@@ -2,6 +2,8 @@
 
 myIWW - a react-native mobile app for IWW.
 
+![myIWW screenshot](./screenshot.png?raw=true "myIWW")
+
 ## Installation
 ### Prerequisites: 
 Make sure to have these installed:
