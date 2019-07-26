@@ -1,12 +1,44 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Button, Text } from 'native-base';
+import { addArticle } from '../redux/actions/index';
 
-export default class Screen1 extends Component {
+const mapStateToProps = state => {
+	return { articles: state.articles };
+};
+
+const mapDispatchToProps = dispatch => {
+	return {
+		addArticle: article => dispatch(addArticle(article))
+	};
+};
+
+// const handleClick = () => {
+// 	alert('OK');
+// 	this.props.addArticle('new one');
+// };
+
+class Screen1 extends Component {
+	// constructor() {
+	// 	super();
+
+	// 	this.handleClick = this.handleClick.bind(this);
+	// }
 	static navigationOptions = {
 		title: 'Screen1',
 		header: null
 	};
+
+	componentDidMount() {
+		// alert('Mounted');
+	}
+
+	// handleClick() {
+	// 	alert(this.props);
+	// 	this.props.addArticle({ title: 'New one' });
+	// }
 
 	render() {
 		return (
@@ -14,9 +46,13 @@ export default class Screen1 extends Component {
 				<Text
 					style={styles.title}
 					onPress={() => this.props.navigation.navigate('Screen2')}
-				>
-					Screen1
-				</Text>
+				/>
+				{this.props.articles.map(el => (
+					<Text key={el}>{el}</Text>
+				))}
+				<Button dark>
+					<Text>Click me plz.</Text>
+				</Button>
 			</View>
 		);
 	}
@@ -40,3 +76,10 @@ const styles = StyleSheet.create({
 		color: 'red'
 	}
 });
+
+const Screen1Container = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Screen1);
+
+export default Screen1Container;

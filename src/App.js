@@ -8,18 +8,17 @@
 
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import AppContainer from './router';
+import { Provider } from 'react-redux';
 
-// import {
-// 	Header,
-// 	LearnMoreLinks,
-// 	Colors,
-// 	DebugInstructions,
-// 	ReloadInstructions
-// } from 'react-native/Libraries/NewAppScreen';
+import AppContainer from './router';
+import store from './redux/store/index';
 
 const App = () => {
-	return <AppContainer />;
+	return (
+		<Provider store={store}>
+			<AppContainer />
+		</Provider>
+	);
 };
 
 const styles = StyleSheet.create({
