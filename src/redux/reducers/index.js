@@ -5,11 +5,11 @@ const initialState = {
 };
 
 function rootReducer(state = initialState, action) {
-	alert(`Received ${action.type} --> ${action.payload}`);
 	if (action.type === ADD_ARTICLE) {
-		return Object.assign({}, state, {
-			articles: state.articles.concat(action.payload)
-		});
+		return {
+			...state,
+			articles: [...state.articles, action.payload]
+		};
 	}
 
 	return state;

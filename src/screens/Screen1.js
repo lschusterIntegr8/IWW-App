@@ -15,30 +15,24 @@ const mapDispatchToProps = dispatch => {
 	};
 };
 
-// const handleClick = () => {
-// 	alert('OK');
-// 	this.props.addArticle('new one');
-// };
-
 class Screen1 extends Component {
-	// constructor() {
-	// 	super();
+	constructor() {
+		super();
+		this.handleClick = this.handleClick.bind(this);
+	}
 
-	// 	this.handleClick = this.handleClick.bind(this);
-	// }
 	static navigationOptions = {
 		title: 'Screen1',
 		header: null
 	};
 
 	componentDidMount() {
-		// alert('Mounted');
+		this.props.addArticle('MOUNTED');
 	}
 
-	// handleClick() {
-	// 	alert(this.props);
-	// 	this.props.addArticle({ title: 'New one' });
-	// }
+	handleClick() {
+		this.props.addArticle('New one.');
+	}
 
 	render() {
 		return (
@@ -50,7 +44,7 @@ class Screen1 extends Component {
 				{this.props.articles.map(el => (
 					<Text key={el}>{el}</Text>
 				))}
-				<Button dark>
+				<Button dark onPress={this.handleClick}>
 					<Text>Click me plz.</Text>
 				</Button>
 			</View>
@@ -59,7 +53,8 @@ class Screen1 extends Component {
 }
 
 Screen1.propTypes = {
-	navigation: PropTypes.object
+	navigation: PropTypes.object,
+	articles: PropTypes.array
 };
 
 const styles = StyleSheet.create({
