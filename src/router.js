@@ -7,6 +7,7 @@ import { zoomIn, zoomOut } from 'react-navigation-transitions';
 import Screen1 from './screens/Screen1';
 import Screen2 from './screens/Screen2';
 import SplashScreen from './screens/SplashScreen';
+import WelcomeOnboarding from './screens/WelcomeOnboarding';
 
 const handleCustomTransition = ({ scenes }) => {
 	const prevScene = scenes[scenes.length - 2];
@@ -32,6 +33,12 @@ const handleCustomTransition = ({ scenes }) => {
 
 const AppNavigator = createStackNavigator(
 	{
+		WelcomeOnboarding: {
+			screen: WelcomeOnboarding,
+			navigationOptions: {
+				tabBarLabel: 'WelcomeOnboarding'
+			}
+		},
 		Screen1: {
 			screen: Screen1,
 			navigationOptions: {
@@ -46,7 +53,7 @@ const AppNavigator = createStackNavigator(
 		}
 	},
 	{
-		initialRouteName: 'Screen1',
+		initialRouteName: 'WelcomeOnboarding',
 		transitionConfig: nav => handleCustomTransition(nav)
 	}
 );

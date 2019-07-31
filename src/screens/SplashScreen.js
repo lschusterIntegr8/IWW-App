@@ -1,13 +1,15 @@
 import React from 'react';
 import { View, Text, ActivityIndicator, Image } from 'react-native';
 import PropTypes from 'prop-types';
+import COLOR from '../config/colors';
 
+const SPLASH_SCREEN_TIMEOUT = 5000;
 class SplashScreen extends React.Component {
 	performTimeConsumingTask = async () => {
 		return new Promise(resolve =>
 			setTimeout(() => {
 				resolve('result');
-			}, 1000)
+			}, SPLASH_SCREEN_TIMEOUT)
 		);
 	};
 
@@ -46,7 +48,7 @@ const styles = {
 		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'center',
-		backgroundColor: '#FFFFFF'
+		backgroundColor: COLOR.WHITE
 	},
 	splashLogo: {
 		width: 125,

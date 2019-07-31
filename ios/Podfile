@@ -30,6 +30,8 @@ target 'myIWW' do
 
 
 
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
   target 'myIWWTests' do
     inherit! :search_paths
     # Pods for testing
