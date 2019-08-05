@@ -3,7 +3,7 @@ import { View, Text, ActivityIndicator, Image } from 'react-native';
 import PropTypes from 'prop-types';
 import COLOR from '../config/colors';
 
-const SPLASH_SCREEN_TIMEOUT = 5000;
+const SPLASH_SCREEN_TIMEOUT = 500;
 class SplashScreen extends React.Component {
 	performTimeConsumingTask = async () => {
 		return new Promise(resolve =>

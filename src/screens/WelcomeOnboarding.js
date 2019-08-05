@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text, Image, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import COLOR from '../config/colors';
-import {
-	widthPercentageToDP as wp,
-	heightPercentageToDP as hp
-} from 'react-native-responsive-screen';
 import { Button } from 'react-native-elements';
 
 // import Onboarding from 'react-native-onboarding-swiper';
@@ -96,32 +92,6 @@ class WelcomeOnboarding extends Component {
 		// alert(slides[0]);
 	}
 
-	/* return (
-			<Onboarding
-				onDone={() => alert('done')}
-				pages={[
-					{
-						backgroundColor: '#fff',
-						image: <Image source={require('../assets/images/iww-logo-splash.png')} />,
-						title: 'Herzlich Wilkommen',
-						subtitle: ''
-					},
-					{
-						backgroundColor: '#fe6e58',
-						image: <Image source={require('../assets/images/iww-logo-splash.png')} />,
-						title: 'The Title',
-						subtitle: 'This is the subtitle that sumplements the title.'
-					},
-					{
-						backgroundColor: '#999',
-						image: <Image source={require('../assets/images/iww-logo-splash.png')} />,
-						title: 'Triangle',
-						subtitle: "Beautiful, isn't it?"
-					}
-				]}
-			/>
-		); */
-
 	_renderItem = props => {
 		const { item } = props;
 		console.log('Title: ', item.title);
@@ -145,11 +115,17 @@ class WelcomeOnboarding extends Component {
 					buttonStyle={styles.loginButton}
 					titleStyle={{ fontSize: 13, fontWeight: 'bold' }}
 					title="ANMELDEN"
+					onPress={() => this.props.navigation.navigate('Login')}
 				/>
 				<Button
 					buttonStyle={styles.signupButton}
-					titleStyle={{ color: 'rgba(1, 49, 95, 0.3)', fontSize: 12, fontWeight: 'bold' }}
+					titleStyle={{
+						color: 'rgba(1, 49, 95, 0.3)',
+						fontSize: 12,
+						fontWeight: 'bold'
+					}}
 					title="Noch keinen Account?"
+					onPress={() => alert('BRE')}
 				/>
 			</View>
 		);
@@ -174,6 +150,6 @@ class WelcomeOnboarding extends Component {
 	}
 }
 
-WelcomeOnboarding.propTypes = {};
+WelcomeOnboarding.propTypes = { navigation: PropTypes.object };
 
 export default WelcomeOnboarding;
