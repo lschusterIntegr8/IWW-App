@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { Container, Header, Form, Content, Input, Item } from 'native-base';
 import PropTypes from 'prop-types';
+import { Button } from 'react-native-elements';
+import COLOR from '../config/colors';
 
 class FormGroup extends React.Component<any, any> {
 	componentDidMount() {
@@ -12,7 +14,7 @@ class FormGroup extends React.Component<any, any> {
 		return (
 			<Form style={{ flex: 0, width: '100%' }}>
 				{this.props.formType === 'login' ? (
-					<React.Fragment>
+					<Fragment>
 						<Input
 							placeholder="Email Adresse*"
 							style={styles.input}
@@ -29,11 +31,17 @@ class FormGroup extends React.Component<any, any> {
 							autoCapitalize="none"
 							autoCompleteType="off"
 						/>
-					</React.Fragment>
+						<Button
+							buttonStyle={styles.submitButton}
+							titleStyle={{ fontSize: 13, fontWeight: 'bold' }}
+							title="ANMELDEN"
+							onPress={() => this.props.navigation.navigate('Login')}
+						/>
+					</Fragment>
 				) : (
-					<React.Fragment>
+					<Fragment>
 						<Text>Fail</Text>
-					</React.Fragment>
+					</Fragment>
 				)}
 			</Form>
 		);
@@ -46,7 +54,18 @@ const styles = StyleSheet.create({
 		borderWidth: 0.5,
 		flex: 0,
 		width: '100%',
-		marginBottom: 10
+		alignSelf: 'center',
+		maxWidth: 450,
+		marginBottom: 10,
+		height: 50,
+		fontSize: 14
+	},
+	submitButton: {
+		width: '100%',
+		maxWidth: 450,
+		alignSelf: 'center',
+		backgroundColor: COLOR.BLUE,
+		height: 50
 	}
 });
 

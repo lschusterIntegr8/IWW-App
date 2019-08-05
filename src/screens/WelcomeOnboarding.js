@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		flexDirection: 'column',
 		marginBottom: 80,
+		paddingHorizontal: 40,
 		paddingTop: Platform.OS === 'ios' ? 20 : 0
 	},
 	image: {
@@ -40,12 +41,15 @@ const styles = StyleSheet.create({
 	},
 	loginButton: {
 		backgroundColor: COLOR.BLUE,
-		marginHorizontal: 40
+		// marginHorizontal: 40,
+		height: 50,
+		width: '100%',
+		maxWidth: 450,
+		alignSelf: 'center'
 	},
 	signupButton: {
 		backgroundColor: 'transparent',
-		marginTop: 32,
-		marginHorizontal: 40
+		marginTop: 32
 	},
 	welcomeLogo: {
 		width: 85,
@@ -94,7 +98,6 @@ class WelcomeOnboarding extends Component {
 
 	_renderItem = props => {
 		const { item } = props;
-		console.log('Title: ', item.title);
 
 		return (
 			<View style={styles.mainContent}>
@@ -110,7 +113,7 @@ class WelcomeOnboarding extends Component {
 
 	_renderNextButton = () => {
 		return (
-			<View>
+			<View style={{ paddingHorizontal: 24 }}>
 				<Button
 					buttonStyle={styles.loginButton}
 					titleStyle={{ fontSize: 13, fontWeight: 'bold' }}
