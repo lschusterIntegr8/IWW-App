@@ -3,13 +3,15 @@ import { createSwitchNavigator, withFadeTransition } from 'react-navigation-swit
 import React from 'react';
 
 import { zoomIn, zoomOut } from 'react-navigation-transitions';
-
+import { View, Text } from 'react-native';
 // let screenDim = Dimensions.get('window');
 import Screen1 from './screens/Screen1';
 import Screen2 from './screens/Screen2';
 import SplashScreen from './screens/SplashScreen';
 import WelcomeOnboarding from './screens/WelcomeOnboarding';
 import Login from './screens/Login';
+import ForgottenPassword from './screens/ForgottenPassword';
+import PasswordResetInstructions from './screens/PasswordResetInstructions';
 import HeaderBackImage from './components/HeaderBackImage';
 
 const handleCustomTransition = ({ scenes }) => {
@@ -38,13 +40,29 @@ const AppNavigator = createStackNavigator(
 	{
 		WelcomeOnboarding: {
 			screen: WelcomeOnboarding,
-			navigationOptions: {}
+			navigationOptions: {
+				headerBackTitle: null
+			}
 		},
 		Login: {
 			screen: Login,
 			navigationOptions: {
 				tabBarLabel: 'Login',
 				headerBackImage: <HeaderBackImage />
+			}
+		},
+		ForgottenPassword: {
+			screen: ForgottenPassword,
+			navigationOptions: {
+				tabBarLabel: 'ForgottenPassword',
+				headerBackImage: <HeaderBackImage />
+			}
+		},
+		PasswordResetInstructions: {
+			screen: PasswordResetInstructions,
+			navigationOptions: {
+				tabBarLabel: 'PasswordResetInstructions',
+				headerLeft: null
 			}
 		},
 		Screen1: {

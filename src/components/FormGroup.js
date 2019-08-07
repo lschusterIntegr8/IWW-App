@@ -1,48 +1,80 @@
 import React, { Fragment } from 'react';
-import { StyleSheet, Text } from 'react-native';
-import { Container, Header, Form, Content, Input, Item } from 'native-base';
+import { StyleSheet } from 'react-native';
+import { Form, Input } from 'native-base';
 import PropTypes from 'prop-types';
 import { Button } from 'react-native-elements';
 import COLOR from '../config/colors';
+import { withNavigation } from 'react-navigation';
 
 class FormGroup extends React.Component<any, any> {
 	componentDidMount() {
-		// alert(this.props.formType);
+		console.log('Mounted');
+	}
+
+	componentDidUpdate() {
+		console.log('Updated');
 	}
 
 	render() {
 		return (
 			<Form style={{ flex: 0, width: '100%' }}>
-				{this.props.formType === 'login' ? (
-					<Fragment>
-						<Input
-							placeholder="Email Adresse*"
-							style={styles.input}
-							keyboardType="email-address"
-							autoCapitalize="none"
-							autoCorrect={false}
-							autoCompleteType="off"
-						/>
-						<Input
-							placeholder="Passwort*"
-							secureTextEntry={true}
-							autoCorrect={false}
-							style={styles.input}
-							autoCapitalize="none"
-							autoCompleteType="off"
-						/>
-						<Button
-							buttonStyle={styles.submitButton}
-							titleStyle={{ fontSize: 13, fontWeight: 'bold' }}
-							title="ANMELDEN"
-							onPress={() => this.props.navigation.navigate('Login')}
-						/>
-					</Fragment>
-				) : (
-					<Fragment>
-						<Text>Fail</Text>
-					</Fragment>
-				)}
+				{
+					{
+						/* CASE1: LOGIN */
+						['login']: (
+							<Fragment>
+								<Input
+									placeholder="Email Adresse*"
+									style={styles.input}
+									keyboardType="email-address"
+									autoCapitalize="none"
+									autoCorrect={false}
+									autoCompleteType="off"
+									onChangeText={text => this.props.setValidity(text, 'email')}
+								/>
+								<Input
+									placeholder="Passwort*"
+									secureTextEntry={true}
+									autoCorrect={false}
+									style={styles.input}
+									autoCapitalize="none"
+									autoCompleteType="off"
+									onChangeText={text => this.props.setValidity(text, 'password')}
+								/>
+								<Button
+									buttonStyle={styles.submitButton}
+									titleStyle={{ fontSize: 13, fontWeight: 'bold' }}
+									title="ANMELDEN"
+									onPress={() =>
+										this.props.navigation.navigate('WelcomeOnboarding')
+									}
+									disabled={!this.props.isValidInput ? true : false}
+								/>
+							</Fragment>
+						),
+						/* CASE2: FORGOTTEN PASSWORD */
+						['forgotten_password']: (
+							<Fragment>
+								<Input
+									placeholder="Email Adresse*"
+									style={styles.input}
+									keyboardType="email-address"
+									autoCapitalize="none"
+									autoCorrect={false}
+									autoCompleteType="off"
+									onChangeText={text => this.props.setValidity(text, 'email')}
+								/>
+								<Button
+									buttonStyle={styles.submitButton}
+									titleStyle={{ fontSize: 13, fontWeight: 'bold' }}
+									title="ZURÜCKSETZEN"
+									onPress={this.props.handleSubmit}
+									disabled={this.props.blockButton}
+								/>
+							</Fragment>
+						)
+					}[this.props.formType]
+				}
 			</Form>
 		);
 	}
@@ -71,6 +103,7 @@ const styles = StyleSheet.create({
 
 FormGroup.propTypes = {
 	navigation: PropTypes.object,
-	formType: PropTypes.string
+	formType: PropTypes.string,
+	handleSubmit: PropTypes.func
 };
-export default FormGroup;
+export default withNavigation(FormGroup);
