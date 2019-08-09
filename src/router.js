@@ -1,10 +1,14 @@
-import { createStackNavigator, createAppContainer } from 'react-navigation';
+import { createStackNavigator, createAppContainer, createDrawerNavigator } from 'react-navigation';
 import { createSwitchNavigator, withFadeTransition } from 'react-navigation-switch-transitioner';
 import React from 'react';
 
 import { zoomIn, zoomOut } from 'react-navigation-transitions';
 import { View, Text } from 'react-native';
 // let screenDim = Dimensions.get('window');
+/* Components */
+import HeaderBackImage from './components/HeaderBackImage';
+
+/* Authentication Screens */
 import Screen1 from './screens/Screen1';
 import Screen2 from './screens/Screen2';
 import SplashScreen from './screens/SplashScreen';
@@ -12,7 +16,9 @@ import WelcomeOnboarding from './screens/WelcomeOnboarding';
 import Login from './screens/Login';
 import ForgottenPassword from './screens/ForgottenPassword';
 import PasswordResetInstructions from './screens/PasswordResetInstructions';
-import HeaderBackImage from './components/HeaderBackImage';
+
+/* Main Screens */
+import HomeScreen from './screens/HomeScreen';
 
 const handleCustomTransition = ({ scenes }) => {
 	const prevScene = scenes[scenes.length - 2];
@@ -36,7 +42,7 @@ const handleCustomTransition = ({ scenes }) => {
 	return zoomIn();
 };
 
-const AppNavigator = createStackNavigator(
+const AuthNavigator = createStackNavigator(
 	{
 		WelcomeOnboarding: {
 			screen: WelcomeOnboarding,
@@ -84,13 +90,35 @@ const AppNavigator = createStackNavigator(
 	}
 );
 
+const AppNavigator = createDrawerNavigator(
+	{
+		Home: {
+			screen: HomeScreen,
+			navigationOptions: {
+				tabBarLabel: 'Home Screen'
+			}
+		}
+	},
+	{
+		// hideStatusBar: true,
+		// drawerBackgroundColor: '#FFFFFF',
+		// overlayColor: '#6b52ae',
+		// color: '#000000',
+		// contentOptions: {
+		// 	activeTintColor: '#fff',
+		// 	activeBackgroundColor: ''
+		// }
+	}
+);
+
 const InitialNavigator = createSwitchNavigator(
 	{
 		Splash: withFadeTransition(SplashScreen),
-		App: withFadeTransition(AppNavigator)
+		Authentication: withFadeTransition(AuthNavigator),
+		App: AppNavigator
 	},
 	{
-		initialRouteName: 'Splash'
+		initialRouteName: 'App'
 	}
 );
 

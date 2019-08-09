@@ -5,11 +5,13 @@ const initialState = {
 };
 
 function rootReducer(state = initialState, action) {
-	if (action.type === ADD_ARTICLE) {
-		return {
-			...state,
-			articles: [...state.articles, action.payload]
-		};
+	switch (action.type) {
+		case ADD_ARTICLE: {
+			return {
+				...state,
+				articles: [...state.articles, action.payload]
+			};
+		}
 	}
 
 	return state;

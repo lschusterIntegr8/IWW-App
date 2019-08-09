@@ -5,8 +5,21 @@ import PropTypes from 'prop-types';
 import COLOR from '../config/colors';
 import FormGroup from '../components/FormGroup';
 import validator from 'validator';
+import { authenticateLogin } from '../helpers/authentication';
 
 class Login extends React.Component {
+	constructor(props) {
+		super(props);
+		this.handleSubmit = this.handleSubmit.bind(this);
+	}
+
+	state = {
+		isLoading: false,
+		isValidInput: false,
+		email: '',
+		password: ''
+	};
+
 	static navigationOptions = {
 		title: null,
 		/* Borderless Header */
@@ -15,12 +28,6 @@ class Login extends React.Component {
 			shadowOpacity: 0,
 			borderBottomWidth: 0
 		}
-	};
-
-	state = {
-		isValidInput: false,
-		email: '',
-		password: ''
 	};
 
 	validateInput = () => {
@@ -56,6 +63,27 @@ class Login extends React.Component {
 		}
 	};
 
+	async handleSubmit() {
+		try {
+			/* 1. Start loader and disable button */
+			this.setState({
+				isLoading: true
+			});
+
+			/* 2. Do request */
+			const authSuccess = await authenticateLogin(this.state.email, this.state.password);
+
+			/* 3. Stop loader */
+			this.setState({
+				isLoading: false
+			});
+			/* 4. Navigate */
+			if (authSuccess) this.props.navigation.navigate('App');
+		} catch (err) {
+			alert('Wrong Email or Password');
+		}
+	}
+
 	render() {
 		return (
 			<View style={styles.mainContent}>
@@ -68,6 +96,7 @@ class Login extends React.Component {
 					formType="login"
 					setValidity={this.setValidity}
 					isValidInput={this.state.isValidInput}
+					handleSubmit={this.handleSubmit}
 				/>
 				<Button
 					buttonStyle={styles.passwordResetButton}

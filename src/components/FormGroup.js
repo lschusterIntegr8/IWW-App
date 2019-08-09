@@ -45,9 +45,7 @@ class FormGroup extends React.Component<any, any> {
 									buttonStyle={styles.submitButton}
 									titleStyle={{ fontSize: 13, fontWeight: 'bold' }}
 									title="ANMELDEN"
-									onPress={() =>
-										this.props.navigation.navigate('WelcomeOnboarding')
-									}
+									onPress={this.props.handleSubmit}
 									disabled={!this.props.isValidInput ? true : false}
 								/>
 							</Fragment>
