@@ -24,6 +24,30 @@ const CustomSidebarMenu = props => (
 					style={styles.bottomLogo}
 					source={require('../assets/images/iww-logo-splash.png')}
 				/>
+				<View
+					style={{
+						flexDirection: 'row'
+					}}
+				>
+					<Text
+						style={{
+							flex: 1,
+							textAlign: 'right',
+							marginRight: 10
+						}}
+					>
+						Datenschutz
+					</Text>
+					<Text
+						style={{
+							flex: 1,
+							textAlign: 'left',
+							marginLeft: 10
+						}}
+					>
+						Impressum
+					</Text>
+				</View>
 			</View>
 		</ScrollView>
 	</SafeAreaView>
