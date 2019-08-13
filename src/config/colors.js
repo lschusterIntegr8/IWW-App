@@ -3,5 +3,6 @@ export default {
 	RED: '#E3001B',
 	GREY: '#EBEBEB',
 	WHITE: '#FFFFFF',
-	BLACK: '#000000'
+	BLACK: '#000000',
+	WASHED_BLUE: '#E1E6EA'
 };

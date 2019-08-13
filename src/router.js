@@ -19,6 +19,8 @@ import PasswordResetInstructions from './screens/PasswordResetInstructions';
 
 /* Main Screens */
 import HomeScreen from './screens/HomeScreen';
+import CustomSidebarMenu from './components/CustomSidebarMenu';
+import HeaderMenu from './components/HeaderMenu';
 
 const handleCustomTransition = ({ scenes }) => {
 	const prevScene = scenes[scenes.length - 2];
@@ -95,20 +97,43 @@ const AppNavigator = createDrawerNavigator(
 		Home: {
 			screen: HomeScreen,
 			navigationOptions: {
-				tabBarLabel: 'Home Screen'
+				title: 'Home Screen'
+			}
+		},
+		Screen1: {
+			screen: Screen1,
+			navigationOptions: {
+				tabBarLabel: 'Screen1'
+			}
+		},
+		Screen2: {
+			screen: Screen2,
+			navigationOptions: {
+				tabBarLabel: 'Screen2'
 			}
 		}
 	},
 	{
-		// hideStatusBar: true,
-		// drawerBackgroundColor: '#FFFFFF',
-		// overlayColor: '#6b52ae',
-		// color: '#000000',
-		// contentOptions: {
-		// 	activeTintColor: '#fff',
-		// 	activeBackgroundColor: ''
-		// }
+		contentComponent: CustomSidebarMenu,
+		navigationOptions: {
+			header: (
+				<View>
+					<Text>LOL</Text>
+				</View>
+			)
+		}
 	}
+
+	// {
+	// 	// hideStatusBar: true,
+	// 	// drawerBackgroundColor: '#FFFFFF',
+	// 	// overlayColor: '#6b52ae',
+	// 	// color: '#000000',
+	// 	// contentOptions: {
+	// 	// 	activeTintColor: '#fff',
+	// 	// 	activeBackgroundColor: ''
+	// 	// }
+	// }
 );
 
 const InitialNavigator = createSwitchNavigator(
