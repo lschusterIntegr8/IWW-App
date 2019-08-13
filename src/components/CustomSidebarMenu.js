@@ -5,11 +5,6 @@ import COLOR from '../config/colors';
 
 const CustomSidebarMenu = props => (
 	<SafeAreaView style={styles.container} forceInset={{ top: 'always', horizontal: 'never' }}>
-		<View style={styles.imageContainer}>
-			<View style={styles.drawerHeader}>
-				<Text style={{ fontSize: 22 }}>N.J.</Text>
-			</View>
-		</View>
 		<ScrollView
 			style={{ flex: 1 }}
 			contentContainerStyle={{
@@ -17,6 +12,12 @@ const CustomSidebarMenu = props => (
 				justifyContent: 'space-between'
 			}}
 		>
+			<View style={styles.imageContainer}>
+				<View style={styles.drawerHeader}>
+					<Text style={{ fontSize: 22 }}>N.J.</Text>
+				</View>
+			</View>
+
 			<DrawerItems {...props} />
 
 			<View style={styles.bottomContainer}>
