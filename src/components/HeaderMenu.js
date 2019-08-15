@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, StatusBar } from 'react-native';
-import { Header, Left, Right, Icon } from 'native-base';
+import { StyleSheet, StatusBar, TouchableOpacity } from 'react-native';
+import { Header, Left, Icon } from 'native-base';
 import COLOR from '../config/colors';
 import { withNavigation } from 'react-navigation';
 
@@ -19,12 +19,10 @@ class HeaderMenu extends Component {
 	render() {
 		return (
 			<Header style={styles.header}>
-				<Left style={{ flex: 1 }}>
-					<Icon
-						name="menu"
-						style={styles.icons}
-						onPress={() => this.props.navigation.openDrawer()}
-					/>
+				<Left style={{ flex: 1, marginHorizontal: 11 }}>
+					<TouchableOpacity onPress={() => this.props.navigation.openDrawer()}>
+						<Icon name="ios-menu" style={styles.icons} />
+					</TouchableOpacity>
 				</Left>
 			</Header>
 		);
@@ -36,7 +34,8 @@ const styles = StyleSheet.create({
 		backgroundColor: COLOR.BLUE
 	},
 	icons: {
-		color: '#FFFFFF'
+		color: '#FFFFFF',
+		fontSize: 40
 	}
 });
 

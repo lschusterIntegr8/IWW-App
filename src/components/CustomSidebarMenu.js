@@ -1,10 +1,33 @@
 import React, { Component } from 'react';
-import { NavigationActions, DrawerItems, SafeAreaView } from 'react-navigation';
-import { ScrollView, StyleSheet, Text, Image, View } from 'react-native';
+import { DrawerItems, SafeAreaView } from 'react-navigation';
+import { ScrollView, StyleSheet, Text, Image, View, TouchableOpacity } from 'react-native';
+import { Header, Left, Icon } from 'native-base';
 import COLOR from '../config/colors';
 
 const CustomSidebarMenu = props => (
 	<SafeAreaView style={styles.container} forceInset={{ top: 'always', horizontal: 'never' }}>
+		<TouchableOpacity
+			style={{
+				display: 'flex',
+				alignItems: 'flex-end',
+				width: 64,
+				height: 40,
+				marginHorizontal: 0,
+				textAlign: 'center',
+				padding: 0
+			}}
+			onPress={() => props.navigation.closeDrawer()}
+		>
+			<Icon
+				name="ios-close"
+				style={{
+					fontSize: 50,
+					color: COLOR.BLUE,
+					alignSelf: 'center',
+					top: -4
+				}}
+			/>
+		</TouchableOpacity>
 		<ScrollView
 			style={{ flex: 1 }}
 			contentContainerStyle={{
