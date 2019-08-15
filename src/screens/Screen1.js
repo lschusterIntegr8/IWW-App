@@ -18,7 +18,6 @@ const mapDispatchToProps = dispatch => {
 class Screen1 extends Component {
 	constructor() {
 		super();
-		this.handleClick = this.handleClick.bind(this);
 	}
 
 	static navigationOptions = {
@@ -27,26 +26,21 @@ class Screen1 extends Component {
 	};
 
 	componentDidMount() {
-		this.props.addArticle('MOUNTED');
-	}
-
-	handleClick() {
-		this.props.addArticle('New one.');
+		console.log('MOUNTED ADD');
+		this.props.addArticle({
+			articleId: '1234',
+			title: 'Qualität des Operateurs hängt von der Methode ab?',
+			category: 'TeamManagement',
+			published_on: 'Wednesday, 21 Jul 2019',
+			author: 'CB',
+			thumbnail: require('../assets/images/test-article-1.png')
+		});
 	}
 
 	render() {
 		return (
 			<View style={styles.container}>
-				<Text
-					style={styles.title}
-					onPress={() => this.props.navigation.navigate('Screen2')}
-				/>
-				{this.props.articles.map(el => (
-					<Text key={el}>{el}</Text>
-				))}
-				<Button dark onPress={this.handleClick}>
-					<Text>Click me plz.</Text>
-				</Button>
+				<Text>Test</Text>
 			</View>
 		);
 	}

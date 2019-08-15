@@ -27,11 +27,10 @@ class HomeScreen extends Component {
 			<View style={{ flex: 1 }}>
 				<HeaderMenu />
 				<ScrollView
-					style={{
-						marginVertical: 30
-					}}
+					style={{}}
 					contentContainerStyle={{
-						flexGrow: 1
+						flexGrow: 1,
+						paddingVertical: 30
 					}}
 				>
 					{this.props.articles.map(el => (

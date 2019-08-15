@@ -14,28 +14,18 @@ import PropTypes from 'prop-types';
 import COLOR from '../config/colors';
 
 const ArticleCard = props => (
-	// <Card
-	// 	image={props.article.thumbnail}
-	// 	containerStyle={styles.cardContainer}
-	// 	imageProps={{
-	// 		resizeMode: 'cover',
-	// 		padding: 0,
-	// 		margin: 0,
-	// 		border: null
-	// 	}}
-	// 	imageWrapperStyle={{ padding: 0, margin: 0 }}
-	// 	imageStyle={{}}
-	// 	wrapperStyle={{}}
-	// >
-	// 	<View key={props.article.articleId}>
-	// 		<Text style={styles.name}>{props.article.title}</Text>
-	// 	</View>
-	// </Card>
 	<View style={styles.cardContainer}>
-		{/* <Image source={props.article.thumbnail} style={styles.image} resizeMode="cover" /> */}
-		<TouchableOpacity style={styles.clickableArea}>
+		<TouchableOpacity
+			style={styles.clickableArea}
+			onPress={() => {
+				alert('test');
+			}}
+		>
 			<ImageBackground source={props.article.thumbnail} style={styles.articleImage}>
 				<View style={styles.cardBodyWrapper}>
+					<View style={styles.authorCorner}>
+						<Text style={styles.authorText}>{props.article.author}</Text>
+					</View>
 					<Text style={styles.dateText}>{props.article.published_on}</Text>
 					<Text style={styles.titleText}>{props.article.title}</Text>
 					<Text style={styles.categoryText}>#{props.article.category}</Text>
@@ -54,10 +44,9 @@ const styles = StyleSheet.create({
 	cardContainer: {
 		minHeight: 250,
 		marginBottom: 30,
+		// paddingBottom: 30,
 		maxWidth: 600,
 		width: '100%',
-		marginHorizontal: 16,
-
 		alignSelf: 'center'
 	},
 	clickableArea: {
@@ -77,12 +66,28 @@ const styles = StyleSheet.create({
 		alignItems: 'flex-start',
 		justifyContent: 'flex-end'
 	},
+	authorCorner: {
+		display: 'flex',
+		justifyContent: 'center',
+		width: 50,
+		height: 50,
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		backgroundColor: COLOR.RED
+	},
+	authorText: {
+		color: COLOR.WHITE,
+		alignSelf: 'center',
+		fontSize: 10,
+		fontWeight: 'bold'
+	},
 	dateText: {
-		color: '#FFFFFF',
+		color: COLOR.WHITE,
 		fontSize: 10
 	},
 	titleText: {
-		color: '#FFFFFF',
+		color: COLOR.WHITE,
 		fontSize: 18,
 		fontWeight: 'bold'
 	},

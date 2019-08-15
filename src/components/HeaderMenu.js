@@ -10,10 +10,8 @@ class HeaderMenu extends Component {
 	}
 
 	componentDidMount() {
-		console.log('PROPS:');
-		console.log(this.props);
 		StatusBar.setBarStyle('light-content', true);
-		StatusBar.setBackgroundColor('red');
+		StatusBar.setBackgroundColor(COLOR.BLUE);
 	}
 
 	render() {
