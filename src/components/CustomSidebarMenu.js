@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { DrawerItems, SafeAreaView } from 'react-navigation';
 import { ScrollView, StyleSheet, Text, Image, View, TouchableOpacity } from 'react-native';
-import { Header, Left, Icon } from 'native-base';
+import { Icon } from 'native-base';
+import PropTypes from 'prop-types';
 import COLOR from '../config/colors';
 
 const CustomSidebarMenu = props => (
@@ -76,6 +77,10 @@ const CustomSidebarMenu = props => (
 		</ScrollView>
 	</SafeAreaView>
 );
+
+CustomSidebarMenu.propTypes = {
+	navigation: PropTypes.object
+};
 
 const styles = StyleSheet.create({
 	container: {
