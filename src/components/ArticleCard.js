@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native';
 import PropTypes from 'prop-types';
+import { withNavigation } from 'react-navigation';
 
 import COLOR from '../config/colors';
 
@@ -11,6 +12,7 @@ const ArticleCard = props => (
 			onPress={() => {
 				alert('test');
 				/* props.navigation.navigate('ArticleDetail', {article: article}) */
+				// props.navigation.navigate('ForgottenPassword');
 			}}
 		>
 			<ImageBackground source={props.article.thumbnail} style={styles.articleImage}>
@@ -36,7 +38,6 @@ const styles = StyleSheet.create({
 	cardContainer: {
 		minHeight: 250,
 		marginBottom: 30,
-		// paddingBottom: 30,
 		maxWidth: 600,
 		width: '100%',
 		alignSelf: 'center'
@@ -90,4 +91,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default ArticleCard;
+export default withNavigation(ArticleCard);

@@ -97,7 +97,8 @@ const AppNavigator = createDrawerNavigator(
 		Home: {
 			screen: HomeScreen,
 			navigationOptions: {
-				title: 'Home Screen'
+				title: 'Home Screen',
+				drawerLabel: () => null //hidden from drawer
 			}
 		},
 		Screen1: {

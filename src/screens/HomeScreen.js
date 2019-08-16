@@ -16,6 +16,10 @@ class HomeScreen extends Component {
 	constructor(props) {
 		super(props);
 	}
+	/* HIDE FROM DRAWER MENU */
+	// static navigationOptions = {
+	// 	drawerLabel: () => null
+	// };
 
 	componentDidMount() {
 		// alert(slides[0]);
