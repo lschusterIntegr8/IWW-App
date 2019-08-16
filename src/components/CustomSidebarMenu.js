@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { DrawerItems, SafeAreaView } from 'react-navigation';
 import { ScrollView, StyleSheet, Text, Image, View, TouchableOpacity } from 'react-native';
 import { Icon } from 'native-base';
 import PropTypes from 'prop-types';
+
 import COLOR from '../config/colors';
 
 const CustomSidebarMenu = props => (

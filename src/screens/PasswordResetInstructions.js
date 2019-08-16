@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { Button } from 'react-native-elements';
-
 import PropTypes from 'prop-types';
+
 import COLOR from '../config/colors';
 
 class PasswordResetInstructions extends React.Component {

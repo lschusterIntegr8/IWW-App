@@ -2,10 +2,11 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { Button } from 'react-native-elements';
 import PropTypes from 'prop-types';
+import validator from 'validator';
+
+import { authenticateLogin } from '../helpers/authentication';
 import COLOR from '../config/colors';
 import FormGroup from '../components/FormGroup';
-import validator from 'validator';
-import { authenticateLogin } from '../helpers/authentication';
 
 class Login extends React.Component {
 	constructor(props) {

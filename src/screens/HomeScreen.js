@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
-import COLOR from '../config/colors';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 
 import HeaderMenu from '../components/HeaderMenu';
 import ArticleCard from '../components/ArticleCard';
+import COLOR from '../config/colors';
 
 const mapStateToProps = state => {
 	return { articles: state.articles };

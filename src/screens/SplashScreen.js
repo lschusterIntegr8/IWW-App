@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, ActivityIndicator, Image } from 'react-native';
 import PropTypes from 'prop-types';
+
 import COLOR from '../config/colors';
 
 const SPLASH_SCREEN_TIMEOUT = 500;

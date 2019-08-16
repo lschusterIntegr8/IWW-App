@@ -3,8 +3,9 @@ import { StyleSheet } from 'react-native';
 import { Form, Input } from 'native-base';
 import PropTypes from 'prop-types';
 import { Button } from 'react-native-elements';
-import COLOR from '../config/colors';
 import { withNavigation } from 'react-navigation';
+
+import COLOR from '../config/colors';
 
 class FormGroup extends React.Component<any, any> {
 	componentDidMount() {

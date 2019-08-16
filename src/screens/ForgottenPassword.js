@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
+import validator from 'validator';
+
 import COLOR from '../config/colors';
 import FormGroup from '../components/FormGroup';
 import { sendPasswordResetEmail } from '../helpers/authentication';
-import validator from 'validator';
-
 class ForgottenPassword extends React.Component {
 	constructor(props) {
 		super(props);

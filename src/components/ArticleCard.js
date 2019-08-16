@@ -1,16 +1,7 @@
-import React, { Component } from 'react';
-import { DrawerItems, SafeAreaView } from 'react-navigation';
-import {
-	ScrollView,
-	StyleSheet,
-	Text,
-	Image,
-	View,
-	TouchableOpacity,
-	ImageBackground
-} from 'react-native';
-
+import React from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native';
 import PropTypes from 'prop-types';
+
 import COLOR from '../config/colors';
 
 const ArticleCard = props => (
@@ -19,6 +10,7 @@ const ArticleCard = props => (
 			style={styles.clickableArea}
 			onPress={() => {
 				alert('test');
+				/* props.navigation.navigate('ArticleDetail', {article: article}) */
 			}}
 		>
 			<ImageBackground source={props.article.thumbnail} style={styles.articleImage}>

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, Image, Platform } from 'react-native';
 import PropTypes from 'prop-types';
-import COLOR from '../config/colors';
 import { Button } from 'react-native-elements';
-
-// import Onboarding from 'react-native-onboarding-swiper';
 import AppIntroSlider from 'react-native-app-intro-slider';
+
+import COLOR from '../config/colors';
+
 const styles = StyleSheet.create({
 	mainContent: {
 		flex: 1,
@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
 	},
 	loginButton: {
 		backgroundColor: COLOR.BLUE,
-		// marginHorizontal: 40,
 		height: 50,
 		width: '100%',
 		maxWidth: 450,

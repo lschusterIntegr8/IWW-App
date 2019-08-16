@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Button, Text } from 'native-base';
+
 import { addArticle } from '../redux/actions/index';
 
 const mapStateToProps = state => {
