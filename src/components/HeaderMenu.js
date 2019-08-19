@@ -11,13 +11,14 @@ class HeaderMenu extends Component {
 	}
 
 	componentDidMount() {
-		StatusBar.setBarStyle('light-content', true);
-		StatusBar.setBackgroundColor(COLOR.BLUE);
+		// StatusBar.setBarStyle('light-content', true);
+		// StatusBar.setBackgroundColor(COLOR.BLUE);
 	}
 
 	render() {
 		return (
 			<Header style={styles.header}>
+				{/* <StatusBar hidden={false} translucent={true} /> */}
 				<Left style={{ flex: 1, marginHorizontal: 11 }}>
 					<TouchableOpacity onPress={() => this.props.navigation.openDrawer()}>
 						<Icon name="ios-menu" style={styles.icons} />

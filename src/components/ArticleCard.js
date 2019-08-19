@@ -1,5 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native';
+import {
+	StyleSheet,
+	Text,
+	View,
+	TouchableOpacity,
+	ImageBackground,
+	TouchableHighlight
+} from 'react-native';
 import PropTypes from 'prop-types';
 import { withNavigation } from 'react-navigation';
 
@@ -7,7 +14,7 @@ import COLOR from '../config/colors';
 
 const ArticleCard = props => (
 	<View style={styles.cardContainer}>
-		<TouchableOpacity
+		<TouchableHighlight
 			style={styles.clickableArea}
 			onPress={() => {
 				alert('test');
@@ -25,7 +32,7 @@ const ArticleCard = props => (
 					<Text style={styles.categoryText}>#{props.article.category}</Text>
 				</View>
 			</ImageBackground>
-		</TouchableOpacity>
+		</TouchableHighlight>
 	</View>
 );
 

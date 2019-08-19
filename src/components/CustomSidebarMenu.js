@@ -1,6 +1,14 @@
 import React from 'react';
 import { DrawerItems, SafeAreaView } from 'react-navigation';
-import { ScrollView, StyleSheet, Text, Image, View, TouchableOpacity } from 'react-native';
+import {
+	ScrollView,
+	StyleSheet,
+	Text,
+	Image,
+	View,
+	TouchableOpacity,
+	Platform
+} from 'react-native';
 import { Icon } from 'native-base';
 import PropTypes from 'prop-types';
 
@@ -26,7 +34,8 @@ const CustomSidebarMenu = props => (
 					fontSize: 50,
 					color: COLOR.BLUE,
 					alignSelf: 'center',
-					top: -4
+					top: Platform.OS === 'ios' ? -4 : 5,
+					left: Platform.OS === 'ios' ? 2 : 5
 				}}
 			/>
 		</TouchableOpacity>

@@ -98,7 +98,7 @@ const AppNavigator = createDrawerNavigator(
 			screen: HomeScreen,
 			navigationOptions: {
 				title: 'Home Screen',
-				drawerLabel: () => null //hidden from drawer
+				drawerLabel: () => null //hidden from drawer,
 			}
 		},
 		Screen1: {
@@ -115,14 +115,7 @@ const AppNavigator = createDrawerNavigator(
 		}
 	},
 	{
-		contentComponent: CustomSidebarMenu,
-		navigationOptions: {
-			header: (
-				<View>
-					<Text>LOL</Text>
-				</View>
-			)
-		}
+		contentComponent: CustomSidebarMenu
 	}
 
 	// {
@@ -136,6 +129,17 @@ const AppNavigator = createDrawerNavigator(
 	// 	// }
 	// }
 );
+
+// const MainDrawer = createStackNavigator(
+// 	{
+// 		AppNavigator: AppNavigator
+// 	},
+// 	{
+// 		defaultNavigationOptions: {
+// 			header: null
+// 		}
+// 	}
+// );
 
 const InitialNavigator = createSwitchNavigator(
 	{
