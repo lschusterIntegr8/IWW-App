@@ -1,53 +1,135 @@
 import React from 'react';
-import { StyleSheet, FlatList, View, Text } from 'react-native';
+import { StyleSheet, FlatList, View, Text, Animated, Easing } from 'react-native';
 import PropTypes from 'prop-types';
 import { Button } from 'react-native-elements';
 
-import ArticleCard from './ArticleCard';
+import NewsFeedList from './NewsFeedList';
 
 import COLOR from '../config/colors';
 
 class NewsFeedWrapper extends React.Component {
 	constructor(props) {
 		super(props);
+		this.opacityValue = new Animated.Value(0);
+
+		this.state = {
+			currentFilter: undefined,
+			runRefreshAnimation: false
+		};
+	}
+	opacity() {
+		this.opacityValue.setValue(0);
+		Animated.timing(this.opacityValue, {
+			toValue: 1,
+			duration: 2000,
+			easing: Easing.cubic
+		}).start(() => {
+			if (this.state.runRefreshAnimation) this.opacity();
+		});
+	}
+
+	toggleFilter(filterName) {
+		if (this.state.currentFilter === filterName) {
+			return this.setState({ currentFilter: undefined });
+		}
+		return this.setState({ currentFilter: filterName });
+	}
+
+	renderFilteredView() {
+		if (!this.state.currentFilter) {
+			return <NewsFeedList />;
+		} else if (this.state.currentFilter === 'archive') {
+			return (
+				<View>
+					<Text>THIS IS THE ARCHIVE</Text>
+				</View>
+			);
+		} else if (this.state.currentFilter === 'rubriken') {
+			return (
+				<View>
+					<Text>THIS IS THE RUBRIKEN</Text>
+				</View>
+			);
+		}
+	}
+
+	/* Handle refresh animation state */
+	componentDidUpdate(prevProps, prevState) {
+		if (!prevProps.refreshing && this.props.refreshing) {
+			this.setState({ runRefreshAnimation: true }, () => {
+				this.opacity();
+			});
+		} else if (prevProps.refreshing && !this.props.refreshing) {
+			this.setState({ runRefreshAnimation: false }, () => {
+				this.opacityValue.stopAnimation(() => {
+					this.opacityValue.setValue(0);
+				});
+			});
+		}
 	}
 
 	render() {
+		const opacity = this.opacityValue.interpolate({
+			inputRange: [0, 0.5, 1],
+			outputRange: [1, 0.75, 1]
+		});
+
 		return (
 			<View>
 				<View style={styles.inhalteHeaderWrapper}>
 					<Text style={styles.inhalteHeading}>Meine Inhalte</Text>
 					<View style={styles.filterBar}>
-						{/* <Text>Filter</Text>
-						<Text>Filter2</Text> */}
 						<Button
-							buttonStyle={styles.filterButton}
-							titleStyle={styles.filterButtonTitle}
+							buttonStyle={[
+								styles.filterButton,
+								this.state.currentFilter === 'archive'
+									? styles.filterActiveButton
+									: null
+							]}
+							titleStyle={[
+								styles.filterButtonTitle,
+								this.state.currentFilter === 'archive'
+									? styles.filterActiveButtonTitle
+									: null
+							]}
 							title="Archiv"
+							onPress={() => this.toggleFilter('archive')}
 						/>
 						<Button
-							buttonStyle={styles.filterButton}
-							titleStyle={styles.filterButtonTitle}
+							buttonStyle={[
+								styles.filterButton,
+								this.state.currentFilter === 'rubriken'
+									? styles.filterActiveButton
+									: null
+							]}
+							titleStyle={[
+								styles.filterButtonTitle,
+								this.state.currentFilter === 'rubriken'
+									? styles.filterActiveButtonTitle
+									: null
+							]}
 							title="Rubriken"
+							onPress={() => this.toggleFilter('rubriken')}
 						/>
-
-						{/* <TouchableOpacity style={styles.filterButton}>
-							<Text>Archive</Text>
-						</TouchableOpacity> */}
 					</View>
 				</View>
-				<FlatList
-					data={this.props.articles}
-					renderItem={({ item }) => <ArticleCard key={item.articleId} article={item} />}
-					keyExtractor={item => item.url}
-				/>
+				<Animated.View style={[{ opacity }]}>
+					{/* 
+				RENDER CORRECT VIEW BASED ON CURRENT SELECTED FILTER
+				1. undefined ==> News Feed List
+				2. archive ==> Archive
+				3. rubriken ==> Rubriken
+				*/
+					this.renderFilteredView()}
+				</Animated.View>
 			</View>
 		);
 	}
 }
 
 NewsFeedWrapper.propTypes = {
-	navigation: PropTypes.object
+	navigation: PropTypes.object,
+	refreshing: PropTypes.bool
 };
 
 const styles = StyleSheet.create({
@@ -84,6 +166,13 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		color: 'rgba(0, 0, 0, 1)',
 		padding: 14
+	},
+	filterActiveButton: {
+		backgroundColor: COLOR.RED
+	},
+	filterActiveButtonTitle: {
+		color: COLOR.WHITE,
+		fontWeight: 'bold'
 	}
 });
 

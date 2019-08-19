@@ -27,8 +27,6 @@ class Screen1 extends Component {
 	};
 
 	componentDidMount() {
-		alert(this.props.articles);
-		console.log('MOUNTED ADD');
 		this.props.addArticle({
 			articleId: '1234',
 			title: 'Qualität des Operateurs hängt von der Methode ab?',

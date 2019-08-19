@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView, StatusBar, RefreshControl } from 'react-native';
+import { View, ScrollView, RefreshControl } from 'react-native';
 import PropTypes from 'prop-types';
-import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 
 import HeaderMenu from '../components/HeaderMenu';
-import ArticleCard from '../components/ArticleCard';
 import NewsFeedWrapper from '../components/NewsFeedWrapper';
-import COLOR from '../config/colors';
+import InfoServiceWrapper from '../components/InfoServiceWrapper';
 import { addArticle } from '../redux/actions/index';
 
 const mapStateToProps = state => {
@@ -66,14 +64,29 @@ class HomeScreen extends Component {
 						/>
 					}
 				>
-					<NewsFeedWrapper articles={this.props.articles} />
+					{/* 
+					Informationsdienste
+					*/}
+
+					<InfoServiceWrapper articles={this.props.articles} />
+
+					{/* 
+					Meine Inhalte
+					*/}
+					<NewsFeedWrapper
+						articles={this.props.articles}
+						refreshing={this.state.refreshing}
+					/>
 				</ScrollView>
 			</View>
 		);
 	}
 }
 
-HomeScreen.propTypes = { navigation: PropTypes.object, articles: PropTypes.array };
+HomeScreen.propTypes = {
+	navigation: PropTypes.object,
+	articles: PropTypes.array
+};
 
 const HomeScreenContainer = connect(
 	mapStateToProps,
