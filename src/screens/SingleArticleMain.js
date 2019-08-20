@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, ScrollView, Text } from 'react-native';
 import PropTypes from 'prop-types';
-import { SafeAreaView } from 'react-navigation';
 
 class SingleArticleMain extends Component {
 	constructor(props) {

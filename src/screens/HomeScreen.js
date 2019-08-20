@@ -26,6 +26,10 @@ class HomeScreen extends Component {
 		};
 	}
 
+	static navigationOptions = {
+		header: null
+	};
+
 	/* TODO: Fetch fresh articles and set to store */
 	_onRefresh = () => {
 		this.setState({ refreshing: true });

@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-	StyleSheet,
-	Text,
-	View,
-	TouchableOpacity,
-	ImageBackground,
-	TouchableHighlight
-} from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, TouchableHighlight } from 'react-native';
 import PropTypes from 'prop-types';
 import { withNavigation } from 'react-navigation';
 

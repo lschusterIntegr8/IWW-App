@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, FlatList, View, Text, Animated, Easing } from 'react-native';
+import { StyleSheet, View, Text, Animated, Easing } from 'react-native';
 import PropTypes from 'prop-types';
 import { Button } from 'react-native-elements';
 

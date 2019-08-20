@@ -2,14 +2,12 @@ import { createStackNavigator, createAppContainer, createDrawerNavigator } from 
 import { createSwitchNavigator, withFadeTransition } from 'react-navigation-switch-transitioner';
 import React from 'react';
 
-import { zoomIn, zoomOut } from 'react-navigation-transitions';
+import { zoomIn, zoomOut, fromBottom } from 'react-navigation-transitions';
 // let screenDim = Dimensions.get('window');
 /* Components */
 import HeaderBackImage from './components/HeaderBackImage';
 
 /* Authentication Screens */
-import Screen1 from './screens/Screen1';
-import Screen2 from './screens/Screen2';
 import SplashScreen from './screens/SplashScreen';
 import WelcomeOnboarding from './screens/WelcomeOnboarding';
 import Login from './screens/Login';
@@ -39,6 +37,17 @@ const handleCustomTransition = ({ scenes }) => {
 	// ) {
 	// 	return zoomIn();
 	// }
+
+	if (prevScene) {
+		if (
+			(prevScene.route.routeName === 'NewsFeed' &&
+				nextScene.route.routeName === 'SingleArticle') ||
+			(prevScene.route.routeName === 'SingleArticle' &&
+				nextScene.route.routeName === 'NewsFeed')
+		) {
+			return fromBottom(600);
+		}
+	}
 
 	return zoomIn();
 };
@@ -70,18 +79,6 @@ const AuthNavigator = createStackNavigator(
 			navigationOptions: {
 				tabBarLabel: 'PasswordResetInstructions',
 				headerLeft: null
-			}
-		},
-		Screen1: {
-			screen: Screen1,
-			navigationOptions: {
-				tabBarLabel: 'Screen1'
-			}
-		},
-		Screen2: {
-			screen: Screen2,
-			navigationOptions: {
-				tabBarLabel: 'Screen2'
 			}
 		}
 	},
@@ -117,7 +114,9 @@ const NewsStack = createStackNavigator(
 		}
 	},
 	{
-		initialRouteName: 'NewsFeed'
+		initialRouteName: 'NewsFeed',
+		transitionConfig: nav => handleCustomTransition(nav),
+		headerMode: 'screen'
 	}
 );
 
@@ -128,18 +127,6 @@ const AppNavigator = createDrawerNavigator(
 			navigationOptions: {
 				title: 'Home Screen',
 				drawerLabel: () => null //hidden from drawer,,
-			}
-		},
-		Screen1: {
-			screen: Screen1,
-			navigationOptions: {
-				tabBarLabel: 'Screen1'
-			}
-		},
-		Screen2: {
-			screen: Screen2,
-			navigationOptions: {
-				tabBarLabel: 'Screen2'
 			}
 		}
 	},
