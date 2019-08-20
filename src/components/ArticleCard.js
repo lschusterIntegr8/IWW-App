@@ -17,9 +17,8 @@ const ArticleCard = props => (
 		<TouchableHighlight
 			style={styles.clickableArea}
 			onPress={() => {
-				alert('test');
-				/* props.navigation.navigate('ArticleDetail', {article: article}) */
-				// props.navigation.navigate('ForgottenPassword');
+				/* Press handler passed via props */
+				props.handlePress(props.article);
 			}}
 		>
 			<ImageBackground source={props.article.thumbnail} style={styles.articleImage}>
@@ -38,7 +37,8 @@ const ArticleCard = props => (
 
 ArticleCard.propTypes = {
 	navigation: PropTypes.object,
-	article: PropTypes.object
+	article: PropTypes.object,
+	handlePress: PropTypes.function
 };
 
 const styles = StyleSheet.create({

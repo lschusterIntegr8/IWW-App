@@ -3,7 +3,6 @@ import { createSwitchNavigator, withFadeTransition } from 'react-navigation-swit
 import React from 'react';
 
 import { zoomIn, zoomOut } from 'react-navigation-transitions';
-import { View, Text } from 'react-native';
 // let screenDim = Dimensions.get('window');
 /* Components */
 import HeaderBackImage from './components/HeaderBackImage';
@@ -19,8 +18,8 @@ import PasswordResetInstructions from './screens/PasswordResetInstructions';
 
 /* Main Screens */
 import HomeScreen from './screens/HomeScreen';
+import SingleArticleMain from './screens/SingleArticleMain';
 import CustomSidebarMenu from './components/CustomSidebarMenu';
-import HeaderMenu from './components/HeaderMenu';
 
 const handleCustomTransition = ({ scenes }) => {
 	const prevScene = scenes[scenes.length - 2];
@@ -92,13 +91,43 @@ const AuthNavigator = createStackNavigator(
 	}
 );
 
+const NewsStack = createStackNavigator(
+	{
+		NewsFeed: {
+			screen: HomeScreen,
+			navigationOptions: {
+				title: 'News Feed',
+				header: () => null,
+				headerBackTitle: null
+			}
+		},
+		SingleArticle: {
+			screen: SingleArticleMain,
+			navigationOptions: {
+				tabBarLabel: 'Article',
+				headerBackTitle: null,
+				headerBackImage: <HeaderBackImage />,
+				/* Borderless Header */
+				headerStyle: {
+					elevation: 0,
+					shadowOpacity: 0,
+					borderBottomWidth: 0
+				}
+			}
+		}
+	},
+	{
+		initialRouteName: 'NewsFeed'
+	}
+);
+
 const AppNavigator = createDrawerNavigator(
 	{
 		Home: {
-			screen: HomeScreen,
+			screen: NewsStack,
 			navigationOptions: {
 				title: 'Home Screen',
-				drawerLabel: () => null //hidden from drawer,
+				drawerLabel: () => null //hidden from drawer,,
 			}
 		},
 		Screen1: {

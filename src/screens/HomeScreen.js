@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, RefreshControl } from 'react-native';
+import { View, ScrollView, RefreshControl, SafeAreaView } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -7,7 +7,6 @@ import HeaderMenu from '../components/HeaderMenu';
 import NewsFeedWrapper from '../components/NewsFeedWrapper';
 import InfoServiceWrapper from '../components/InfoServiceWrapper';
 import { addArticle } from '../redux/actions/index';
-import { SafeAreaView } from 'react-navigation';
 
 const mapStateToProps = state => {
 	return { articles: state.articles };
@@ -48,10 +47,11 @@ class HomeScreen extends Component {
 
 	render() {
 		return (
-			<SafeAreaView style={{ flex: 1 }}>
-				<View style={{ flex: 1 }}>
-					<HeaderMenu />
+			<View style={{ flex: 1 }}>
+				<HeaderMenu />
+				<SafeAreaView>
 					<ScrollView
+						contentInsetAdjustmentBehavior="automatic"
 						style={{}}
 						contentContainerStyle={{
 							flexGrow: 1,
@@ -69,7 +69,6 @@ class HomeScreen extends Component {
 						{/* 
 					Informationsdienste
 					*/}
-
 						<InfoServiceWrapper articles={this.props.articles} />
 
 						{/* 
@@ -80,8 +79,8 @@ class HomeScreen extends Component {
 							refreshing={this.state.refreshing}
 						/>
 					</ScrollView>
-				</View>
-			</SafeAreaView>
+				</SafeAreaView>
+			</View>
 		);
 	}
 }
