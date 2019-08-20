@@ -1,6 +1,26 @@
 import { ADD_ARTICLE } from '../actions/action-types';
 
 const initialState = {
+	aboInfoServices: [
+		{
+			aboId: 'abo3',
+			title: 'Alle',
+			subtitle: 'Meine Informationsdienste',
+			thumbnail: require('../../assets/images/infodienst3.png')
+		},
+		{
+			aboId: 'abo1',
+			title: 'MR',
+			subtitle: 'MedizinReport',
+			thumbnail: require('../../assets/images/infodienst2.png')
+		},
+		{
+			aboId: 'abo2',
+			title: 'CB',
+			subtitle: 'ChefärzteBrief',
+			thumbnail: require('../../assets/images/infodienst1.png')
+		}
+	],
 	articles: [
 		{
 			articleId: '1234',

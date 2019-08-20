@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import InfoTile from './InfoTile';
 
 const mapStateToProps = state => ({
-	articles: state.articles
+	aboInfoServices: state.aboInfoServices
 });
 
 class InfoServiceHorizontalList extends Component {
@@ -17,16 +17,17 @@ class InfoServiceHorizontalList extends Component {
 	render() {
 		return (
 			<FlatList
-				data={this.props.articles}
-				renderItem={({ item }) => <InfoTile key={item.articleId} article={item} />}
+				data={this.props.aboInfoServices}
+				renderItem={({ item }) => <InfoTile key={item.articleId} tile={item} />}
 				keyExtractor={item => item.url}
 				horizontal
+				contentContainerStyle={{ paddingHorizontal: 6 }}
 			/>
 		);
 	}
 }
 InfoServiceHorizontalList.propTypes = {
-	articles: PropTypes.array
+	aboInfoServices: PropTypes.array
 };
 
 const InfoServiceHorizontalListContainer = connect(mapStateToProps)(InfoServiceHorizontalList);

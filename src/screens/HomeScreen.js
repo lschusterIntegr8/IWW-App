@@ -7,6 +7,7 @@ import HeaderMenu from '../components/HeaderMenu';
 import NewsFeedWrapper from '../components/NewsFeedWrapper';
 import InfoServiceWrapper from '../components/InfoServiceWrapper';
 import { addArticle } from '../redux/actions/index';
+import { SafeAreaView } from 'react-navigation';
 
 const mapStateToProps = state => {
 	return { articles: state.articles };
@@ -47,38 +48,40 @@ class HomeScreen extends Component {
 
 	render() {
 		return (
-			<View style={{ flex: 1 }}>
-				<HeaderMenu />
-				<ScrollView
-					style={{}}
-					contentContainerStyle={{
-						flexGrow: 1,
-						paddingVertical: 30
-					}}
-					refreshControl={
-						<RefreshControl
-							refreshing={this.state.refreshing}
-							onRefresh={this._onRefresh}
-							style={{ zIndex: 99 }}
-							zIndex={99}
-						/>
-					}
-				>
-					{/* 
+			<SafeAreaView style={{ flex: 1 }}>
+				<View style={{ flex: 1 }}>
+					<HeaderMenu />
+					<ScrollView
+						style={{}}
+						contentContainerStyle={{
+							flexGrow: 1,
+							paddingVertical: 30
+						}}
+						refreshControl={
+							<RefreshControl
+								refreshing={this.state.refreshing}
+								onRefresh={this._onRefresh}
+								style={{ zIndex: 99 }}
+								zIndex={99}
+							/>
+						}
+					>
+						{/* 
 					Informationsdienste
 					*/}
 
-					<InfoServiceWrapper articles={this.props.articles} />
+						<InfoServiceWrapper articles={this.props.articles} />
 
-					{/* 
+						{/* 
 					Meine Inhalte
 					*/}
-					<NewsFeedWrapper
-						articles={this.props.articles}
-						refreshing={this.state.refreshing}
-					/>
-				</ScrollView>
-			</View>
+						<NewsFeedWrapper
+							articles={this.props.articles}
+							refreshing={this.state.refreshing}
+						/>
+					</ScrollView>
+				</View>
+			</SafeAreaView>
 		);
 	}
 }

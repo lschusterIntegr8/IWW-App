@@ -17,7 +17,9 @@ class InfoServiceWrapper extends React.Component {
 				<View style={styles.inhalteHeaderWrapper}>
 					<Text style={styles.inhalteHeading}>Informationsdienste</Text>
 				</View>
-				<InfoServiceHorizontalList />
+				<View style={{ marginBottom: 40 }}>
+					<InfoServiceHorizontalList />
+				</View>
 			</View>
 		);
 	}

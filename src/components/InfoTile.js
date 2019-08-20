@@ -22,9 +22,13 @@ const InfoTile = props => (
 				// props.navigation.navigate('ForgottenPassword');
 			}}
 		>
-			<ImageBackground source={props.article.thumbnail} style={styles.articleImage}>
+			<ImageBackground
+				source={props.tile.thumbnail}
+				style={styles.articleImage}
+				resizeMode="cover"
+			>
 				<View style={styles.cardBodyWrapper}>
-					<Text style={styles.authorText}>Alle</Text>
+					<Text style={styles.authorText}>{props.tile.title}</Text>
 				</View>
 			</ImageBackground>
 		</TouchableHighlight>
@@ -33,15 +37,15 @@ const InfoTile = props => (
 
 InfoTile.propTypes = {
 	navigation: PropTypes.object,
-	article: PropTypes.object
+	tile: PropTypes.object
 };
 
 const styles = StyleSheet.create({
 	cardContainer: {
-		minHeight: 80,
-		marginBottom: 30,
-		minWidth: 150,
-		maxWidth: 150,
+		height: 80,
+		maxHeight: 80,
+		// marginBottom: 30,
+		width: 150,
 		alignSelf: 'center',
 		marginHorizontal: 10
 	},
