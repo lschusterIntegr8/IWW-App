@@ -17,8 +17,10 @@ const ArchiveCard = props => (
 		<TouchableOpacity
 			style={styles.clickableArea}
 			onPress={() => {
-				/* Press handler passed via props */
-				props.handlePress(props.article);
+				/* TODO: Press handler passed via props
+				 * props.handlePress(props.article);
+				 */
+				alert('TODO');
 			}}
 		>
 			<View style={styles.cardBodyWrapper}>
