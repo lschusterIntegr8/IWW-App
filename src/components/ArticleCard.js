@@ -19,9 +19,11 @@ const ArticleCard = props => (
 					<View style={styles.authorCorner}>
 						<Text style={styles.authorText}>{props.article.author}</Text>
 					</View>
-					<Text style={styles.dateText}>{props.article.published_on}</Text>
-					<Text style={styles.titleText}>{props.article.title}</Text>
-					<Text style={styles.categoryText}>#{props.article.category}</Text>
+					<View style={styles.headingWrapper}>
+						<Text style={styles.dateText}>{props.article.published_on}</Text>
+						<Text style={styles.titleText}>{props.article.title}</Text>
+						<Text style={styles.categoryText}>#{props.article.category}</Text>
+					</View>
 				</View>
 			</ImageBackground>
 		</TouchableHighlight>
@@ -57,16 +59,21 @@ const styles = StyleSheet.create({
 		padding: 16,
 		paddingBottom: 32,
 		alignItems: 'flex-start',
+		justifyContent: 'flex-start'
+	},
+	headingWrapper: {
+		flex: 1,
 		justifyContent: 'flex-end'
 	},
 	authorCorner: {
 		display: 'flex',
+		flex: 1,
 		justifyContent: 'center',
 		width: 50,
-		height: 50,
-		position: 'absolute',
-		top: 0,
-		left: 0,
+		maxHeight: 50,
+		position: 'relative',
+		top: -16,
+		left: -16,
 		backgroundColor: COLOR.RED
 	},
 	authorText: {

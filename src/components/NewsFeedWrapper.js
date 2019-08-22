@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Button } from 'react-native-elements';
 
 import NewsFeedList from './NewsFeedList';
+import ArchiveFeedList from './ArchiveFeedList';
 
 import COLOR from '../config/colors';
 
@@ -39,11 +40,7 @@ class NewsFeedWrapper extends React.Component {
 		if (!this.state.currentFilter) {
 			return <NewsFeedList />;
 		} else if (this.state.currentFilter === 'archive') {
-			return (
-				<View>
-					<Text>THIS IS THE ARCHIVE</Text>
-				</View>
-			);
+			return <ArchiveFeedList />;
 		} else if (this.state.currentFilter === 'rubriken') {
 			return (
 				<View>

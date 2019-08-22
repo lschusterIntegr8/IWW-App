@@ -37,10 +37,18 @@ const styles = StyleSheet.create({
 	cardContainer: {
 		height: 80,
 		maxHeight: 80,
-		// marginBottom: 30,
 		width: 150,
 		alignSelf: 'center',
-		marginHorizontal: 10
+		marginHorizontal: 10,
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 2
+		},
+		shadowOpacity: 0.45,
+		shadowRadius: 3,
+		elevation: 3,
+		marginVertical: 0
 	},
 	clickableArea: {
 		flex: 1,

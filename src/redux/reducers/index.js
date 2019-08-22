@@ -42,6 +42,27 @@ const initialState = {
 			content:
 				'blablablablalbsdjflskdjfljlksjdglsjdflksjdflksjdflksjdflksjdflksjdflksdjflksdjflskdjflskdjflskdjflsdkjflsdkfjsldkfjlsdkjflskdjflskjdf'
 		}
+	],
+	archive: [
+		{
+			articleId: '1234',
+			title:
+				'ARCHIV: Qualität des Operateurs hängt von der Methode ab? Bla bla Bla bla Bla bla Bla bla Bla bla Bla bla Bla bla Bla bla ',
+			category: 'TeamManagement',
+			published_on: 'Wednesday, 21 Jul 2019',
+			author: 'CB',
+			content:
+				'blablablablalbsdjsdfsdfssdfflskdjfljlksjdglsjdflksjdflksjdflksjdflksjdflksjdflksdjflksdjflskdjflskdjflskdjflsdkjflsdkfjsldkfjlsdkjflskdjflskjdf'
+		},
+		{
+			articleId: '12345',
+			title: 'ARCHIV: Was tun bei Burnout und innerer Kündigung?',
+			category: 'TeamManagement',
+			published_on: 'Monday, 02 Mar 2018',
+			author: 'MR',
+			content:
+				'blablablablalbsdjflskdjfljlksjdglsjdflksjdflksjdflksjdflksjdflksjdflksdjflksdjflskdjflskdjflskdjflsdkjflsdkfjsldkfjlsdkjflskdjflskjdf'
+		}
 	]
 };
 

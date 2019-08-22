@@ -21,7 +21,7 @@ class InfoServiceHorizontalList extends Component {
 				renderItem={({ item }) => <InfoTile key={item.articleId} tile={item} />}
 				keyExtractor={item => item.url}
 				horizontal
-				contentContainerStyle={{ paddingHorizontal: 6 }}
+				contentContainerStyle={{ paddingHorizontal: 6, paddingVertical: 30 }}
 			/>
 		);
 	}

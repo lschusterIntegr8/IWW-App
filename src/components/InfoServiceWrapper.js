@@ -17,7 +17,7 @@ class InfoServiceWrapper extends React.Component {
 				<View style={styles.inhalteHeaderWrapper}>
 					<Text style={styles.inhalteHeading}>Informationsdienste</Text>
 				</View>
-				<View style={{ marginBottom: 40 }}>
+				<View style={{ marginBottom: 10 }}>
 					<InfoServiceHorizontalList />
 				</View>
 			</View>
@@ -32,7 +32,7 @@ InfoServiceWrapper.propTypes = {
 const styles = StyleSheet.create({
 	inhalteHeaderWrapper: {
 		paddingHorizontal: 16,
-		marginBottom: 30,
+		// marginBottom: 30,
 		display: 'flex',
 		flexDirection: 'row',
 		alignItems: 'flex-end'

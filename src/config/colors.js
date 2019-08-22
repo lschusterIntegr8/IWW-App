@@ -2,6 +2,7 @@ export default {
 	BLUE: '#01315F',
 	DARK_BLUE: '#051934',
 	WASHED_BLUE: '#E1E6EA',
+	ALMOST_BLUE: '#246DA9',
 	RED: '#E3001B',
 	GREY: '#EBEBEB',
 	WHITE: '#FFFFFF',
