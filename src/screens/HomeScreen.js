@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import HeaderMenu from '../components/HeaderMenu';
 import NewsFeedWrapper from '../components/NewsFeedWrapper';
 import InfoServiceWrapper from '../components/InfoServiceWrapper';
+import SearchBarWrapper from '../components/SearchBarWrapper';
 import { addArticle } from '../redux/actions/index';
 
 const mapStateToProps = state => {
@@ -53,10 +54,11 @@ class HomeScreen extends Component {
 		return (
 			<View style={{ flex: 1 }}>
 				<HeaderMenu />
-				<SafeAreaView>
+				<SearchBarWrapper />
+				<SafeAreaView style={{ flex: 1 }}>
 					<ScrollView
 						contentInsetAdjustmentBehavior="automatic"
-						style={{}}
+						style={{ flex: 1 }}
 						contentContainerStyle={{
 							flexGrow: 1,
 							paddingVertical: 30

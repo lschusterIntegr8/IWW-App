@@ -17,6 +17,7 @@ class NewsFeedList extends Component {
 	}
 
 	openArticle(article) {
+		console.log('RECEIVED ARTICLE: ', article);
 		this.props.navigation.navigate('SingleArticle', { article: article });
 	}
 
@@ -38,7 +39,7 @@ class NewsFeedList extends Component {
 }
 NewsFeedList.propTypes = {
 	articles: PropTypes.array,
-	navigation: PropTypes.function
+	navigation: PropTypes.object
 };
 
 const NewsFeedListContainer = connect(mapStateToProps)(NewsFeedList);

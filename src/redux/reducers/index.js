@@ -28,7 +28,9 @@ const initialState = {
 			category: 'TeamManagement',
 			published_on: 'Wednesday, 21 Jul 2019',
 			author: 'CB',
-			thumbnail: require('../../assets/images/test-article-1.png')
+			thumbnail: require('../../assets/images/test-article-1.png'),
+			content:
+				'blablablablalbsdjflskdjfljlksjdglsjdflksjdflksjdflksjdflksjdflksjdflksdjflksdjflskdjflskdjflskdjflsdkjflsdkfjsldkfjlsdkjflskdjflskjdf'
 		},
 		{
 			articleId: '12345',
@@ -36,7 +38,9 @@ const initialState = {
 			category: 'TeamManagement',
 			published_on: 'Monday, 02 Mar 2018',
 			author: 'MR',
-			thumbnail: require('../../assets/images/test-article-2.png')
+			thumbnail: require('../../assets/images/test-article-2.png'),
+			content:
+				'blablablablalbsdjflskdjfljlksjdglsjdflksjdflksjdflksjdflksjdflksjdflksdjflksdjflskdjflskdjflskdjflsdkjflsdkfjsldkfjlsdkjflskdjflskjdf'
 		}
 	]
 };

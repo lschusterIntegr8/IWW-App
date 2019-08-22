@@ -7,20 +7,25 @@ class SingleArticleMain extends Component {
 		super(props);
 	}
 
-	componentDidMount() {}
+	componentDidMount() {
+		// console.log(this.props.navigation);
+	}
 
 	render() {
+		/* Get parameter that is passed via navigation */
+		const { navigation } = this.props;
+		const article = navigation.getParam('article', {});
+
 		return (
 			<View style={{ flex: 1 }}>
-				<Text>Test</Text>
+				<Text>{article.content}</Text>
 			</View>
 		);
 	}
 }
 
 SingleArticleMain.propTypes = {
-	navigation: PropTypes.object,
-	article: PropTypes.array
+	navigation: PropTypes.object
 };
 
 export default SingleArticleMain;
