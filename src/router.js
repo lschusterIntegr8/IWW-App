@@ -1,4 +1,5 @@
-import { createStackNavigator, createAppContainer, createDrawerNavigator } from 'react-navigation';
+import { createStackNavigator, createAppContainer } from 'react-navigation';
+import { createDrawerNavigator } from 'react-navigation-drawer';
 import { createSwitchNavigator, withFadeTransition } from 'react-navigation-switch-transitioner';
 import React from 'react';
 
