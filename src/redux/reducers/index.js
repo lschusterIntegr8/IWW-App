@@ -29,8 +29,8 @@ const initialState = {
 			published_on: 'Wednesday, 21 Jul 2019',
 			author: 'CB',
 			thumbnail: require('../../assets/images/test-article-1.png'),
-			content:
-				'blablablablalbsdjflskdjfljlksjdglsjdflksjdflksjdflksjdflksjdflksjdflksdjflksdjflskdjflskdjflskdjflsdkjflsdkfjsldkfjlsdkjflskdjflskjdf'
+			html:
+				'<h1>This HTML snippet is now rendered with native components !</h1><h2>Enjoy a webview-free and blazing fast application</h2><img src="https://dummyimage.com/600x400/e6e6e6/000000&text=placeholder" /><em style="textAlign: center;">This is an Image.</em>'
 		},
 		{
 			articleId: '12345',
@@ -39,8 +39,8 @@ const initialState = {
 			published_on: 'Monday, 02 Mar 2018',
 			author: 'MR',
 			thumbnail: require('../../assets/images/test-article-2.png'),
-			content:
-				'blablablablalbsdjflskdjfljlksjdglsjdflksjdflksjdflksjdflksjdflksjdflksdjflksdjflskdjflskdjflskdjflsdkjflsdkfjsldkfjlsdkjflskdjflskjdf'
+			html:
+				'<h1>This HTML snippet is now rendered with native components !</h1><h2>Enjoy a webview-free and blazing fast application</h2><img src="https://dummyimage.com/600x400/e6e6e6/000000&text=placeholder" /><em style="textAlign: center;">This is an Image.</em>'
 		}
 	],
 	archive: [

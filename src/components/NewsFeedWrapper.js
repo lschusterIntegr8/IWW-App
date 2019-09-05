@@ -11,13 +11,15 @@ import COLOR from '../config/colors';
 class NewsFeedWrapper extends React.Component {
 	constructor(props) {
 		super(props);
-		this.opacityValue = new Animated.Value(0);
-
-		this.state = {
-			currentFilter: undefined,
-			runRefreshAnimation: false
-		};
 	}
+
+	state = {
+		currentFilter: undefined,
+		runRefreshAnimation: false
+	};
+
+	opacityValue = new Animated.Value(0);
+
 	opacity() {
 		this.opacityValue.setValue(0);
 		Animated.timing(this.opacityValue, {

@@ -7,13 +7,15 @@ import COLOR from '../config/colors';
 
 const ArchiveCard = props => (
 	<View style={styles.cardContainer}>
-		<TouchableOpacity style={styles.downloadCorner}>
+		<TouchableOpacity style={styles.downloadCorner} elevation={3}>
 			<Image
 				source={require('../assets/images/download-icon.png')}
 				style={{ width: '100%' }}
+				elevation={3}
 				resizeMode="contain"
 			/>
 		</TouchableOpacity>
+
 		<TouchableOpacity
 			style={styles.clickableArea}
 			onPress={() => {
@@ -92,13 +94,14 @@ const styles = StyleSheet.create({
 	},
 	downloadCorner: {
 		flex: 1,
-		zIndex: 2,
+		zIndex: 3,
 		width: 30,
 		height: 30,
 		marginHorizontal: 16,
 		position: 'absolute',
 		top: 0,
-		right: 16
+		right: 16,
+		elevation: 3
 	},
 	authorText: {
 		color: COLOR.WHITE,
