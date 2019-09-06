@@ -1,6 +1,8 @@
-import { ADD_ARTICLE } from '../actions/action-types';
+import { ADD_ARTICLE, SET_TOKENS } from '../actions/action-types';
 
 const initialState = {
+	accessToken: undefined,
+	refreshToken: undefined,
 	aboInfoServices: [
 		{
 			aboId: 'abo3',
@@ -30,7 +32,8 @@ const initialState = {
 			author: 'CB',
 			thumbnail: require('../../assets/images/test-article-1.png'),
 			html:
-				'<h1>This HTML snippet is now rendered with native components !</h1><h2>Enjoy a webview-free and blazing fast application</h2><img src="https://dummyimage.com/600x400/e6e6e6/000000&text=placeholder" /><em style="textAlign: center;">This is an Image.</em>'
+				'<h1>This HTML snippet is now rendered with native components !</h1><h2>Enjoy a webview-free and blazing fast application</h2><img src="https://dummyimage.com/600x400/e6e6e6/000000&text=placeholder" /><em style="textAlign: center;">This is an Image.</em>',
+			audio: 'test.wav'
 		},
 		{
 			articleId: '12345',
@@ -40,7 +43,8 @@ const initialState = {
 			author: 'MR',
 			thumbnail: require('../../assets/images/test-article-2.png'),
 			html:
-				'<h1>This HTML snippet is now rendered with native components !</h1><h2>Enjoy a webview-free and blazing fast application</h2><img src="https://dummyimage.com/600x400/e6e6e6/000000&text=placeholder" /><em style="textAlign: center;">This is an Image.</em>'
+				'<h1>This HTML snippet is now rendered with native components !</h1><h2>Enjoy a webview-free and blazing fast application</h2><img src="https://dummyimage.com/600x400/e6e6e6/000000&text=placeholder" /><em style="textAlign: center;">This is an Image.</em>',
+			audio: 'test2.wav'
 		}
 	],
 	archive: [
@@ -52,7 +56,8 @@ const initialState = {
 			published_on: 'Wednesday, 21 Jul 2019',
 			author: 'CB',
 			content:
-				'blablablablalbsdjsdfsdfssdfflskdjfljlksjdglsjdflksjdflksjdflksjdflksjdflksjdflksdjflksdjflskdjflskdjflskdjflsdkjflsdkfjsldkfjlsdkjflskdjflskjdf'
+				'blablablablalbsdjsdfsdfssdfflskdjfljlksjdglsjdflksjdflksjdflksjdflksjdflksjdflksdjflksdjflskdjflskdjflskdjflsdkjflsdkfjsldkfjlsdkjflskdjflskjdf',
+			audio: 'test.wav'
 		},
 		{
 			articleId: '12345',
@@ -61,17 +66,26 @@ const initialState = {
 			published_on: 'Monday, 02 Mar 2018',
 			author: 'MR',
 			content:
-				'blablablablalbsdjflskdjfljlksjdglsjdflksjdflksjdflksjdflksjdflksjdflksdjflksdjflskdjflskdjflskdjflsdkjflsdkfjsldkfjlsdkjflskdjflskjdf'
+				'blablablablalbsdjflskdjfljlksjdglsjdflksjdflksjdflksjdflksjdflksjdflksdjflksdjflskdjflskdjflskdjflsdkjflsdkfjsldkfjlsdkjflskdjflskjdf',
+			audio: 'test2.wav'
 		}
 	]
 };
 
 function rootReducer(state = initialState, action) {
+	console.log('PAYLOAD:\n', action.payload);
 	switch (action.type) {
 		case ADD_ARTICLE: {
 			return {
 				...state,
 				articles: [...state.articles, action.payload]
+			};
+		}
+		case SET_TOKENS: {
+			return {
+				...state,
+				accessToken: action.payload.accessToken,
+				refreshToken: action.payload.refreshToken
 			};
 		}
 	}

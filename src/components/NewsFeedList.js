@@ -49,7 +49,7 @@ class NewsFeedList extends Component {
 			<FlatList
 				data={this.props.articles}
 				renderItem={this.renderItem}
-				keyExtractor={item => item.url}
+				keyExtractor={item => item.articleId}
 				initialNumToRender={3}
 				windowSize={3}
 				maxToRenderPerBatch={1}

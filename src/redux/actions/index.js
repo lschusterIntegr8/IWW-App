@@ -1,20 +1,20 @@
 import { AsyncStorage } from 'react-native';
-import { ADD_ARTICLE, GET_TOKEN, SAVE_TOKEN } from './action-types';
+import { ADD_ARTICLE, GET_TOKEN, SET_TOKENS } from './action-types';
 
 /* ACTIONS */
 export function addArticle(payload) {
-	return { type: ADD_ARTICLE, payload };
+	return {
+		type: ADD_ARTICLE,
+		payload
+	};
 }
 
-export const getToken = token => ({
-	type: GET_TOKEN,
-	token
-});
-
-export const saveToken = token => ({
-	type: SAVE_TOKEN,
-	token
-});
+export function saveToken(payload) {
+	return {
+		type: SET_TOKENS,
+		payload
+	};
+}
 
 /* ACTION CREATORS */
 /* 

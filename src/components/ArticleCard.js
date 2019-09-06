@@ -33,7 +33,7 @@ const ArticleCard = props => (
 ArticleCard.propTypes = {
 	navigation: PropTypes.object,
 	article: PropTypes.object,
-	handlePress: PropTypes.function
+	handlePress: PropTypes.func
 };
 
 const styles = StyleSheet.create({

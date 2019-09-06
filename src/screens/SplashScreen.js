@@ -3,24 +3,30 @@ import { View, Text, ActivityIndicator, Image } from 'react-native';
 import PropTypes from 'prop-types';
 
 import COLOR from '../config/colors';
+import * as authHelper from '../helpers/authentication';
 
 const SPLASH_SCREEN_TIMEOUT = 500;
 class SplashScreen extends React.Component {
 	performTimeConsumingTask = async () => {
-		return new Promise(resolve =>
-			setTimeout(() => {
-				resolve('result');
-			}, SPLASH_SCREEN_TIMEOUT)
-		);
+		console.log('Fetching tokens on start ...');
+		const tokens = await authHelper.fetchTokens().catch(err => {
+			console.log(err);
+			alert('FAIL');
+		});
+		return tokens;
 	};
 
 	async componentDidMount() {
+		// await authHelper.resetCredentials();
+
 		// Preload data from an external API
 		// Preload data using AsyncStorage
-		const data = await this.performTimeConsumingTask();
+		const data = await this.performTimeConsumingTask().catch(err => alert(err));
 
-		if (data !== null) {
+		if (!data) {
 			this.props.navigation.navigate('Authentication');
+		} else if (data.accessToken && data.refreshToken) {
+			this.props.navigation.navigate('App');
 		}
 	}
 

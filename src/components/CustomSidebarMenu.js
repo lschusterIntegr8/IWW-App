@@ -1,5 +1,6 @@
 import React from 'react';
-import { DrawerItems, SafeAreaView } from 'react-navigation';
+import { SafeAreaView } from 'react-navigation';
+import { DrawerNavigatorItems } from 'react-navigation-drawer';
 import {
 	ScrollView,
 	StyleSheet,
@@ -52,7 +53,7 @@ const CustomSidebarMenu = props => (
 				</View>
 			</View>
 
-			<DrawerItems {...props} />
+			<DrawerNavigatorItems {...props} />
 
 			<View style={styles.bottomContainer}>
 				<Image

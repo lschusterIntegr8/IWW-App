@@ -1,12 +1,35 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ActivityIndicator } from 'react-native';
 import { Button } from 'react-native-elements';
 import PropTypes from 'prop-types';
 import validator from 'validator';
+import { withNavigation, NavigationActions } from 'react-navigation';
+import { connect } from 'react-redux';
 
-import { authenticateLogin } from '../helpers/authentication';
+import { authenticateLogin, storeTokens } from '../helpers/authentication';
 import COLOR from '../config/colors';
 import FormGroup from '../components/FormGroup';
+
+import { saveToken } from '../redux/actions/index';
+
+const mapStateToProps = state => {
+	return {
+		accessToken: state.accessToken,
+		refreshToken: state.refreshToken
+	};
+};
+
+const mapDispatchToProps = dispatch => {
+	return {
+		saveToken: tokens =>
+			dispatch(
+				saveToken({
+					accessToken: tokens.accessToken,
+					refreshToken: tokens.refreshToken
+				})
+			)
+	};
+};
 
 class Login extends React.Component {
 	constructor(props) {
@@ -72,15 +95,35 @@ class Login extends React.Component {
 			});
 
 			/* 2. Do request */
-			const authSuccess = await authenticateLogin(this.state.email, this.state.password);
-
+			const authResponse = await authenticateLogin(this.state.email, this.state.password);
+			console.log('AuTH RESSPONSE:');
+			console.log(authResponse);
 			/* 3. Stop loader */
 			this.setState({
 				isLoading: false
 			});
-			/* 4. Navigate */
-			if (authSuccess) this.props.navigation.navigate('App');
+			/* 4. Store tokens to asyncStorage + navigate */
+			console.log('NAVIGATION: ', this.props);
+			if (authResponse.success) {
+				await storeTokens(authResponse);
+				this.props.saveToken({
+					accessToken: authResponse.accessToken,
+					refreshToken: authResponse.refreshToken
+				});
+
+				this.props.navigation.navigate(
+					'App',
+					{},
+					NavigationActions.navigate({ routeName: 'Home' })
+				);
+			}
 		} catch (err) {
+			console.log(err);
+			/* 3. Stop loader */
+			this.setState({
+				isLoading: false
+			});
+
 			alert('Wrong Email or Password');
 		}
 	}
@@ -99,6 +142,13 @@ class Login extends React.Component {
 					isValidInput={this.state.isValidInput}
 					handleSubmit={this.handleSubmit}
 				/>
+				{this.state.isLoading ? (
+					<View style={styles.indicatorContainer}>
+						<ActivityIndicator size="large" color="#E3001B" />
+					</View>
+				) : (
+					<View />
+				)}
 				<Button
 					buttonStyle={styles.passwordResetButton}
 					titleStyle={{
@@ -131,8 +181,9 @@ const styles = {
 		color: COLOR.BLUE,
 		textAlign: 'center',
 		marginBottom: 16
-
-		// marginTop: 50
+	},
+	indicatorContainer: {
+		marginTop: 40
 	},
 	subtitle: {
 		fontSize: 14,
@@ -145,4 +196,9 @@ const styles = {
 	}
 };
 
-export default Login;
+const LoginScreen = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Login);
+
+export default withNavigation(LoginScreen);

@@ -1,4 +1,5 @@
-import { createStackNavigator, createAppContainer } from 'react-navigation';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { createSwitchNavigator, withFadeTransition } from 'react-navigation-switch-transitioner';
 import React from 'react';
@@ -132,7 +133,8 @@ const AppNavigator = createDrawerNavigator(
 		}
 	},
 	{
-		contentComponent: CustomSidebarMenu
+		contentComponent: CustomSidebarMenu,
+		transitionConfig: nav => handleCustomTransition(nav)
 	}
 
 	// {
@@ -162,10 +164,10 @@ const InitialNavigator = createSwitchNavigator(
 	{
 		Splash: withFadeTransition(SplashScreen),
 		Authentication: withFadeTransition(AuthNavigator),
-		App: AppNavigator
+		App: withFadeTransition(AppNavigator)
 	},
 	{
-		initialRouteName: 'App'
+		initialRouteName: 'Splash'
 	}
 );
 

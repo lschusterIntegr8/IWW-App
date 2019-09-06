@@ -18,8 +18,8 @@ class InfoServiceHorizontalList extends Component {
 		return (
 			<FlatList
 				data={this.props.aboInfoServices}
-				renderItem={({ item }) => <InfoTile key={item.articleId} tile={item} />}
-				keyExtractor={item => item.url}
+				renderItem={({ item }) => <InfoTile key={item.aboId} tile={item} />}
+				keyExtractor={item => item.aboId}
 				horizontal
 				contentContainerStyle={{ paddingHorizontal: 6, paddingVertical: 30 }}
 			/>
