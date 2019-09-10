@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
-import { FlatList, View, InteractionManager, ActivityIndicator, StyleSheet } from 'react-native';
+import {
+	FlatList,
+	View,
+	InteractionManager,
+	ActivityIndicator,
+	StyleSheet,
+	Text
+} from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { withNavigation } from 'react-navigation';
+import { withNavigation, ScrollView } from 'react-navigation';
 
 import ArchiveCard from './ArchiveCard';
+import DropdownFilter from './DropdownFilter';
 
 const mapStateToProps = state => ({
 	archive: state.archive
@@ -16,7 +24,13 @@ class ArchiveFeedlist extends Component {
 		this.renderItem = this.renderItem.bind(this);
 	}
 	state = {
-		interactionsComplete: false
+		interactionsComplete: false,
+		contents: [
+			{
+				title: 'Title 1',
+				body: 'Hi. I love this component. What do you think?'
+			}
+		]
 	};
 
 	renderItem({ item }) {
@@ -39,6 +53,9 @@ class ArchiveFeedlist extends Component {
 		}
 		return (
 			<View>
+				{/* Archive category filter */}
+				<DropdownFilter />
+				{/* Archive flatlist (archived news cards) */}
 				<FlatList
 					data={this.props.archive}
 					renderItem={this.renderItem}
