@@ -1,48 +1,9 @@
 /* eslint-disable no-console */
-import { AsyncStorage } from '@react-native-community/async-storage';
-import * as Keychain from 'react-native-keychain';
+import store from '../redux/store/index';
 
 import * as API from './api';
-
-export const storeTokens = async authResponse => {
-	/* Dispatch tokens to redux store */
-	console.log('Storing ', authResponse);
-
-	const tmpTokens = {
-		accessToken: authResponse.accessToken,
-		refreshToken: authResponse.refreshToken
-	};
-
-	/* Save to storage */
-	try {
-		await Keychain.setGenericPassword('tokens', JSON.stringify(tmpTokens));
-	} catch (err) {
-		console.log(err);
-		alert('ERROR STORING TOKENS ...');
-	}
-};
-
-export const fetchTokens = async () => {
-	console.log('inside fetchTokens');
-	try {
-		let { password: tokens } = await Keychain.getGenericPassword();
-		console.log(tokens);
-		if (!tokens) {
-			return undefined;
-		}
-
-		tokens = JSON.parse(tokens);
-		console.log('tokens:\n', tokens);
-		return tokens;
-	} catch (err) {
-		console.log(err);
-		alert('Error fetching tokens ...');
-	}
-};
-
-export const resetCredentials = async () => {
-	await Keychain.resetGenericPassword();
-};
+import * as storageHelper from './storage';
+import { setSubscriptions } from '../redux/actions/index';
 
 export const sendPasswordResetEmail = async () => {
 	return new Promise((resolve, reject) => {
@@ -52,6 +13,51 @@ export const sendPasswordResetEmail = async () => {
 			return resolve('yes');
 		}, 4000);
 	});
+};
+
+export const initAppStart = async props => {
+	const data = await storageHelper.fetchTokens().catch(err => {
+		console.log(err);
+		props.navigation.navigate('Authentication');
+	});
+
+	if (!data || (Object.entries(data).length === 0 && data.constructor === Object)) {
+		props.navigation.navigate('Authentication');
+	} else if (data.accessToken && data.refreshToken) {
+		/* 2. Try to fetch screens data from API */
+		const subs = await API.getSubscriptions().catch(async responseContent => {
+			/* 3. If token is expired --> refresh the token */
+			if (!responseContent) {
+				console.log('NO RESPONSE CONTENT ---> SHOULD REFRESH');
+				const refreshedTokens = await API.refreshToken(data.refreshToken).catch(
+					validRefreshToken => {
+						if (!validRefreshToken) {
+							props.navigation.navigate('Authentication');
+							return true;
+						}
+					}
+				);
+				console.log('Refreshed tokens');
+				console.log(refreshedTokens);
+				await storageHelper.storeTokens(refreshedTokens);
+				await API.setAxiosAuthInterceptor();
+				/* Recurse this function after new tokens are set */
+				return initAppStart(props);
+			}
+		});
+
+		console.log(subs);
+
+		/* Store subscriptions */
+		console.log('I should store subs here ...');
+		console.log(store);
+		store.dispatch(setSubscriptions(subs));
+		console.log('STORE: ');
+		console.log(store.getState());
+		props.navigation.navigate('App');
+	} else {
+		console.log('SOMETHING UNEXPLAINED HAPPENED');
+	}
 };
 
 export const authenticateLogin = async (email, password) => {

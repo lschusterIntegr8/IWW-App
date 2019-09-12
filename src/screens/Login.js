@@ -6,7 +6,8 @@ import validator from 'validator';
 import { withNavigation, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 
-import { authenticateLogin, storeTokens } from '../helpers/authentication';
+import { authenticateLogin } from '../helpers/authentication';
+import { storeTokens } from '../helpers/storage';
 import COLOR from '../config/colors';
 import FormGroup from '../components/FormGroup';
 

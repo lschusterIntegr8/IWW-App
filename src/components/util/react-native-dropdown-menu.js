@@ -1,3 +1,5 @@
+'use strict';
+
 import React, { Component } from 'react';
 import {
 	View,
@@ -112,11 +114,11 @@ class DropdownMenu extends Component {
 			}
 
 			return (
-				<View style={{ position: 'absolute', left: 0, right: 0, top: 40, bottom: 0 }}>
+				<View style={{ position: 'relative', left: 0, right: 0, top: 0, bottom: 0 }}>
 					<TouchableOpacity
 						onPress={() => this.openOrClosePanel(this.state.activityIndex)}
 						activeOpacity={1}
-						style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }}
+						style={{ position: 'relative', left: 0, right: 0, top: 0, bottom: 0 }}
 					>
 						<View style={{ opacity: 0.4, backgroundColor: 'black', flex: 1 }} />
 					</TouchableOpacity>
@@ -124,7 +126,7 @@ class DropdownMenu extends Component {
 					<ScrollView
 						style={[
 							{
-								position: 'absolute',
+								position: 'relative',
 								top: 0,
 								left: 0,
 								right: 0,
@@ -189,6 +191,8 @@ class DropdownMenu extends Component {
 	}
 
 	openPanel(index) {
+		console.log(this.state.rotationAnims, index);
+		console.log(this.state.rotationAnims[index]);
 		Animated.timing(this.state.rotationAnims[index], {
 			toValue: 0.5,
 			duration: 300,

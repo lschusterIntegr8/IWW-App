@@ -47,11 +47,10 @@ class DropdownFilter extends Component {
 						this.setState({ selectedFilter: data[selection][row] })
 					}
 					data={data}
-				>
-					<View style={{ flex: 1 }}>
-						<Text>{this.state.selectedFilter} is the best language in the world</Text>
-					</View>
-				</DropdownMenu>
+				></DropdownMenu>
+				<View style={{ flex: 1 }}>
+					<Text>{this.state.selectedFilter} is the best language in the world</Text>
+				</View>
 			</View>
 		);
 	}

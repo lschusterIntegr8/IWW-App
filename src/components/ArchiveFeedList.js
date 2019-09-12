@@ -59,7 +59,7 @@ class ArchiveFeedlist extends Component {
 				<FlatList
 					data={this.props.archive}
 					renderItem={this.renderItem}
-					keyExtractor={item => item.url}
+					keyExtractor={item => item.archiveId}
 					initialNumToRender={3}
 					windowSize={3}
 					maxToRenderPerBatch={1}

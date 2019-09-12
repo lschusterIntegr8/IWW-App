@@ -1,27 +1,27 @@
-import { ADD_ARTICLE, SET_TOKENS } from '../actions/action-types';
+import { ADD_ARTICLE, SET_TOKENS, SET_SUBSCRIPTIONS } from '../actions/action-types';
 
 const initialState = {
 	accessToken: undefined,
 	refreshToken: undefined,
-	aboInfoServices: [
-		{
-			aboId: 'abo3',
-			title: 'Alle',
-			subtitle: 'Meine Informationsdienste',
-			thumbnail: require('../../assets/images/infodienst3.png')
-		},
-		{
-			aboId: 'abo1',
-			title: 'MR',
-			subtitle: 'MedizinReport',
-			thumbnail: require('../../assets/images/infodienst2.png')
-		},
-		{
-			aboId: 'abo2',
-			title: 'CB',
-			subtitle: 'ChefärzteBrief',
-			thumbnail: require('../../assets/images/infodienst1.png')
-		}
+	subscriptionServices: [
+		// {
+		// 	aboId: 'abo3',
+		// 	title: 'Alle',
+		// 	subtitle: 'Meine Informationsdienste',
+		// 	thumbnail: require('../../assets/images/infodienst3.png')
+		// },
+		// {
+		// 	aboId: 'abo1',
+		// 	title: 'MR',
+		// 	subtitle: 'MedizinReport',
+		// 	thumbnail: require('../../assets/images/infodienst2.png')
+		// },
+		// {
+		// 	aboId: 'abo2',
+		// 	title: 'CB',
+		// 	subtitle: 'ChefärzteBrief',
+		// 	thumbnail: require('../../assets/images/infodienst1.png')
+		// }
 	],
 	articles: [
 		{
@@ -49,7 +49,7 @@ const initialState = {
 	],
 	archive: [
 		{
-			articleId: '1234',
+			archiveId: '1234',
 			title:
 				'ARCHIV: Qualität des Operateurs hängt von der Methode ab? Bla bla Bla bla Bla bla Bla bla Bla bla Bla bla Bla bla Bla bla ',
 			category: 'TeamManagement',
@@ -60,7 +60,7 @@ const initialState = {
 			audio: 'test.wav'
 		},
 		{
-			articleId: '12345',
+			archiveId: '12345',
 			title: 'ARCHIV: Was tun bei Burnout und innerer Kündigung?',
 			category: 'TeamManagement',
 			published_on: 'Monday, 02 Mar 2018',
@@ -75,6 +75,12 @@ const initialState = {
 function rootReducer(state = initialState, action) {
 	console.log('PAYLOAD:\n', action.payload);
 	switch (action.type) {
+		case SET_SUBSCRIPTIONS: {
+			return {
+				...state,
+				subscriptionServices: [...state.subscriptionServices, ...action.payload]
+			};
+		}
 		case ADD_ARTICLE: {
 			return {
 				...state,

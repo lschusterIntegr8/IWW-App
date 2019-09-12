@@ -15,15 +15,14 @@ const InfoTile = props => (
 				// props.navigation.navigate('ForgottenPassword');
 			}}
 		>
-			<ImageBackground
-				source={props.tile.thumbnail}
-				style={styles.articleImage}
+			<View
+				style={[styles.articleImage, { backgroundColor: props.tile.color.split(';')[0] }]}
 				resizeMode="cover"
 			>
 				<View style={styles.cardBodyWrapper}>
-					<Text style={styles.authorText}>{props.tile.title}</Text>
+					<Text style={styles.subName}>{props.tile.title}</Text>
 				</View>
-			</ImageBackground>
+			</View>
 		</TouchableHighlight>
 	</View>
 );
@@ -35,11 +34,10 @@ InfoTile.propTypes = {
 
 const styles = StyleSheet.create({
 	cardContainer: {
-		height: 80,
-		maxHeight: 80,
-		width: 150,
+		minHeight: 80,
+		width: 160,
 		alignSelf: 'center',
-		marginHorizontal: 10,
+		marginHorizontal: 8,
 		shadowColor: '#000',
 		shadowOffset: {
 			width: 0,
@@ -61,38 +59,16 @@ const styles = StyleSheet.create({
 		alignSelf: 'stretch'
 	},
 	cardBodyWrapper: {
+		padding: 8,
 		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
-	authorCorner: {
-		display: 'flex',
-		justifyContent: 'center',
-		width: 50,
-		height: 50,
-		position: 'absolute',
-		top: 0,
-		left: 0,
-		backgroundColor: COLOR.RED
-	},
-	authorText: {
+
+	subName: {
 		color: COLOR.WHITE,
-		alignSelf: 'center',
-		fontSize: 20,
-		fontWeight: 'bold'
-	},
-	dateText: {
-		color: COLOR.WHITE,
-		fontSize: 10
-	},
-	titleText: {
-		color: COLOR.WHITE,
-		fontSize: 18,
-		fontWeight: 'bold'
-	},
-	categoryText: {
-		color: COLOR.RED,
-		fontSize: 12,
+		textAlign: 'center',
+		fontSize: 13,
 		fontWeight: 'bold'
 	}
 });

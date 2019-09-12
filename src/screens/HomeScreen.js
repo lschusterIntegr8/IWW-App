@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import HeaderMenu from '../components/HeaderMenu';
-import NewsFeedWrapper from '../components/NewsFeedWrapper';
-import InfoServiceWrapper from '../components/InfoServiceWrapper';
+import NewsFeedWrapper from '../components/NewsFeed.container';
+import InfoServiceWrapper from '../components/InfoService.container';
 import SearchBarWrapper from '../components/SearchBarWrapper';
 import { addArticle } from '../redux/actions/index';
 
