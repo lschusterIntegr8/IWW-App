@@ -4,6 +4,9 @@ import { fetchTokens } from './storage';
 
 const BASE_ENDPOINT = 'https://www.vogel.de/api/iww';
 
+/*
+ * Configures axios headers
+ */
 export const setAxiosAuthInterceptor = async () => {
 	axios.interceptors.request.use(
 		async config => {
@@ -36,12 +39,11 @@ export const refreshToken = refreshToken => {
 				console.log(accessToken);
 				console.log('done login');
 
-				// resolve(response.data);
 				return resolve({ success: true, accessToken, refreshToken });
 			})
 			.catch(err => {
 				console.log(err);
-				return reject(false);
+				return reject({ success: false });
 			});
 	});
 };
@@ -64,7 +66,7 @@ export const userLogin = (email, password) => {
 				return resolve({ success: true, accessToken, refreshToken });
 			})
 			.catch(err => {
-				return reject(false);
+				return reject({ success: false });
 			});
 	});
 };
@@ -76,17 +78,35 @@ export const getSubscriptions = () => {
 			.then(response => {
 				console.log('SUBSCRIPTIONS RESPONSE:');
 				console.log(response.data._embedded.subscriptions);
-				return resolve(response.data._embedded.subscriptions);
-				// const { access_token: accessToken, refresh_token: refreshToken } = response.data;
-				// console.log('ACCESS TOKEN:');
-				// console.log(accessToken);
-				// console.log('done login');
-
-				// return resolve({ success: true, accessToken, refreshToken });
+				return resolve({ success: true, data: response.data._embedded.subscriptions });
 			})
 			.catch(err => {
 				console.log(err);
-				return reject(false);
+				return reject({ success: false });
+			});
+	});
+};
+
+export const getSubscriptionArticles = (subId, limit, skip, searchtext) => {
+	const params = {};
+	if (subId) params.application = subId;
+	if (limit) params.limit = limit;
+	if (skip) params.skip = skip;
+	if (searchtext) params.searchtext = searchtext;
+
+	return new Promise((resolve, reject) => {
+		axios
+			.get(`${BASE_ENDPOINT}/contents`, {
+				params
+			})
+			.then(response => {
+				console.log('SubArticles RESPONSE:');
+				console.log(response.data._embedded.contents);
+				return resolve({ success: true, data: response.data._embedded.contents });
+			})
+			.catch(err => {
+				console.log(err);
+				return reject({ success: false });
 			});
 	});
 };

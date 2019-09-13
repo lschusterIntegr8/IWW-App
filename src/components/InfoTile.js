@@ -10,9 +10,11 @@ const InfoTile = props => (
 		<TouchableHighlight
 			style={styles.clickableArea}
 			onPress={() => {
-				alert('test');
+				/* Set active subscription filter */
+
 				/* props.navigation.navigate('ArticleDetail', {article: article}) */
 				// props.navigation.navigate('ForgottenPassword');
+				props.setActiveSubFilter(props.tile.id);
 			}}
 		>
 			<View
@@ -29,7 +31,8 @@ const InfoTile = props => (
 
 InfoTile.propTypes = {
 	navigation: PropTypes.object,
-	tile: PropTypes.object
+	tile: PropTypes.object,
+	setActiveSubFilter: PropTypes.object
 };
 
 const styles = StyleSheet.create({

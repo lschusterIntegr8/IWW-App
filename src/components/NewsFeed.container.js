@@ -2,12 +2,16 @@ import React from 'react';
 import { StyleSheet, View, Text, Animated, Easing } from 'react-native';
 import PropTypes from 'prop-types';
 import { Button } from 'react-native-elements';
+import { connect } from 'react-redux';
 
 import NewsFeedList from './NewsFeedList';
 import ArchiveFeedList from './ArchiveFeedList';
-
 import COLOR from '../config/colors';
+import { getArticles } from '../redux/selectors/content.selector';
 
+const mapStateToProps = state => ({
+	articles: getArticles(state)
+});
 class NewsFeedWrapper extends React.Component {
 	constructor(props) {
 		super(props);
@@ -40,7 +44,7 @@ class NewsFeedWrapper extends React.Component {
 
 	renderFilteredView() {
 		if (!this.state.currentFilter) {
-			return <NewsFeedList />;
+			return <NewsFeedList articles={this.props.articles} />;
 		} else if (this.state.currentFilter === 'archive') {
 			return <ArchiveFeedList />;
 		} else if (this.state.currentFilter === 'rubriken') {
@@ -175,4 +179,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default NewsFeedWrapper;
+const NewsFeedWrapperContainer = connect(mapStateToProps)(NewsFeedWrapper);
+
+export default NewsFeedWrapperContainer;

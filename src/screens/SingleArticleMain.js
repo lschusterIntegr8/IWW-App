@@ -15,11 +15,11 @@ class SingleArticleMain extends Component {
 
 	backgroundAudioRender(article) {
 		if (article.audio) {
-			const audioSource = require('../assets/audio/test.wav');
+			const audioSource = `../assets/audio/test.wav`;
 			return (
 				<View>
 					<Video
-						source={audioSource}
+						source={() => audioSource}
 						style={{ width: '100%', height: 400 }}
 						muted={false}
 						repeat={false}

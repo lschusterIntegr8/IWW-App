@@ -1,28 +1,16 @@
-import { ADD_ARTICLE, SET_TOKENS, SET_SUBSCRIPTIONS } from '../actions/action-types';
+import {
+	ADD_ARTICLE,
+	SET_TOKENS,
+	SET_SUBSCRIPTIONS,
+	SET_ACTIVE_SUB_FILTER,
+	SET_ARTICLES
+} from '../actions/action-types';
 
 const initialState = {
 	accessToken: undefined,
 	refreshToken: undefined,
-	subscriptionServices: [
-		// {
-		// 	aboId: 'abo3',
-		// 	title: 'Alle',
-		// 	subtitle: 'Meine Informationsdienste',
-		// 	thumbnail: require('../../assets/images/infodienst3.png')
-		// },
-		// {
-		// 	aboId: 'abo1',
-		// 	title: 'MR',
-		// 	subtitle: 'MedizinReport',
-		// 	thumbnail: require('../../assets/images/infodienst2.png')
-		// },
-		// {
-		// 	aboId: 'abo2',
-		// 	title: 'CB',
-		// 	subtitle: 'ChefärzteBrief',
-		// 	thumbnail: require('../../assets/images/infodienst1.png')
-		// }
-	],
+	activeSubscriptionFilter: undefined,
+	subscriptionServices: [],
 	articles: [
 		{
 			articleId: '1234',
@@ -81,6 +69,12 @@ function rootReducer(state = initialState, action) {
 				subscriptionServices: [...state.subscriptionServices, ...action.payload]
 			};
 		}
+		case SET_ARTICLES: {
+			return {
+				...state,
+				articles: action.payload
+			};
+		}
 		case ADD_ARTICLE: {
 			return {
 				...state,
@@ -92,6 +86,12 @@ function rootReducer(state = initialState, action) {
 				...state,
 				accessToken: action.payload.accessToken,
 				refreshToken: action.payload.refreshToken
+			};
+		}
+		case SET_ACTIVE_SUB_FILTER: {
+			return {
+				...state,
+				activeSubscriptionFilter: action.payload
 			};
 		}
 	}

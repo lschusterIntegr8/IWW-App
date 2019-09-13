@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
 import { FlatList, InteractionManager, ActivityIndicator, View, StyleSheet } from 'react-native';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withNavigation } from 'react-navigation';
 
 import ArticleCard from './ArticleCard';
-
-const mapStateToProps = state => ({
-	articles: state.articles
-});
 
 class NewsFeedList extends Component {
 	constructor(props) {
@@ -22,6 +17,8 @@ class NewsFeedList extends Component {
 	};
 
 	componentDidMount() {
+		console.log('ARTICLES MOUNT:');
+		console.log(this.props.articles);
 		InteractionManager.runAfterInteractions(() => {
 			// alert('Complete');
 			this.setState({ interactionsComplete: true });
@@ -34,7 +31,7 @@ class NewsFeedList extends Component {
 	}
 
 	renderItem({ item }) {
-		return <ArticleCard key={item.articleId} article={item} handlePress={this.openArticle} />;
+		return <ArticleCard key={item.article_id} article={item} handlePress={this.openArticle} />;
 	}
 
 	render() {
@@ -49,7 +46,7 @@ class NewsFeedList extends Component {
 			<FlatList
 				data={this.props.articles}
 				renderItem={this.renderItem}
-				keyExtractor={item => item.articleId}
+				keyExtractor={item => item.article_id}
 				initialNumToRender={3}
 				windowSize={3}
 				maxToRenderPerBatch={1}
@@ -69,6 +66,4 @@ NewsFeedList.propTypes = {
 	navigation: PropTypes.object
 };
 
-const NewsFeedListContainer = connect(mapStateToProps)(NewsFeedList);
-
-export default withNavigation(NewsFeedListContainer);
+export default withNavigation(NewsFeedList);

@@ -14,18 +14,18 @@ const ArticleCard = props => (
 				props.handlePress(props.article);
 			}}
 		>
-			<ImageBackground source={props.article.thumbnail} style={styles.articleImage}>
+			<View style={styles.articleImage}>
 				<View style={styles.cardBodyWrapper}>
 					<View style={styles.authorCorner}>
 						<Text style={styles.authorText}>{props.article.author}</Text>
 					</View>
 					<View style={styles.headingWrapper}>
-						<Text style={styles.dateText}>{props.article.published_on}</Text>
+						<Text style={styles.dateText}>{props.article.date}</Text>
 						<Text style={styles.titleText}>{props.article.title}</Text>
-						<Text style={styles.categoryText}>#{props.article.category}</Text>
+						<Text style={styles.categoryText}>#{props.article.catgory_title}</Text>
 					</View>
 				</View>
-			</ImageBackground>
+			</View>
 		</TouchableHighlight>
 	</View>
 );
@@ -52,7 +52,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 		height: undefined,
 		width: undefined,
-		alignSelf: 'stretch'
+		alignSelf: 'stretch',
+		backgroundColor: COLOR.DARK_BLUE
 	},
 	cardBodyWrapper: {
 		flex: 1,
