@@ -8,6 +8,7 @@ import NewsFeedWrapper from '../components/NewsFeed.container';
 import InfoServiceWrapper from '../components/InfoService.container';
 import SearchBarWrapper from '../components/SearchBarWrapper';
 import { addArticle } from '../redux/actions/index';
+import { isCloseToBottom } from '../helpers/util/util';
 
 const mapStateToProps = state => {
 	return { articles: state.articles };
@@ -36,14 +37,14 @@ class HomeScreen extends Component {
 		this.setState({ refreshing: true });
 
 		setTimeout(() => {
-			this.props.addArticle({
-				articleId: '12346',
-				title: 'Qualität des Operateurs hängt von der Methode ab?',
-				category: 'TeamManagement',
-				published_on: 'Wednesday, 21 Jul 2019',
-				author: 'CB',
-				thumbnail: require('../assets/images/test-article-1.png')
-			});
+			// this.props.addArticle({
+			// 	articleId: '12346',
+			// 	title: 'Qualität des Operateurs hängt von der Methode ab?',
+			// 	category: 'TeamManagement',
+			// 	published_on: 'Wednesday, 21 Jul 2019',
+			// 	author: 'CB',
+			// 	thumbnail: require('../assets/images/test-article-1.png')
+			// });
 			this.setState({ refreshing: false });
 		}, 3000);
 	};
@@ -59,6 +60,13 @@ class HomeScreen extends Component {
 					<ScrollView
 						contentInsetAdjustmentBehavior="automatic"
 						style={{ flex: 1 }}
+						onScroll={({ nativeEvent }) => {
+							console.log('Onscroll');
+							if (isCloseToBottom(nativeEvent)) {
+								console.warn('Reached end of page');
+							}
+						}}
+						scrollEventThrottle={0}
 						contentContainerStyle={{
 							flexGrow: 1,
 							paddingVertical: 30

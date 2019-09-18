@@ -1,8 +1,20 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, Dimensions, StyleSheet } from 'react-native';
+import {
+	View,
+	ScrollView,
+	Text,
+	Dimensions,
+	StyleSheet,
+	ActivityIndicator,
+	Alert,
+	Linking
+} from 'react-native';
+import { WebView } from 'react-native-webview';
 import PropTypes from 'prop-types';
 import HTML from 'react-native-render-html';
 import Video from 'react-native-video';
+
+import { checkAndPrependToUrl } from '../helpers/util/util';
 
 class SingleArticleMain extends Component {
 	constructor(props) {
@@ -44,20 +56,15 @@ class SingleArticleMain extends Component {
 		const article = navigation.getParam('article', {});
 
 		return (
-			<View>
-				{this.backgroundAudioRender(article)}
-				<ScrollView style={styles.singleArticleContainer}>
+			<View style={styles.htmlContainer}>
+				<ScrollView style={{ flex: 1 }}>
 					<HTML
-						html={article.html}
-						imagesMaxWidth={Dimensions.get('window').width}
-						tagsStyles={{
-							h1: { marginHorizontal: 16 },
-							h2: { marginHorizontal: 16 },
-							h3: { marginHorizontal: 16 },
-							h4: { marginHorizontal: 16 },
-							h5: { marginHorizontal: 16 },
-							h6: { marginHorizontal: 16 },
-							p: { marginHorizontal: 16 }
+						style={styles.webview}
+						html={`<div style="padding: 8px">${article.content}</div>`}
+						imagesMaxWidth={Dimensions.get('window').width - 16}
+						onLinkPress={async (event, href) => {
+							// const cleanedHref = checkAndPrependToUrl(href, articleTag);
+							await Linking.openURL(href);
 						}}
 					/>
 				</ScrollView>
@@ -67,11 +74,19 @@ class SingleArticleMain extends Component {
 }
 
 const styles = StyleSheet.create({
-	singleArticleContainer: {
-		flex: 1
-	},
 	htmlContainer: {
-		marginHorizontal: 16
+		flex: 1,
+		backgroundColor: 'transparent'
+	},
+	webview: {
+		backgroundColor: 'transparent',
+		shadowColor: 'transparent',
+		shadowOpacity: 0,
+		shadowRadius: 0,
+		shadowOffset: {
+			height: 0,
+			width: 0
+		}
 	}
 });
 

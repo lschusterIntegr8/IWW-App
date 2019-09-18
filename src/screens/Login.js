@@ -11,27 +11,6 @@ import { storeTokens } from '../helpers/storage';
 import COLOR from '../config/colors';
 import FormGroup from '../components/FormGroup';
 
-import { saveToken } from '../redux/actions/index';
-
-const mapStateToProps = state => {
-	return {
-		accessToken: state.accessToken,
-		refreshToken: state.refreshToken
-	};
-};
-
-const mapDispatchToProps = dispatch => {
-	return {
-		saveToken: tokens =>
-			dispatch(
-				saveToken({
-					accessToken: tokens.accessToken,
-					refreshToken: tokens.refreshToken
-				})
-			)
-	};
-};
-
 class Login extends React.Component {
 	constructor(props) {
 		super(props);
@@ -104,13 +83,8 @@ class Login extends React.Component {
 				isLoading: false
 			});
 			/* 4. Store tokens to asyncStorage + navigate */
-			console.log('NAVIGATION: ', this.props);
 			if (authResponse.success) {
 				await storeTokens(authResponse);
-				this.props.saveToken({
-					accessToken: authResponse.accessToken,
-					refreshToken: authResponse.refreshToken
-				});
 
 				this.props.navigation.navigate(
 					'App',
@@ -197,9 +171,9 @@ const styles = {
 	}
 };
 
-const LoginScreen = connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(Login);
+// const LoginScreen = connect(
+// 	mapStateToProps,
+// 	mapDispatchToProps
+// )(Login);
 
-export default withNavigation(LoginScreen);
+export default withNavigation(Login);
