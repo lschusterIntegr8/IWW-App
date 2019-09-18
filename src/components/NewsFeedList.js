@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { withNavigation } from 'react-navigation';
 
 import ArticleCard from './ArticleCard';
+import { fetchAndAddArticles, getArticleContent } from '../helpers/articles';
+// import { isCloseToBottom } from '../helpers/util/util';
 
 class NewsFeedList extends Component {
 	constructor(props) {
@@ -13,7 +15,8 @@ class NewsFeedList extends Component {
 	}
 
 	state = {
-		interactionsComplete: false
+		interactionsComplete: false,
+		page: 1
 	};
 
 	componentDidMount() {
@@ -25,14 +28,27 @@ class NewsFeedList extends Component {
 		});
 	}
 
-	openArticle(article) {
-		console.log('RECEIVED ARTICLE: ', article);
-		this.props.navigation.navigate('SingleArticle', { article: article });
+	async openArticle(article) {
+		const articleContent = await getArticleContent(article.article_id, article.application_id);
+		const articleWithContent = { ...articleContent, ...article };
+		console.log('articlewithcontent:');
+		console.log(articleWithContent);
+
+		this.props.navigation.navigate('SingleArticle', { article: articleWithContent });
 	}
 
 	renderItem({ item }) {
 		return <ArticleCard key={item.article_id} article={item} handlePress={this.openArticle} />;
 	}
+
+	// async loadMoreArticles() {
+	// 	console.log('PAGE: ');
+	// 	console.log(this.state.page);
+	// 	await fetchAndAddArticles(undefined, 10, this.state.page, undefined);
+	// 	console.log('ARTICLES AFTER ADD');
+	// 	console.log(this.props.articles);
+	// 	this.setState({ page: this.state.page + 1 });
+	// }
 
 	render() {
 		if (!this.state.interactionsComplete) {
@@ -46,10 +62,8 @@ class NewsFeedList extends Component {
 			<FlatList
 				data={this.props.articles}
 				renderItem={this.renderItem}
-				keyExtractor={item => item.article_id}
-				initialNumToRender={3}
-				windowSize={3}
-				maxToRenderPerBatch={1}
+				keyExtractor={item => (item.article_id ? item.article_id.toString() : '')}
+				initialNumToRender={10}
 			/>
 		);
 	}

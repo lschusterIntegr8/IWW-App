@@ -23,6 +23,7 @@ const InfoTile = props => (
 			>
 				<View style={styles.cardBodyWrapper}>
 					<Text style={styles.subName}>{props.tile.title}</Text>
+					{props.tile.audio ? <Text style={styles.subName}>(audio)</Text> : null}
 				</View>
 			</View>
 		</TouchableHighlight>
@@ -32,7 +33,7 @@ const InfoTile = props => (
 InfoTile.propTypes = {
 	navigation: PropTypes.object,
 	tile: PropTypes.object,
-	setActiveSubFilter: PropTypes.object
+	setActiveSubFilter: PropTypes.func
 };
 
 const styles = StyleSheet.create({
@@ -41,13 +42,6 @@ const styles = StyleSheet.create({
 		width: 160,
 		alignSelf: 'center',
 		marginHorizontal: 8,
-		shadowColor: '#000',
-		shadowOffset: {
-			width: 0,
-			height: 2
-		},
-		shadowOpacity: 0.45,
-		shadowRadius: 3,
 		elevation: 3,
 		marginVertical: 0
 	},
@@ -59,7 +53,14 @@ const styles = StyleSheet.create({
 		flex: 1,
 		height: undefined,
 		width: undefined,
-		alignSelf: 'stretch'
+		alignSelf: 'stretch',
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 2
+		},
+		shadowOpacity: 0.45,
+		shadowRadius: 3
 	},
 	cardBodyWrapper: {
 		padding: 8,
