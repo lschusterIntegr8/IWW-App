@@ -14,21 +14,19 @@ import COLOR from '../config/colors';
 
 // const IC_ARR_DOWN = require('./icons/ic_arr_down.png');
 // const IC_ARR_UP = require('./icons/ic_arr_up.png');
-
+const FILTER_DATA = [
+	['Ausgabe 01 / 2019', 'Ausgabe 12 / 2018', 'Ausgabe 11 / 2018', 'Ausgabe 10 / 2018']
+];
 class DropdownFilter extends Component {
 	constructor(props) {
 		super(props);
 	}
 
 	state = {
-		selectedFilter: undefined
+		selectedFilter: FILTER_DATA[0][0]
 	};
 
 	render() {
-		var data = [
-			['Ausgabe 01 / 2019', 'Ausgabe 12 / 2018', 'Ausgabe 11 / 2018', 'Ausgabe 10 / 2018']
-		];
-
 		return (
 			<View style={{ flex: 1, position: 'relative' }}>
 				<DropdownMenu
@@ -44,12 +42,14 @@ class DropdownFilter extends Component {
 					// titleStyle={{color: '#333333'}}
 					// maxHeight={300}
 					handler={(selection, row) =>
-						this.setState({ selectedFilter: data[selection][row] })
+						this.setState({ selectedFilter: FILTER_DATA[selection][row] })
 					}
-					data={data}
+					data={FILTER_DATA}
 				></DropdownMenu>
 				<View style={{ flex: 1 }}>
-					<Text>{this.state.selectedFilter} is the best language in the world</Text>
+					<Text style={{ textAlign: 'center' }}>
+						Selected: {this.state.selectedFilter}
+					</Text>
 				</View>
 			</View>
 		);
