@@ -1,5 +1,6 @@
 import * as Keychain from 'react-native-keychain';
-
+import AsyncStorage from '@react-native-community/async-storage';
+import API from './api';
 /*
  *
  * Function that stores auth tokens securely using encription
@@ -8,14 +9,15 @@ export const storeTokens = async authResponse => {
 	/* Dispatch tokens to redux store */
 	console.log('Storing ', authResponse);
 
-	const tmpTokens = {
+	const tmpTokens = JSON.stringify({
 		accessToken: authResponse.accessToken,
 		refreshToken: authResponse.refreshToken
-	};
+	});
 
 	/* Save to storage */
 	try {
-		await Keychain.setGenericPassword('tokens', JSON.stringify(tmpTokens));
+		await Keychain.setGenericPassword('tokens', tmpTokens);
+		await API.setAxiosAuthInterceptor();
 	} catch (err) {
 		console.log(err);
 		alert('ERROR STORING TOKENS ...');
@@ -41,6 +43,7 @@ export const fetchTokens = async () => {
 	} catch (err) {
 		console.log(err);
 		alert('Error fetching tokens ...');
+		return undefined;
 	}
 };
 

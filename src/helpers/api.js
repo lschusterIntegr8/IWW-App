@@ -10,9 +10,13 @@ const BASE_ENDPOINT = 'https://www.vogel.de/api/iww';
 export const setAxiosAuthInterceptor = async () => {
 	axios.interceptors.request.use(
 		async config => {
+			console.log('FETCHTOKENS from axios interceptor');
 			const token = await fetchTokens();
 			if (token) {
+				console.log('Axios interceptor setting token ...');
 				config.headers['Authorization'] = 'Bearer ' + token.accessToken;
+			} else {
+				console.log('Axios interceptor did not find any tokens ...');
 			}
 			config.headers['Content-Type'] = 'application/json';
 
@@ -103,6 +107,20 @@ export const getSubscriptionArticles = (subId, limit, skip, searchtext) => {
 				console.log('SubArticles RESPONSE:');
 				console.log(response.data._embedded.contents);
 				return resolve({ success: true, data: response.data._embedded.contents });
+			})
+			.catch(err => {
+				console.log(err);
+				return reject({ success: false });
+			});
+	});
+};
+
+export const singleArticleContent = articleId => {
+	return new Promise((resolve, reject) => {
+		axios
+			.get(`${BASE_ENDPOINT}/contents/${articleId}`)
+			.then(response => {
+				return resolve({ success: true, data: response.data._embedded });
 			})
 			.catch(err => {
 				console.log(err);

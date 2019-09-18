@@ -1,8 +1,7 @@
-import { AsyncStorage } from 'react-native';
 import {
 	ADD_ARTICLE,
 	GET_TOKEN,
-	SET_TOKENS,
+	// SET_TOKENS,
 	SET_SUBSCRIPTIONS,
 	SET_ACTIVE_SUB_FILTER,
 	SET_ARTICLES
@@ -25,12 +24,12 @@ export function setArticles(payload) {
 	};
 }
 
-export function saveToken(payload) {
-	return {
-		type: SET_TOKENS,
-		payload
-	};
-}
+// export function saveToken(payload) {
+// 	return {
+// 		type: SET_TOKENS,
+// 		payload
+// 	};
+// }
 
 export function setSubscriptions(payload) {
 	return {

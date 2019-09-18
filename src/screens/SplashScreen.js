@@ -11,6 +11,7 @@ const SPLASH_SCREEN_TIMEOUT = 500;
 class SplashScreen extends React.Component {
 	async componentDidMount() {
 		// await storageHelper.resetCredentials();
+
 		await initAppStart(this.props);
 	}
 

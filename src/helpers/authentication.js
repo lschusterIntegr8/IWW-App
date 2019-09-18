@@ -1,9 +1,17 @@
 /* eslint-disable no-console */
-import store from '../redux/store/index';
+import { store, persistor } from '../redux/store/index';
 
 import * as API from './api';
 import * as storageHelper from './storage';
 import { setSubscriptions, setArticles } from '../redux/actions/index';
+
+// store.subscribe(() => {
+// 	console.log('...STORE SUBSCRIBER RAN...');
+// 	storageHelper.storeTokens({
+// 		accessToken: store.getState().accessToken,
+// 		refreshToken: store.getState().refreshToken
+// 	});
+// });
 
 export const sendPasswordResetEmail = async () => {
 	return new Promise((resolve, reject) => {
@@ -16,58 +24,69 @@ export const sendPasswordResetEmail = async () => {
 };
 
 export const initAppStart = async props => {
-	const data = await storageHelper.fetchTokens().catch(err => {
-		console.log(err);
-		props.navigation.navigate('Authentication');
-	});
+	try {
+		const data = await storageHelper.fetchTokens().catch(err => {
+			console.log(err);
+			props.navigation.navigate('Authentication');
+		});
 
-	if (!data || (Object.entries(data).length === 0 && data.constructor === Object)) {
-		props.navigation.navigate('Authentication');
-	} else if (data.accessToken && data.refreshToken) {
-		/* 2. Try to fetch screens data from API */
-		const { data: subs } = await API.getSubscriptions().catch(async responseContent => {
-			/* 3. If token is expired --> refresh the token */
-			if (!responseContent || !responseContent.success) {
-				// console.log('NO RESPONSE CONTENT ---> SHOULD REFRESH');
-				const refreshedTokens = await API.refreshToken(data.refreshToken).catch(
-					validRefreshToken => {
-						if (!validRefreshToken || !validRefreshToken.success) {
-							props.navigation.navigate('Authentication');
-							return true;
+		if (!data || (Object.entries(data).length === 0 && data.constructor === Object)) {
+			props.navigation.navigate('Authentication');
+		} else if (data.accessToken && data.refreshToken) {
+			/* 2. Try to fetch screens data from API */
+			const { data: subs } = await API.getSubscriptions().catch(async responseContent => {
+				/* 3. If token is expired --> refresh the token */
+				if (!responseContent || !responseContent.success) {
+					// console.log('NO RESPONSE CONTENT ---> SHOULD REFRESH');
+					const refreshedTokens = await API.refreshToken(data.refreshToken).catch(
+						validRefreshToken => {
+							if (!validRefreshToken || !validRefreshToken.success) {
+								props.navigation.navigate('Authentication');
+								return true;
+							}
 						}
-					}
-				);
-				// console.log('Refreshed tokens');
-				// console.log(refreshedTokens);
-				await storageHelper.storeTokens(refreshedTokens);
-				await API.setAxiosAuthInterceptor();
-				/* Recurse this function after new tokens are set */
-				return initAppStart(props);
-			}
-		});
+					);
+					// console.log('Refreshed tokens');
+					// console.log(refreshedTokens);
+					await storageHelper.storeTokens(refreshedTokens);
+					await API.setAxiosAuthInterceptor();
+					/* Recurse this function after new tokens are set */
+					return initAppStart(props);
+				}
+			});
 
-		const { data: articles } = await API.getSubscriptionArticles(
-			undefined,
-			2,
-			undefined,
-			undefined
-		).catch(async responseContent => {
-			console.log(responseContent);
-		});
-		// console.log('articles:');
-		// console.log(articles);
+			const { data: articles } = await API.getSubscriptionArticles(
+				undefined,
+				10,
+				undefined,
+				undefined
+			).catch(async responseContent => {
+				console.log(responseContent);
+			});
+			// console.log('articles:');
+			// console.log(articles);
 
-		/* Store subscriptions */
-		store.dispatch(setSubscriptions(subs));
-		store.dispatch(setArticles(articles));
-		props.navigation.navigate('App');
-	} else {
-		console.log('SOMETHING UNEXPLAINED HAPPENED');
+			/* Store subscriptions */
+			store.dispatch(setSubscriptions(subs));
+			store.dispatch(setArticles(articles));
+			props.navigation.navigate('App');
+		} else {
+			console.log('SOMETHING UNEXPLAINED HAPPENED');
+		}
+	} catch (err) {
+		console.log('App init error ...');
+		console.log(err);
 	}
 };
 
-export const authenticateLogin = async (email, password) => {
-	const authResponse = await API.userLogin(email, password);
+export const authenticateLogin = async (email, password, props) => {
+	const authResponse = await API.userLogin(email, password).catch(err => {
+		console.log(err);
+		return err;
+	});
+
+	/* If auth === success, store tokens to redux + storage */
+
 	return authResponse;
 	// if (email === 't@t.de' && password === 'test') return resolve(true);
 	// else return reject(false);
