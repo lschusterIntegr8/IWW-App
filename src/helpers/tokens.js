@@ -17,8 +17,6 @@ export const setActiveTokens = async tokens => {
 /* Returns tokens from SecureStorage OR fetches and returns new tokens */
 export const getActiveTokens = async () => {
 	console.log('Getactivetokens called');
-
-	console.log('Fetch tokens from getactivetokens');
 	const storageTokens = await storageHelper.fetchTokens();
 
 	/* If there tokens are missing or outdated */
@@ -30,11 +28,10 @@ export const getActiveTokens = async () => {
 	}
 
 	const tokenAge = Math.abs(dayjs().diff(dayjs(storageTokens.timestamp)));
-	console.log('DIFFERENCE: ', tokenAge);
 	let isTokenOutdated = false;
 
 	if (tokenAge > TOKEN_TIMEOUT) {
-		console.warn('FOUND OUTDATED TOKEN');
+		console.warn('FOUND OUTDATED TOKEN: ', storageTokens);
 		isTokenOutdated = true;
 	} else {
 		isTokenOutdated = false;
@@ -51,11 +48,9 @@ export const getActiveTokens = async () => {
 
 		/* Store them to AsyncStorage and refresh the interceptor */
 		isTokenOutdated = false;
-		// await setActiveTokens(refreshedTokens);
 		return refreshedTokens;
 	}
 
 	isTokenOutdated = false;
-	// await setActiveTokens(storageTokens);
 	return storageTokens;
 };

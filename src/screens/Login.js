@@ -78,15 +78,11 @@ class Login extends React.Component {
 
 			/* 2. Do request */
 			const authResponse = await authenticateLogin(this.state.email, this.state.password);
-			console.log('AuTH RESSPONSE:');
-			console.log(authResponse);
 
 			/* 4. Store tokens to asyncStorage + navigate */
 			if (authResponse.success) {
-				console.log('+++store tokens');
 				await storeTokens(authResponse);
-				console.log('+++setting axios auth interceptor');
-				await initAppContent(false, this.props);
+				await initAppContent(true, this.props);
 				/* 3. Stop loader */
 				this.setState({
 					isLoading: false

@@ -11,16 +11,13 @@ const BASE_ENDPOINT = 'https://www.vogel.de/api/iww';
 export const setAxiosAuthInterceptor = async () => {
 	axios.interceptors.request.use(
 		async config => {
-			console.log('fetchTokens from axios interceptor');
 			const tokens = await fetchTokens();
 			if (tokens) {
-				console.log('Axios interceptor setting token ...');
 				config.headers['Authorization'] = 'Bearer ' + tokens.accessToken;
 			} else {
 				console.log('Axios interceptor did not find any tokens ...');
 			}
 			config.headers['Content-Type'] = 'application/json';
-			console.log('Returning axios config.');
 			return config;
 		},
 		error => {
@@ -30,8 +27,7 @@ export const setAxiosAuthInterceptor = async () => {
 };
 
 export const refreshToken = refreshToken => {
-	console.log('CALLED REFRESH TOKEN');
-	console.log(refreshToken);
+	console.info('CALLED REFRESH TOKEN: ', refreshToken);
 	return new Promise((resolve, reject) => {
 		axios
 			.post(`${BASE_ENDPOINT}/oauth`, {
@@ -41,10 +37,7 @@ export const refreshToken = refreshToken => {
 			})
 			.then(response => {
 				const { access_token: accessToken, refresh_token: refreshToken } = response.data;
-				console.log('ACCESS TOKEN after REFRESH:');
-				console.log(accessToken);
-				console.log('done login');
-
+				console.log('ACCESS TOKEN after REFRESH: ', accessToken);
 				return resolve({ success: true, accessToken, refreshToken });
 			})
 			.catch(err => {
@@ -65,10 +58,7 @@ export const userLogin = (email, password) => {
 			})
 			.then(response => {
 				const { access_token: accessToken, refresh_token: refreshToken } = response.data;
-				console.log('ACCESS TOKEN:');
-				console.log(accessToken);
-				console.log('done login');
-
+				console.log('ACCESS TOKEN: ', accessToken);
 				return resolve({ success: true, accessToken, refreshToken });
 			})
 			.catch(err => {
@@ -82,8 +72,6 @@ export const getSubscriptions = () => {
 		axios
 			.get(`${BASE_ENDPOINT}/subscriptions`)
 			.then(response => {
-				console.log('SUBSCRIPTIONS RESPONSE:');
-				console.log(response.data._embedded.subscriptions);
 				return resolve({ success: true, data: response.data._embedded.subscriptions });
 			})
 			.catch(err => {
@@ -99,6 +87,12 @@ export const getSubscriptionArticles = (subId, limit, skip, searchtext) => {
 	if (limit) params.limit = limit;
 	if (skip) params.skip = skip;
 	if (searchtext) params.searchtext = searchtext;
+	console.info(`Articles called with:
+	subid: ${subId},
+	limit: ${limit},
+	skip: ${skip},
+	searchtext: ${searchtext}
+	`);
 
 	return new Promise((resolve, reject) => {
 		axios
@@ -106,7 +100,7 @@ export const getSubscriptionArticles = (subId, limit, skip, searchtext) => {
 				params
 			})
 			.then(response => {
-				console.log('SubArticles RESPONSE:');
+				console.log('Articles RESPONSE:');
 				console.log(response.data._embedded.contents);
 				return resolve({ success: true, data: response.data._embedded.contents });
 			})

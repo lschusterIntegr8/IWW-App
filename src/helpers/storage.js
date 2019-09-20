@@ -29,12 +29,11 @@ export const storeTokens = async authResponse => {
  * Function that fetches auth tokens from the secure storage
  */
 export const fetchTokens = async () => {
-	console.log('inside fetchTokens');
 	try {
 		let { password: tokens } = await Keychain.getGenericPassword();
 
 		if (!tokens) {
-			console.log('FETCH TOKEN DID NOT FIND STORED TOKEN');
+			console.log('FETCH TOKEN DID NOT FIND STORED TOKENS');
 			console.log(tokens);
 			return undefined;
 		}
@@ -46,8 +45,8 @@ export const fetchTokens = async () => {
 			console.log(tokens);
 			return undefined;
 		}
-		console.info('Found tokens in secure storage:\n', tokens);
 
+		console.info('Found tokens in secure storage:\n', tokens);
 		return tokens;
 	} catch (err) {
 		console.log(err);
