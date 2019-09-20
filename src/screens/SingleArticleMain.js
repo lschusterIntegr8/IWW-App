@@ -21,10 +21,6 @@ class SingleArticleMain extends Component {
 		super(props);
 	}
 
-	componentDidMount() {
-		// console.log(this.props.navigation);
-	}
-
 	backgroundAudioRender(article) {
 		if (article.audio) {
 			const audioSource = `../assets/audio/test.wav`;

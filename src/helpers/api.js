@@ -6,20 +6,21 @@ const BASE_ENDPOINT = 'https://www.vogel.de/api/iww';
 
 /*
  * Configures axios headers
+ * TODO: check token age, try to refresh/ask user to log-in
  */
 export const setAxiosAuthInterceptor = async () => {
 	axios.interceptors.request.use(
 		async config => {
-			console.log('FETCHTOKENS from axios interceptor');
-			const token = await fetchTokens();
-			if (token) {
+			console.log('fetchTokens from axios interceptor');
+			const tokens = await fetchTokens();
+			if (tokens) {
 				console.log('Axios interceptor setting token ...');
-				config.headers['Authorization'] = 'Bearer ' + token.accessToken;
+				config.headers['Authorization'] = 'Bearer ' + tokens.accessToken;
 			} else {
 				console.log('Axios interceptor did not find any tokens ...');
 			}
 			config.headers['Content-Type'] = 'application/json';
-
+			console.log('Returning axios config.');
 			return config;
 		},
 		error => {
@@ -30,6 +31,7 @@ export const setAxiosAuthInterceptor = async () => {
 
 export const refreshToken = refreshToken => {
 	console.log('CALLED REFRESH TOKEN');
+	console.log(refreshToken);
 	return new Promise((resolve, reject) => {
 		axios
 			.post(`${BASE_ENDPOINT}/oauth`, {

@@ -42,7 +42,7 @@ function rootReducer(state = initialState, action) {
 		case SET_SUBSCRIPTIONS: {
 			return {
 				...state,
-				subscriptionServices: [...state.subscriptionServices, ...action.payload]
+				subscriptionServices: action.payload
 			};
 		}
 		case SET_ARTICLES: {

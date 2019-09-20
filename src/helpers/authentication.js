@@ -3,6 +3,8 @@ import { store, persistor } from '../redux/store/index';
 
 import * as API from './api';
 import * as storageHelper from './storage';
+import { getActiveTokens, setActiveTokens } from './tokens';
+import { fetchAndSetArticles, fetchAndSetSubscriptions, initAppContent } from './content';
 import { setSubscriptions, setArticles } from '../redux/actions/index';
 
 // store.subscribe(() => {
@@ -24,55 +26,24 @@ export const sendPasswordResetEmail = async () => {
 };
 
 export const initAppStart = async props => {
+	console.info('getactive tokens (initappstart)');
+
 	try {
-		const data = await storageHelper.fetchTokens().catch(err => {
-			console.log(err);
-			props.navigation.navigate('Authentication');
-		});
+		// await API.setAxiosAuthInterceptor();
+		/* 1. Check if access token already exists in asyncStorage from previous log-ins */
+		const fetchedTokens = await getActiveTokens();
 
-		if (!data || (Object.entries(data).length === 0 && data.constructor === Object)) {
-			props.navigation.navigate('Authentication');
-		} else if (data.accessToken && data.refreshToken) {
-			/* 2. Try to fetch screens data from API */
-			const { data: subs } = await API.getSubscriptions().catch(async responseContent => {
-				/* 3. If token is expired --> refresh the token */
-				if (!responseContent || !responseContent.success) {
-					// console.log('NO RESPONSE CONTENT ---> SHOULD REFRESH');
-					const refreshedTokens = await API.refreshToken(data.refreshToken).catch(
-						validRefreshToken => {
-							if (!validRefreshToken || !validRefreshToken.success) {
-								props.navigation.navigate('Authentication');
-								return true;
-							}
-						}
-					);
-					// console.log('Refreshed tokens');
-					// console.log(refreshedTokens);
-					await storageHelper.storeTokens(refreshedTokens);
-					await API.setAxiosAuthInterceptor();
-					/* Recurse this function after new tokens are set */
-					return initAppStart(props);
-				}
-			});
-
-			const { data: articles } = await API.getSubscriptionArticles(
-				undefined,
-				10,
-				undefined,
-				undefined
-			).catch(async responseContent => {
-				console.log(responseContent);
-			});
-			// console.log('articles:');
-			// console.log(articles);
-
-			/* Store subscriptions */
-			store.dispatch(setSubscriptions(subs));
-			store.dispatch(setArticles(articles));
-			props.navigation.navigate('App');
-		} else {
-			console.log('SOMETHING UNEXPLAINED HAPPENED');
+		if (fetchedTokens.navigation) {
+			console.log('Navigating to: ', fetchedTokens.navigation);
+			return props.navigation.navigate(fetchedTokens.navigation);
 		}
+
+		await setActiveTokens(fetchedTokens);
+
+		// const fetchedArticles = await fetchAndSetArticles();
+		// const fetchedSubscriptions = await fetchAndSetSubscriptions();
+		console.log('Initing app content ...');
+		await initAppContent(false, props);
 	} catch (err) {
 		console.log('App init error ...');
 		console.log(err);
@@ -88,6 +59,4 @@ export const authenticateLogin = async (email, password, props) => {
 	/* If auth === success, store tokens to redux + storage */
 
 	return authResponse;
-	// if (email === 't@t.de' && password === 'test') return resolve(true);
-	// else return reject(false);
 };

@@ -15,10 +15,18 @@ import { v4 } from 'uuid';
 
 import AppContainer from './router';
 import { store, persistor } from './redux/store/index';
-persistor.purge();
+import * as storageHelper from './helpers/storage';
 console.log('STORE');
 console.log(store);
-// const { store, persistor } = storeConfig();
+
+const resetAppStorage = async () => {
+	console.info('Reseting app storage');
+	await storageHelper.resetCredentials();
+	await persistor.purge();
+};
+(async () => {
+	// await resetAppStorage();
+})();
 
 const App = () => {
 	return (

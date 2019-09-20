@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { withNavigation } from 'react-navigation';
 
 import ArticleCard from './ArticleCard';
-import { fetchAndAddArticles, getArticleContent } from '../helpers/articles';
+import { fetchAndAddArticles, getArticleContent } from '../helpers/content';
 // import { isCloseToBottom } from '../helpers/util/util';
 
 class NewsFeedList extends Component {

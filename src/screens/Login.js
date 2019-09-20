@@ -8,6 +8,8 @@ import { connect } from 'react-redux';
 
 import { authenticateLogin } from '../helpers/authentication';
 import { storeTokens } from '../helpers/storage';
+import { initAppContent } from '../helpers/content';
+import * as API from '../helpers/api';
 import COLOR from '../config/colors';
 import FormGroup from '../components/FormGroup';
 
@@ -78,14 +80,17 @@ class Login extends React.Component {
 			const authResponse = await authenticateLogin(this.state.email, this.state.password);
 			console.log('AuTH RESSPONSE:');
 			console.log(authResponse);
-			/* 3. Stop loader */
-			this.setState({
-				isLoading: false
-			});
+
 			/* 4. Store tokens to asyncStorage + navigate */
 			if (authResponse.success) {
+				console.log('+++store tokens');
 				await storeTokens(authResponse);
-
+				console.log('+++setting axios auth interceptor');
+				await initAppContent(false, this.props);
+				/* 3. Stop loader */
+				this.setState({
+					isLoading: false
+				});
 				this.props.navigation.navigate(
 					'App',
 					{},
