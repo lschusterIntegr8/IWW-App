@@ -54,23 +54,22 @@ export const getArticleContent = async (articleId, applicationId) => {
 
 /* If content not in redux-store --> fetch from API */
 export const initAppContent = async (fetchNew, props) => {
-	console.info('INIT APP CONTENT CALLED');
 	/* New data should be fetched:
 	 *	1. refresh token (to not receive cached data)
 	 *	2. fetch content with the new token
 	 */
 	try {
 		if (fetchNew) {
-			console.log('HEARD FETCH NEW FLAG');
+			console.info('HEARD FETCH NEW FLAG');
 			const tokens = await getActiveTokens().catch(err => {
 				console.error("TOKEN CAN'T BE fetched");
 				console.error(err);
 				return err;
 			});
 
-			if (fetchedTokens.navigation) {
-				console.log('Navigating to: ', fetchedTokens.navigation);
-				return props.navigation.navigate(fetchedTokens.navigation);
+			if (tokens.navigation) {
+				console.log('Navigating to: ', tokens.navigation);
+				return props.navigation.navigate(tokens.navigation);
 			}
 
 			const refreshedTokens = await API.refreshToken(tokens.refreshToken).catch(err => {
@@ -90,6 +89,7 @@ export const initAppContent = async (fetchNew, props) => {
 			if (fetchedSubscriptions.navigation) {
 				// return props.navigation.navigate(fetchedSubscriptions.navigation);
 				console.warn('FETCHED .navigation');
+				console.warn(fetchedSubscriptions);
 			}
 			if (fetchedSubscriptions.retry) {
 				console.warn('FETCHED .retry');
@@ -115,10 +115,13 @@ export const initAppContent = async (fetchNew, props) => {
 				return Promise.all(fetchPromises);
 			}
 
-			return props.navigation.navigate('App');
+			return true;
+
+			// return props.navigation.navigate('App');
 		}
 	} catch (err) {
 		console.error('INIT APP CONNTENT ERR');
 		console.error(err);
+		throw err;
 	}
 };

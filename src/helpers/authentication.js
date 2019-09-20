@@ -44,9 +44,11 @@ export const initAppStart = async props => {
 		// const fetchedSubscriptions = await fetchAndSetSubscriptions();
 		console.log('Initing app content ...');
 		await initAppContent(false, props);
+		return props.navigation.navigate('App');
 	} catch (err) {
-		console.log('App init error ...');
-		console.log(err);
+		console.error('App init error ...');
+		console.error(err);
+		return props.navigation.navigate('Authentication');
 	}
 };
 
