@@ -12,7 +12,10 @@ import { isCloseToBottom } from '../helpers/util/util';
 import { initAppContent } from '../helpers/content';
 
 const mapStateToProps = state => {
-	return { articles: state.articles };
+	return {
+		articles: state.articles,
+		activeSubscriptionFilter: state.activeSubscriptionFilter
+	};
 };
 
 const mapDispatchToProps = dispatch => {
@@ -94,7 +97,8 @@ class HomeScreen extends Component {
 
 HomeScreen.propTypes = {
 	navigation: PropTypes.object,
-	articles: PropTypes.array
+	articles: PropTypes.array,
+	activeSubscriptionFilter: PropTypes.object
 };
 
 const HomeScreenContainer = connect(

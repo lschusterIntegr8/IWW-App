@@ -14,7 +14,8 @@ const InfoTile = props => (
 
 				/* props.navigation.navigate('ArticleDetail', {article: article}) */
 				// props.navigation.navigate('ForgottenPassword');
-				props.setActiveSubFilter(props.tile.id);
+				props.setActiveSubFilter({ id: props.tile.id, audio: props.tile.audio });
+				console.log('CLICKED: ', props.tile);
 			}}
 		>
 			<View

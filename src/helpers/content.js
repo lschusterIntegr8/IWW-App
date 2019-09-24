@@ -17,6 +17,7 @@ export const fetchAndSetArticles = async (subId, limit, skip, searchtext) => {
 		searchtext
 	).catch(responseContent => {
 		console.log(responseContent);
+		return responseContent;
 	});
 
 	return store.dispatch(setArticles(articles));
@@ -91,9 +92,11 @@ export const initAppContent = async (fetchNew, props) => {
 				console.warn('FETCHED .navigation');
 				console.warn(fetchedSubscriptions);
 			}
+
 			if (fetchedSubscriptions.retry) {
 				console.warn('FETCHED .retry');
 			}
+
 			return true;
 		} else {
 			console.info('ONLY FETCHING IF DATA IS EMPTY');

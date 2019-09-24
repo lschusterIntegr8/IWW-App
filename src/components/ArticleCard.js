@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, ImageBackground, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import { withNavigation } from 'react-navigation';
 
@@ -7,7 +7,7 @@ import COLOR from '../config/colors';
 
 const ArticleCard = props => (
 	<View style={styles.cardContainer}>
-		<TouchableHighlight
+		<TouchableOpacity
 			style={styles.clickableArea}
 			onPress={() => {
 				/* Press handler passed via props */
@@ -26,7 +26,7 @@ const ArticleCard = props => (
 					</View>
 				</View>
 			</View>
-		</TouchableHighlight>
+		</TouchableOpacity>
 	</View>
 );
 
@@ -36,34 +36,104 @@ ArticleCard.propTypes = {
 	handlePress: PropTypes.func
 };
 
+// const styles = StyleSheet.create({
+// 	cardContainer: {
+// 		minHeight: 250,
+// 		marginBottom: 30,
+// 		maxWidth: 600,
+// 		width: '100%',
+// 		alignSelf: 'center'
+// 	},
+// 	clickableArea: {
+// 		flex: 1,
+// 		alignSelf: 'stretch'
+// 	},
+// 	articleImage: {
+// 		flex: 1,
+// 		height: undefined,
+// 		width: undefined,
+// 		alignSelf: 'stretch',
+// 		backgroundColor: COLOR.DARK_BLUE
+// 	},
+// 	cardBodyWrapper: {
+// 		flex: 1,
+// 		padding: 16,
+// 		paddingBottom: 32,
+// 		alignItems: 'flex-start',
+// 		justifyContent: 'flex-start'
+// 	},
+// 	headingWrapper: {
+// 		flex: 1,
+// 		justifyContent: 'flex-end'
+// 	},
+// 	authorCorner: {
+// 		display: 'flex',
+// 		flex: 1,
+// 		justifyContent: 'center',
+// 		width: 50,
+// 		maxHeight: 50,
+// 		position: 'relative',
+// 		top: -16,
+// 		left: -16,
+// 		backgroundColor: COLOR.RED
+// 	},
+// 	authorText: {
+// 		color: COLOR.WHITE,
+// 		alignSelf: 'center',
+// 		fontSize: 10,
+// 		fontWeight: 'bold'
+// 	},
+// 	dateText: {
+// 		color: COLOR.WHITE,
+// 		fontSize: 10
+// 	},
+// 	titleText: {
+// 		color: COLOR.WHITE,
+// 		fontSize: 18,
+// 		fontWeight: 'bold'
+// 	},
+// 	categoryText: {
+// 		color: COLOR.RED,
+// 		fontSize: 12,
+// 		fontWeight: 'bold'
+// 	}
+// });
+
 const styles = StyleSheet.create({
 	cardContainer: {
-		minHeight: 250,
+		minHeight: 170,
 		marginBottom: 30,
 		maxWidth: 600,
 		width: '100%',
+		paddingHorizontal: 16,
 		alignSelf: 'center'
 	},
 	clickableArea: {
 		flex: 1,
-		alignSelf: 'stretch'
+		alignSelf: 'stretch',
+		backgroundColor: '#ffffff',
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 2
+		},
+		shadowOpacity: 0.45,
+		shadowRadius: 3,
+		elevation: 3,
+		borderWidth: 0.5,
+		borderColor: COLOR.GREY
 	},
 	articleImage: {
 		flex: 1,
 		height: undefined,
 		width: undefined,
-		alignSelf: 'stretch',
-		backgroundColor: COLOR.DARK_BLUE
+		alignSelf: 'stretch'
 	},
 	cardBodyWrapper: {
 		flex: 1,
 		padding: 16,
 		paddingBottom: 32,
 		alignItems: 'flex-start',
-		justifyContent: 'flex-start'
-	},
-	headingWrapper: {
-		flex: 1,
 		justifyContent: 'flex-end'
 	},
 	authorCorner: {
@@ -71,11 +141,22 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		width: 50,
-		maxHeight: 50,
+		height: 50,
 		position: 'relative',
 		top: -16,
 		left: -16,
 		backgroundColor: COLOR.RED
+	},
+	downloadCorner: {
+		flex: 1,
+		zIndex: 3,
+		width: 30,
+		height: 30,
+		marginHorizontal: 16,
+		position: 'absolute',
+		top: 0,
+		right: 16,
+		elevation: 3
 	},
 	authorText: {
 		color: COLOR.WHITE,
@@ -84,19 +165,18 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold'
 	},
 	dateText: {
-		color: COLOR.WHITE,
+		color: COLOR.BLACK,
 		fontSize: 10
 	},
 	titleText: {
-		color: COLOR.WHITE,
+		color: COLOR.BLACK,
 		fontSize: 18,
 		fontWeight: 'bold'
 	},
 	categoryText: {
-		color: COLOR.RED,
+		color: COLOR.ALMOST_BLUE,
 		fontSize: 12,
 		fontWeight: 'bold'
 	}
 });
-
 export default withNavigation(ArticleCard);

@@ -21,8 +21,12 @@ class SingleArticleMain extends Component {
 		super(props);
 	}
 
+	state = {
+		article: undefined
+	};
+
 	backgroundAudioRender(article) {
-		if (article.audio) {
+		if (this.state.article.audio) {
 			const audioSource = `../assets/audio/test.wav`;
 			return (
 				<View>
@@ -48,24 +52,40 @@ class SingleArticleMain extends Component {
 
 	render() {
 		/* Get parameter that is passed via navigation */
-		const { navigation } = this.props;
-		const article = navigation.getParam('article', {});
+		if (!this.state.article) {
+			const { navigation } = this.props;
+			navigation.getParam('article', {}).then(data => {
+				console.log('PROMISE DATA: ', data);
+				let articleBasic = navigation.getParam('articleBasic', {});
+				console.log('Setting state to...', { ...data, ...articleBasic });
 
-		return (
-			<View style={styles.htmlContainer}>
-				<ScrollView style={{ flex: 1 }}>
-					<HTML
-						style={styles.webview}
-						html={`<div style="padding: 8px">${article.content}</div>`}
-						imagesMaxWidth={Dimensions.get('window').width - 16}
-						onLinkPress={async (event, href) => {
-							// const cleanedHref = checkAndPrependToUrl(href, articleTag);
-							await Linking.openURL(href);
-						}}
-					/>
-				</ScrollView>
-			</View>
-		);
+				this.setState({ article: { ...data, ...articleBasic } });
+			});
+		}
+
+		if (this.state.article && this.state.article.content) {
+			return (
+				<View style={styles.htmlContainer}>
+					<ScrollView style={{ flex: 1 }}>
+						<HTML
+							style={styles.webview}
+							html={`<div style="padding: 8px">${this.state.article.content}</div>`}
+							imagesMaxWidth={Dimensions.get('window').width - 16}
+							onLinkPress={async (event, href) => {
+								// const cleanedHref = checkAndPrependToUrl(href, articleTag);
+								await Linking.openURL(href);
+							}}
+						/>
+					</ScrollView>
+				</View>
+			);
+		} else {
+			return (
+				<View style={styles.indicatorContainer}>
+					<ActivityIndicator size="large" color="#E3001B" />
+				</View>
+			);
+		}
 	}
 }
 
@@ -83,6 +103,9 @@ const styles = StyleSheet.create({
 			height: 0,
 			width: 0
 		}
+	},
+	indicatorContainer: {
+		marginTop: 40
 	}
 });
 

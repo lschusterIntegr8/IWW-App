@@ -10,6 +10,13 @@ const initialState = {
 	activeSubscriptionFilter: undefined,
 	subscriptionServices: [],
 	articles: [],
+	aboArticles: [
+		{
+			id: 51,
+			audio: true,
+			articles: []
+		}
+	],
 	archive: [
 		{
 			archiveId: '1234',

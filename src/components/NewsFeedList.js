@@ -29,12 +29,12 @@ class NewsFeedList extends Component {
 	}
 
 	async openArticle(article) {
-		const articleContent = await getArticleContent(article.article_id, article.application_id);
-		const articleWithContent = { ...articleContent, ...article };
-		console.log('articlewithcontent:');
-		console.log(articleWithContent);
+		const articleContent = getArticleContent(article.article_id, article.application_id);
 
-		this.props.navigation.navigate('SingleArticle', { article: articleWithContent });
+		this.props.navigation.navigate('SingleArticle', {
+			article: articleContent, // single article details (content / html)
+			articleBasic: article // basic article info
+		});
 	}
 
 	renderItem({ item }) {
