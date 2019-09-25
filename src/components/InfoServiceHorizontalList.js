@@ -9,7 +9,12 @@ const InfoServiceHorizontalList = props => (
 	<FlatList
 		data={props.subscriptionServices}
 		renderItem={({ item }) => (
-			<InfoTile key={v4()} tile={item} setActiveSubFilter={props.setActiveSubFilter} />
+			<InfoTile
+				key={v4()}
+				tile={item}
+				setActiveSubFilter={props.setActiveSubFilter}
+				storeSubscriptionArticles={props.storeSubscriptionArticles}
+			/>
 		)}
 		keyExtractor={item => v4()}
 		horizontal

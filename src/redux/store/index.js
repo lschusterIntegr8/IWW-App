@@ -1,16 +1,49 @@
 // src/js/store/index.js
 import { createStore, applyMiddleware } from 'redux';
 import logger from 'redux-logger';
-import { persistStore, persistReducer } from 'redux-persist';
+import { persistStore, persistReducer, createMigrate } from 'redux-persist';
 import AsyncStorage from '@react-native-community/async-storage';
-
+import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import rootReducer from '../reducers/index';
+
+const migrations = {
+	0: state => {
+		return {
+			...state,
+			aboArticles: {}
+		};
+	},
+	1: state => {
+		return {
+			...state,
+			aboArticles: []
+		};
+	},
+	2: state => {
+		return {
+			...state,
+			aboArticles: [],
+			activeSubscriptionFilter: undefined
+		};
+	},
+	5: state => {
+		return {
+			...state,
+			aboArticles: [],
+			activeSubscriptionFilter: undefined
+		};
+	}
+};
 
 const persistConfig = {
 	// Root
 	key: 'root',
 	// Storage Method (React Native)
-	storage: AsyncStorage
+	storage: AsyncStorage,
+	migrate: createMigrate(migrations, { debug: true }),
+	version: 5
+	// stateReconciler: autoMergeLevel2
+
 	// Whitelist (Save Specific Reducers)
 	// whitelist: ['authReducer'],
 	// Blacklist (Don't Save Specific Reducers)

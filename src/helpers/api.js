@@ -81,17 +81,19 @@ export const getSubscriptions = () => {
 	});
 };
 
-export const getSubscriptionArticles = (subId, limit, skip, searchtext) => {
+export const getSubscriptionArticles = (subId, limit, skip, searchtext, audio) => {
 	const params = {};
 	if (subId) params.application = subId;
 	if (limit) params.limit = limit;
 	if (skip) params.skip = skip;
 	if (searchtext) params.searchtext = searchtext;
+	if (audio) params.audio = audio;
 	console.info(`Articles called with:
 	subid: ${subId},
 	limit: ${limit},
 	skip: ${skip},
-	searchtext: ${searchtext}
+	searchtext: ${searchtext},
+	audio: ${audio}
 	`);
 
 	return new Promise((resolve, reject) => {

@@ -25,6 +25,10 @@ export const sendPasswordResetEmail = async () => {
 	});
 };
 
+export const resetStore = async () => {
+	// store.dispatch()
+};
+
 export const initAppStart = async props => {
 	console.info('getactive tokens (initappstart)');
 

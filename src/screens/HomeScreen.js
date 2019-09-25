@@ -13,7 +13,6 @@ import { initAppContent } from '../helpers/content';
 
 const mapStateToProps = state => {
 	return {
-		articles: state.articles,
 		activeSubscriptionFilter: state.activeSubscriptionFilter
 	};
 };
@@ -27,10 +26,11 @@ const mapDispatchToProps = dispatch => {
 class HomeScreen extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			refreshing: false
-		};
 	}
+
+	state = {
+		refreshing: false
+	};
 
 	static navigationOptions = {
 		header: null
@@ -43,7 +43,9 @@ class HomeScreen extends Component {
 		this.setState({ refreshing: false });
 	};
 
-	componentDidMount() {}
+	componentDidMount() {
+		console.log('STATE: ', this.state);
+	}
 
 	handleInifiniteScroll({ nativeEvent }) {
 		console.log('Onscroll');
@@ -76,18 +78,15 @@ class HomeScreen extends Component {
 							/>
 						}
 					>
-						{/* 
-					Informationsdienste
-					*/}
-						<InfoServiceWrapper articles={this.props.articles} />
+						{/*--------------------
+								Informationsdienste
+							--------------------*/}
+						<InfoServiceWrapper />
 
-						{/* 
-					Meine Inhalte
-					*/}
-						<NewsFeedWrapper
-							articles={this.props.articles}
-							refreshing={this.state.refreshing}
-						/>
+						{/*--------------------
+								Meine Inhalte
+							--------------------*/}
+						<NewsFeedWrapper refreshing={this.state.refreshing} />
 					</ScrollView>
 				</SafeAreaView>
 			</View>
@@ -97,7 +96,6 @@ class HomeScreen extends Component {
 
 HomeScreen.propTypes = {
 	navigation: PropTypes.object,
-	articles: PropTypes.array,
 	activeSubscriptionFilter: PropTypes.object
 };
 

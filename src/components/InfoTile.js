@@ -4,17 +4,35 @@ import PropTypes from 'prop-types';
 import { withNavigation } from 'react-navigation';
 
 import COLOR from '../config/colors';
+import { addSubscriptionArticles } from '../redux/actions/index';
 
 const InfoTile = props => (
 	<View style={styles.cardContainer}>
 		<TouchableHighlight
 			style={styles.clickableArea}
-			onPress={() => {
+			onPress={async () => {
 				/* Set active subscription filter */
 
 				/* props.navigation.navigate('ArticleDetail', {article: article}) */
 				// props.navigation.navigate('ForgottenPassword');
-				props.setActiveSubFilter({ id: props.tile.id, audio: props.tile.audio });
+
+				/* Set active filter to store */
+				try {
+					await props.setActiveSubFilter({ id: props.tile.id, audio: props.tile.audio });
+					/* Fetch Articles */
+
+					await props.storeSubscriptionArticles(
+						props.tile.id,
+						10,
+						undefined,
+						undefined,
+						props.tile.audio
+					);
+				} catch (err) {
+					console.log('ERROR');
+					console.log(err);
+				}
+
 				console.log('CLICKED: ', props.tile);
 			}}
 		>
@@ -34,7 +52,8 @@ const InfoTile = props => (
 InfoTile.propTypes = {
 	navigation: PropTypes.object,
 	tile: PropTypes.object,
-	setActiveSubFilter: PropTypes.func
+	setActiveSubFilter: PropTypes.func,
+	storeSubscriptionArticles: PropTypes.func
 };
 
 const styles = StyleSheet.create({

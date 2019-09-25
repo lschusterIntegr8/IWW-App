@@ -5,22 +5,72 @@ import { getArticles, getSubscriptions } from '../redux/selectors/content.select
 import * as API from './api';
 import * as storageHelper from './storage';
 import { getActiveTokens, setActiveTokens } from './tokens';
-import { setSubscriptions, setArticles, addArticle } from '../redux/actions/index';
+import {
+	setSubscriptions,
+	setArticles,
+	addArticle,
+	addSubscriptionArticles
+} from '../redux/actions/index';
 import { cleanUrls, matchSubscriptionIdToShortcut } from './util/util';
 
-/* */
-export const fetchAndSetArticles = async (subId, limit, skip, searchtext) => {
+/* Set general articles */
+export const fetchAndSetArticles = async (subId, limit, skip, searchtext, audio) => {
 	const { data: articles } = await API.getSubscriptionArticles(
 		subId,
 		limit,
 		skip,
-		searchtext
+		searchtext,
+		audio
 	).catch(responseContent => {
 		console.log(responseContent);
 		return responseContent;
 	});
 
 	return store.dispatch(setArticles(articles));
+};
+
+/* Set subscription articles */
+export const storeSubscriptionArticles = async (subId, limit, skip, searchtext, audio) => {
+	console.info('STORE SUBS ARTICLES CALLED (content)');
+	/* Check if subscription articles are already present in the store  */
+	const subscriptionArticles = store.getState().aboArticles;
+	console.log('SUB ART:', subscriptionArticles);
+
+	for (const aboArticle of subscriptionArticles) {
+		if (
+			aboArticle.id === subId &&
+			aboArticle.audio === audio &&
+			aboArticle.articles.length > 0
+		) {
+			console.info(
+				'---------Found cached subscription articles, no need to fetch new ...----------'
+			);
+			return true;
+		}
+	}
+
+	/* If subscription articles are not already cached --> fetch and store them to store */
+
+	const { data: articles } = await API.getSubscriptionArticles(
+		subId,
+		limit,
+		skip,
+		searchtext,
+		audio
+	).catch(responseContent => {
+		console.log(responseContent);
+		return responseContent;
+	});
+
+	const result = {
+		id: subId,
+		audio: audio,
+		articles: articles
+	};
+
+	console.log('STORING SUB ARTICLES (DISPATCH)', result);
+
+	return store.dispatch(addSubscriptionArticles(result));
 };
 
 export const fetchAndSetSubscriptions = async () => {

@@ -1,8 +1,8 @@
 import {
 	ADD_ARTICLE,
-	// SET_TOKENS,
+	ADD_SUBSCRIPTION_ARTICLES,
 	SET_SUBSCRIPTIONS,
-	SET_ACTIVE_SUB_FILTER,
+	TOGGLE_ACTIVE_SUB_FILTER,
 	SET_ARTICLES
 } from '../actions/action-types';
 
@@ -10,13 +10,7 @@ const initialState = {
 	activeSubscriptionFilter: undefined,
 	subscriptionServices: [],
 	articles: [],
-	aboArticles: [
-		{
-			id: 51,
-			audio: true,
-			articles: []
-		}
-	],
+	aboArticles: [],
 	archive: [
 		{
 			archiveId: '1234',
@@ -46,6 +40,12 @@ function rootReducer(state = initialState, action) {
 	console.log('PAYLOAD:\n', action.payload);
 	console.log('TYPE:\n', action.type);
 	switch (action.type) {
+		// case RESET_KEYS: {
+		// 	return {
+		// 		...state,
+		// 		articles: []
+		// 	}
+		// }
 		case SET_SUBSCRIPTIONS: {
 			return {
 				...state,
@@ -64,17 +64,61 @@ function rootReducer(state = initialState, action) {
 				articles: [...state.articles, action.payload]
 			};
 		}
-		// case SET_TOKENS: {
-		// 	return {
-		// 		...state,
-		// 		accessToken: action.payload.accessToken,
-		// 		refreshToken: action.payload.refreshToken
-		// 	};
-		// }
-		case SET_ACTIVE_SUB_FILTER: {
+		case ADD_SUBSCRIPTION_ARTICLES: {
+			console.log('ADD_SUBSCRIPTION_ARTICLES');
+			console.log(action.payload); // .
+			/* Find place where to store articles */
+			const receivedArticles = action.payload;
+			const storedArticles = state.aboArticles;
+			let aboIndex = 0;
+			for (const storedAbo of storedArticles) {
+				aboIndex++;
+				if (
+					storedAbo.id === receivedArticles.id &&
+					storedAbo.audio === receivedArticles.audio
+				) {
+					/* If abo articles with ID already exist --> set new ones there */
+					let storedAboArticles = storedAbo;
+					storedAboArticles.articles = receivedArticles.articles;
+
+					storedArticles[aboIndex] = storedAboArticles;
+
+					console.info('TRYING TO RETURN');
+					console.log({
+						...state,
+						aboArticles: storedArticles
+					});
+
+					return {
+						...state,
+						aboArticles: storedArticles
+					};
+				}
+			}
+
+			/* If the artilces are not yet stored --> append them to the articles abo */
 			return {
 				...state,
-				activeSubscriptionFilter: action.payload
+				aboArticles: [
+					...state.aboArticles,
+					{
+						id: receivedArticles.id,
+						audio: receivedArticles.audio,
+						articles: receivedArticles.articles
+					}
+				]
+			};
+		}
+		case TOGGLE_ACTIVE_SUB_FILTER: {
+			return {
+				...state,
+				activeSubscriptionFilter:
+					state.activeSubscriptionFilter &&
+					state.activeSubscriptionFilter.id &&
+					state.activeSubscriptionFilter.id === action.payload.id &&
+					state.activeSubscriptionFilter.audio === action.payload.audio
+						? undefined
+						: action.payload
 			};
 		}
 	}

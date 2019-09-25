@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import InfoServiceHorizontalList from './InfoServiceHorizontalList';
 import COLOR from '../config/colors';
 import { setActiveSubFilter } from '../redux/actions/index';
+import { storeSubscriptionArticles } from '../helpers/content';
 
 const mapStateToProps = state => ({
 	subscriptionServices: state.subscriptionServices,
@@ -41,6 +42,7 @@ class InfoServiceWrapper extends React.Component {
 					<InfoServiceHorizontalList
 						subscriptionServices={this.props.subscriptionServices}
 						setActiveSubFilter={this.props.setActiveSubFilter}
+						storeSubscriptionArticles={storeSubscriptionArticles}
 					/>
 				</View>
 			</View>

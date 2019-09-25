@@ -7,14 +7,31 @@ import { connect } from 'react-redux';
 import NewsFeedList from './NewsFeedList';
 import ArchiveFeedList from './ArchiveFeedList';
 import COLOR from '../config/colors';
-import { getArticles } from '../redux/selectors/content.selector';
+import {
+	getFilteredSubscriptionArticles,
+	getArticles,
+	test
+} from '../redux/selectors/content.selector';
 
-const mapStateToProps = state => ({
-	articles: getArticles(state)
-});
+const makeMapStateToProps = () => {
+	const filteredArticles = getFilteredSubscriptionArticles;
+	const mapStateToProps = state => {
+		return {
+			articles: filteredArticles(state)
+		};
+	};
+
+	return mapStateToProps;
+};
+
 class NewsFeedWrapper extends React.Component {
 	constructor(props) {
 		super(props);
+	}
+
+	componentDidMount() {
+		console.log('MOUNTED NEWSFEED');
+		console.info(this.props.articles);
 	}
 
 	state = {
@@ -179,6 +196,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-const NewsFeedWrapperContainer = connect(mapStateToProps)(NewsFeedWrapper);
+const NewsFeedWrapperContainer = connect(makeMapStateToProps)(NewsFeedWrapper);
 
 export default NewsFeedWrapperContainer;

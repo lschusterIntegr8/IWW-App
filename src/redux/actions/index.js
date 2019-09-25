@@ -3,8 +3,9 @@ import {
 	GET_TOKEN,
 	// SET_TOKENS,
 	SET_SUBSCRIPTIONS,
-	SET_ACTIVE_SUB_FILTER,
-	SET_ARTICLES
+	TOGGLE_ACTIVE_SUB_FILTER,
+	SET_ARTICLES,
+	ADD_SUBSCRIPTION_ARTICLES
 } from './action-types';
 
 /* ACTIONS */
@@ -20,6 +21,13 @@ export function addArticle(payload) {
 export function setArticles(payload) {
 	return {
 		type: SET_ARTICLES,
+		payload
+	};
+}
+
+export function addSubscriptionArticles(payload) {
+	return {
+		type: ADD_SUBSCRIPTION_ARTICLES,
 		payload
 	};
 }
@@ -40,7 +48,7 @@ export function setSubscriptions(payload) {
 
 export function setActiveSubFilter(payload) {
 	return {
-		type: SET_ACTIVE_SUB_FILTER,
+		type: TOGGLE_ACTIVE_SUB_FILTER,
 		payload
 	};
 }

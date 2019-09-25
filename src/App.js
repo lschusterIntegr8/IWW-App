@@ -16,9 +16,10 @@ const resetAppStorage = async () => {
 	console.info('Reseting app storage');
 	await storageHelper.resetCredentials();
 	await persistor.purge();
+	// await persistor.flush();
 };
 (async () => {
-	// await resetAppStorage();
+	await resetAppStorage();
 })();
 
 const App = () => {
