@@ -30,7 +30,11 @@ class InfoServiceWrapper extends React.Component {
 			<View>
 				<View style={styles.inhalteHeaderWrapper}>
 					<Text style={styles.inhalteHeading}>
-						Informationsdienste (selected: {this.props.activeSubscriptionFilter.id})
+						Informationsdienste (selected:{' '}
+						{this.props.activeSubscriptionFilter
+							? this.props.activeSubscriptionFilter.id
+							: null}
+						)
 					</Text>
 				</View>
 				<View style={{ marginBottom: 10 }}>
