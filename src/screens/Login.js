@@ -87,6 +87,7 @@ class Login extends React.Component {
 				this.setState({
 					isLoading: false
 				});
+
 				this.props.navigation.navigate(
 					'App',
 					{},

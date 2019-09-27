@@ -1,4 +1,5 @@
 import {
+	SET_HOME_SCREEN_REFRESHING,
 	ADD_ARTICLE,
 	GET_TOKEN,
 	// SET_TOKENS,
@@ -10,6 +11,12 @@ import {
 
 /* ACTIONS */
 
+export function setHomeScreenRefreshing(payload) {
+	return {
+		type: SET_HOME_SCREEN_REFRESHING,
+		payload
+	};
+}
 /* articles */
 export function addArticle(payload) {
 	return {

@@ -12,7 +12,7 @@ const ArticleCard = props => (
 		<TouchableOpacity
 			style={styles.clickableArea}
 			onPress={() => {
-				/* Press handler passed via props */
+				/* OnPress handler passed via props */
 				props.handlePress(props.article);
 			}}
 		>
@@ -42,69 +42,6 @@ ArticleCard.propTypes = {
 	article: PropTypes.object,
 	handlePress: PropTypes.func
 };
-
-// const styles = StyleSheet.create({
-// 	cardContainer: {
-// 		minHeight: 250,
-// 		marginBottom: 30,
-// 		maxWidth: 600,
-// 		width: '100%',
-// 		alignSelf: 'center'
-// 	},
-// 	clickableArea: {
-// 		flex: 1,
-// 		alignSelf: 'stretch'
-// 	},
-// 	articleImage: {
-// 		flex: 1,
-// 		height: undefined,
-// 		width: undefined,
-// 		alignSelf: 'stretch',
-// 		backgroundColor: COLOR.DARK_BLUE
-// 	},
-// 	cardBodyWrapper: {
-// 		flex: 1,
-// 		padding: 16,
-// 		paddingBottom: 32,
-// 		alignItems: 'flex-start',
-// 		justifyContent: 'flex-start'
-// 	},
-// 	headingWrapper: {
-// 		flex: 1,
-// 		justifyContent: 'flex-end'
-// 	},
-// 	authorCorner: {
-// 		display: 'flex',
-// 		flex: 1,
-// 		justifyContent: 'center',
-// 		width: 50,
-// 		maxHeight: 50,
-// 		position: 'relative',
-// 		top: -16,
-// 		left: -16,
-// 		backgroundColor: COLOR.RED
-// 	},
-// 	authorText: {
-// 		color: COLOR.WHITE,
-// 		alignSelf: 'center',
-// 		fontSize: 10,
-// 		fontWeight: 'bold'
-// 	},
-// 	dateText: {
-// 		color: COLOR.WHITE,
-// 		fontSize: 10
-// 	},
-// 	titleText: {
-// 		color: COLOR.WHITE,
-// 		fontSize: 18,
-// 		fontWeight: 'bold'
-// 	},
-// 	categoryText: {
-// 		color: COLOR.RED,
-// 		fontSize: 12,
-// 		fontWeight: 'bold'
-// 	}
-// });
 
 const styles = StyleSheet.create({
 	cardContainer: {
@@ -186,4 +123,5 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold'
 	}
 });
+
 export default withNavigation(ArticleCard);

@@ -18,9 +18,9 @@ const InfoTile = props => (
 
 				/* Set active filter to store */
 				try {
+					/* Apply current Infodienst filter to the store filter variable */
 					await props.setActiveSubFilter({ id: props.tile.id, audio: props.tile.audio });
 					/* Fetch Articles */
-
 					await props.storeSubscriptionArticles(
 						props.tile.id,
 						10,

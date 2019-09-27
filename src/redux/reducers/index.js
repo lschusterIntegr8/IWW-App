@@ -1,4 +1,5 @@
 import {
+	SET_HOME_SCREEN_REFRESHING,
 	ADD_ARTICLE,
 	ADD_SUBSCRIPTION_ARTICLES,
 	SET_SUBSCRIPTIONS,
@@ -7,6 +8,7 @@ import {
 } from '../actions/action-types';
 
 const initialState = {
+	homeScreenRefreshing: false,
 	activeSubscriptionFilter: undefined,
 	subscriptionServices: [],
 	articles: [],
@@ -40,6 +42,12 @@ function rootReducer(state = initialState, action) {
 	console.log('PAYLOAD:\n', action.payload);
 	console.log('TYPE:\n', action.type);
 	switch (action.type) {
+		case SET_HOME_SCREEN_REFRESHING: {
+			return {
+				...state,
+				homeScreenRefreshing: action.payload
+			};
+		}
 		// case RESET_KEYS: {
 		// 	return {
 		// 		...state,

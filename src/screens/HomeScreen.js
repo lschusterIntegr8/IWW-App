@@ -7,19 +7,21 @@ import HeaderMenu from '../components/HeaderMenu';
 import NewsFeedWrapper from '../components/NewsFeed.container';
 import InfoServiceWrapper from '../components/InfoService.container';
 import SearchBarWrapper from '../components/SearchBarWrapper';
-import { addArticle } from '../redux/actions/index';
+import { addArticle, setHomeScreenRefreshing } from '../redux/actions/index';
 import { isCloseToBottom } from '../helpers/util/util';
 import { initAppContent } from '../helpers/content';
 
 const mapStateToProps = state => {
 	return {
-		activeSubscriptionFilter: state.activeSubscriptionFilter
+		activeSubscriptionFilter: state.activeSubscriptionFilter,
+		homeScreenRefreshing: state.homeScreenRefreshing
 	};
 };
 
 const mapDispatchToProps = dispatch => {
 	return {
-		addArticle: article => dispatch(addArticle(article))
+		addArticle: article => dispatch(addArticle(article)),
+		setHomeScreenRefreshing: flag => dispatch(setHomeScreenRefreshing(flag))
 	};
 };
 
@@ -28,23 +30,22 @@ class HomeScreen extends Component {
 		super(props);
 	}
 
-	state = {
-		refreshing: false
-	};
-
 	static navigationOptions = {
 		header: null
 	};
 
 	/* TODO: Fetch fresh articles and set to store */
 	_onRefresh = async () => {
-		this.setState({ refreshing: true });
+		console.info('Refreshing home screen...');
+		console.log('Refreshing home screen...');
+		this.props.setHomeScreenRefreshing(true);
 		await initAppContent(true, this.props);
-		this.setState({ refreshing: false });
+		this.props.setHomeScreenRefreshing(false);
 	};
 
 	componentDidMount() {
-		console.log('STATE: ', this.state);
+		console.log('STATE: ', this.props);
+		console.log('REFRESHING: ', this.props.homeScreenRefreshing);
 	}
 
 	handleInifiniteScroll({ nativeEvent }) {
@@ -71,7 +72,7 @@ class HomeScreen extends Component {
 						}}
 						refreshControl={
 							<RefreshControl
-								refreshing={this.state.refreshing}
+								refreshing={this.props.homeScreenRefreshing}
 								onRefresh={this._onRefresh}
 								style={{ zIndex: 99 }}
 								zIndex={99}
@@ -79,14 +80,14 @@ class HomeScreen extends Component {
 						}
 					>
 						{/*--------------------
-								Informationsdienste
+							Informationsdienste
 							--------------------*/}
 						<InfoServiceWrapper />
 
 						{/*--------------------
-								Meine Inhalte
+							Meine Inhalte
 							--------------------*/}
-						<NewsFeedWrapper refreshing={this.state.refreshing} />
+						<NewsFeedWrapper refreshing={this.props.homeScreenRefreshing} />
 					</ScrollView>
 				</SafeAreaView>
 			</View>
@@ -96,7 +97,8 @@ class HomeScreen extends Component {
 
 HomeScreen.propTypes = {
 	navigation: PropTypes.object,
-	activeSubscriptionFilter: PropTypes.object
+	activeSubscriptionFilter: PropTypes.object,
+	homeScreenRefreshing: PropTypes.bool
 };
 
 const HomeScreenContainer = connect(
