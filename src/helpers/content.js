@@ -9,7 +9,8 @@ import {
 	setSubscriptions,
 	setArticles,
 	addArticle,
-	addSubscriptionArticles
+	addSubscriptionArticles,
+	setHomeScreenRefreshing
 } from '../redux/actions/index';
 import { cleanUrls, matchSubscriptionIdToShortcut } from './util/util';
 
@@ -36,16 +37,18 @@ export const storeSubscriptionArticles = async (subId, limit, skip, searchtext, 
 	const subscriptionArticles = store.getState().aboArticles;
 	console.log('SUB ART:', subscriptionArticles);
 
-	for (const aboArticle of subscriptionArticles) {
-		if (
-			aboArticle.id === subId &&
-			aboArticle.audio === audio &&
-			aboArticle.articles.length > 0
-		) {
-			console.info(
-				'---------Found cached subscription articles, no need to fetch new ...----------'
-			);
-			return true;
+	if (subscriptionArticles) {
+		for (const aboArticle of subscriptionArticles) {
+			if (
+				aboArticle.id === subId &&
+				aboArticle.audio === audio &&
+				aboArticle.articles.length > 0
+			) {
+				console.info(
+					'---------Found cached subscription articles, no need to fetch new ...----------'
+				);
+				return true;
+			}
 		}
 	}
 
