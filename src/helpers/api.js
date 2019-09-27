@@ -81,6 +81,7 @@ export const getSubscriptions = () => {
 	});
 };
 
+/* Returns general articles OR articles of a specific infoDienst, when subId is specified */
 export const getSubscriptionArticles = (subId, limit, skip, searchtext, audio) => {
 	const params = {};
 	if (subId) params.application = subId;
@@ -113,10 +114,26 @@ export const getSubscriptionArticles = (subId, limit, skip, searchtext, audio) =
 	});
 };
 
+/* Returns HTML content of the specified article */
 export const singleArticleContent = articleId => {
 	return new Promise((resolve, reject) => {
 		axios
 			.get(`${BASE_ENDPOINT}/contents/${articleId}`)
+			.then(response => {
+				return resolve({ success: true, data: response.data._embedded });
+			})
+			.catch(err => {
+				console.log(err);
+				return reject({ success: false });
+			});
+	});
+};
+
+/* Returns all archive issues */
+export const getArchiveIssues = subId => {
+	return new Promise((resolve, reject) => {
+		axios
+			.get(`${BASE_ENDPOINT}/issues?application=${subId}`)
 			.then(response => {
 				return resolve({ success: true, data: response.data._embedded });
 			})

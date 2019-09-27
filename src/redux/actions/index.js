@@ -2,7 +2,7 @@ import {
 	SET_HOME_SCREEN_REFRESHING,
 	ADD_ARTICLE,
 	GET_TOKEN,
-	// SET_TOKENS,
+	SET_ARCHIVE_ISSUES,
 	SET_SUBSCRIPTIONS,
 	TOGGLE_ACTIVE_SUB_FILTER,
 	SET_ARTICLES,
@@ -10,7 +10,6 @@ import {
 } from './action-types';
 
 /* ACTIONS */
-
 export function setHomeScreenRefreshing(payload) {
 	return {
 		type: SET_HOME_SCREEN_REFRESHING,
@@ -39,12 +38,12 @@ export function addSubscriptionArticles(payload) {
 	};
 }
 
-// export function saveToken(payload) {
-// 	return {
-// 		type: SET_TOKENS,
-// 		payload
-// 	};
-// }
+export function setArchiveIssues(payload) {
+	return {
+		type: SET_ARCHIVE_ISSUES,
+		payload
+	};
+}
 
 export function setSubscriptions(payload) {
 	return {

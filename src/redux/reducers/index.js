@@ -4,7 +4,8 @@ import {
 	ADD_SUBSCRIPTION_ARTICLES,
 	SET_SUBSCRIPTIONS,
 	TOGGLE_ACTIVE_SUB_FILTER,
-	SET_ARTICLES
+	SET_ARTICLES,
+	SET_ARCHIVE_ISSUES
 } from '../actions/action-types';
 
 const initialState = {
@@ -13,7 +14,7 @@ const initialState = {
 	subscriptionServices: [],
 	articles: [],
 	aboArticles: [],
-	archive: [
+	archiveIssues: [
 		{
 			archiveId: '1234',
 			title:
@@ -48,12 +49,12 @@ function rootReducer(state = initialState, action) {
 				homeScreenRefreshing: action.payload
 			};
 		}
-		// case RESET_KEYS: {
-		// 	return {
-		// 		...state,
-		// 		articles: []
-		// 	}
-		// }
+		case SET_ARCHIVE_ISSUES: {
+			return {
+				...state,
+				archiveIssues: action.payload
+			};
+		}
 		case SET_SUBSCRIPTIONS: {
 			return {
 				...state,
