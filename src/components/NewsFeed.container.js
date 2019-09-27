@@ -46,7 +46,8 @@ class NewsFeedWrapper extends React.Component {
 		Animated.timing(this.opacityValue, {
 			toValue: 1,
 			duration: 2000,
-			easing: Easing.cubic
+			easing: Easing.cubic,
+			useNativeDriver: true
 		}).start(() => {
 			if (this.state.runRefreshAnimation) this.opacity();
 		});
@@ -91,7 +92,7 @@ class NewsFeedWrapper extends React.Component {
 	render() {
 		const opacity = this.opacityValue.interpolate({
 			inputRange: [0, 0.5, 1],
-			outputRange: [1, 0.75, 1]
+			outputRange: [1, 0.5, 1]
 		});
 
 		return (

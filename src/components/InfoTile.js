@@ -7,7 +7,21 @@ import COLOR from '../config/colors';
 import { addSubscriptionArticles } from '../redux/actions/index';
 
 const InfoTile = props => (
-	<View style={styles.cardContainer}>
+	<View
+		style={[
+			styles.cardContainer,
+			{
+				opacity:
+					props.activeSubscriptionFilter &&
+					props.activeSubscriptionFilter.id === props.tile.id &&
+					props.activeSubscriptionFilter.audio === props.tile.audio
+						? 1
+						: !props.activeSubscriptionFilter
+						? 1
+						: 0.2
+			}
+		]}
+	>
 		<TouchableHighlight
 			style={styles.clickableArea}
 			onPress={async () => {
@@ -63,7 +77,8 @@ const styles = StyleSheet.create({
 		alignSelf: 'center',
 		marginHorizontal: 8,
 		elevation: 3,
-		marginVertical: 0
+		marginVertical: 0,
+		opacity: 1
 	},
 	clickableArea: {
 		flex: 1,

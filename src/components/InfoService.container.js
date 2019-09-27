@@ -43,6 +43,7 @@ class InfoServiceWrapper extends React.Component {
 						subscriptionServices={this.props.subscriptionServices}
 						setActiveSubFilter={this.props.setActiveSubFilter}
 						storeSubscriptionArticles={storeSubscriptionArticles}
+						activeSubscriptionFilter={this.props.activeSubscriptionFilter}
 					/>
 				</View>
 			</View>

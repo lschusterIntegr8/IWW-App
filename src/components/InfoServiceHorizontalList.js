@@ -14,6 +14,7 @@ const InfoServiceHorizontalList = props => (
 				tile={item}
 				setActiveSubFilter={props.setActiveSubFilter}
 				storeSubscriptionArticles={props.storeSubscriptionArticles}
+				activeSubscriptionFilter={props.activeSubscriptionFilter}
 			/>
 		)}
 		keyExtractor={item => v4()}
