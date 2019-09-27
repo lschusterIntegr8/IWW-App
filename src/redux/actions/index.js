@@ -3,6 +3,7 @@ import {
 	ADD_ARTICLE,
 	GET_TOKEN,
 	SET_ARCHIVE_ISSUES,
+	SET_ARCHIVE_ARTICLES,
 	SET_SUBSCRIPTIONS,
 	TOGGLE_ACTIVE_SUB_FILTER,
 	SET_ARTICLES,
@@ -41,6 +42,13 @@ export function addSubscriptionArticles(payload) {
 export function setArchiveIssues(payload) {
 	return {
 		type: SET_ARCHIVE_ISSUES,
+		payload
+	};
+}
+
+export function setArchiveArticles(payload) {
+	return {
+		type: SET_ARCHIVE_ARTICLES,
 		payload
 	};
 }

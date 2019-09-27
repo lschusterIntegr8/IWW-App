@@ -19,6 +19,7 @@ const makeMapStateToProps = () => {
 		return {
 			articles: filteredArticles(state),
 			archiveIssues: state.archiveIssues,
+			archiveArticles: state.archiveArticles,
 			activeSubscriptionFilter: state.activeSubscriptionFilter
 		};
 	};
@@ -75,7 +76,15 @@ class NewsFeedWrapper extends React.Component {
 					</View>
 				);
 			}
-			return <ArchiveFeedList />;
+
+			if (this.props.archiveIssues.length === 0) {
+			}
+			return (
+				<ArchiveFeedList
+					archiveIssues={this.props.archiveIssues}
+					articles={this.props.archiveArticles}
+				/>
+			);
 		} else if (this.state.currentFilter === 'rubriken') {
 			return (
 				<View>

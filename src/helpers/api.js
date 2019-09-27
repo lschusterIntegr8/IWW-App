@@ -144,6 +144,21 @@ export const getArchiveIssues = subId => {
 	});
 };
 
+/* Returns all archive articles for :issueId and subId */
+export const getArchiveArticles = (subId, issueId) => {
+	return new Promise((resolve, reject) => {
+		axios
+			.get(`${BASE_ENDPOINT}/issues/${issueId}?application=${subId}`)
+			.then(response => {
+				return resolve({ success: true, data: response.data._embedded });
+			})
+			.catch(err => {
+				console.log(err);
+				return reject({ success: false });
+			});
+	});
+};
+
 (async () => {
 	console.log('Running async axios interceptor ...');
 	await setAxiosAuthInterceptor();
