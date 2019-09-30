@@ -135,7 +135,7 @@ export const getArchiveIssues = subId => {
 		axios
 			.get(`${BASE_ENDPOINT}/issues?application=${subId}`)
 			.then(response => {
-				return resolve({ success: true, data: response.data._embedded });
+				return resolve({ success: true, data: response.data._embedded.issues });
 			})
 			.catch(err => {
 				console.log(err);
@@ -150,7 +150,7 @@ export const getArchiveArticles = (subId, issueId) => {
 		axios
 			.get(`${BASE_ENDPOINT}/issues/${issueId}?application=${subId}`)
 			.then(response => {
-				return resolve({ success: true, data: response.data._embedded });
+				return resolve({ success: true, data: response.data._embedded.contents });
 			})
 			.catch(err => {
 				console.log(err);

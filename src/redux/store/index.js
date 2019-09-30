@@ -26,11 +26,13 @@ const migrations = {
 			activeSubscriptionFilter: undefined
 		};
 	},
-	5: state => {
+	6: state => {
 		return {
 			...state,
 			aboArticles: [],
-			activeSubscriptionFilter: undefined
+			activeSubscriptionFilter: undefined,
+			archiveIssues: [],
+			archiveArticles: []
 		};
 	}
 };
@@ -41,7 +43,7 @@ const persistConfig = {
 	// Storage Method (React Native)
 	storage: AsyncStorage,
 	migrate: createMigrate(migrations, { debug: true }),
-	version: 5
+	version: 6
 	// stateReconciler: autoMergeLevel2
 
 	// Whitelist (Save Specific Reducers)

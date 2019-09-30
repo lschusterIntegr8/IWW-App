@@ -10,7 +10,9 @@ import {
 	setArticles,
 	addArticle,
 	addSubscriptionArticles,
-	setHomeScreenRefreshing
+	setHomeScreenRefreshing,
+	setArchiveIssues,
+	setArchiveArticles
 } from '../redux/actions/index';
 import { cleanUrls, matchSubscriptionIdToShortcut } from './util/util';
 
@@ -104,6 +106,65 @@ export const getArticleContent = async (articleId, applicationId) => {
 	resultObj.content = cleanHTML;
 
 	return resultObj;
+};
+
+/*
+ * Fetches and stores archive issues/articles to the Redux store, based on the (default if issueID ==== undefined) selection
+ */
+export const getArchiveContent = async (subId, issueID = undefined) => {
+	store.dispatch(setHomeScreenRefreshing(true));
+	console.info('GET ARCHIVE CONTENT CALLED with subId: ', subId, 'and issueID: ', issueID);
+	try {
+		/* Default case (usually when archive tab is opened) */
+		if (!issueID) {
+			/* Get archive issues and select first issue (default) and set to store */
+			console.info('ArchiveIssueID not provided --> fetching archive issues');
+			let archiveIssues = await API.getArchiveIssues(subId).catch(issuesErr => {
+				throw new Error('Archive issues could not be fetched for subId: ', subId);
+			});
+			console.info('ARCHIVE ISSUES');
+			archiveIssues = archiveIssues.data;
+			console.log(archiveIssues);
+			const firstIssueID = archiveIssues[0].id;
+			store.dispatch(setArchiveIssues(archiveIssues));
+
+			/* Fetch default archive articles and set to store */
+			const { data: archiveArticles } = await API.getArchiveArticles(
+				subId,
+				firstIssueID
+			).catch(articlesErr => {
+				throw new Error(
+					'Archive Articles could not be fetched for subId: ',
+					subId,
+					'\tissueID: ',
+					issueID
+				);
+			});
+
+			store.dispatch(setHomeScreenRefreshing(false));
+			return store.dispatch(setArchiveArticles(archiveArticles));
+		}
+
+		store.dispatch(setHomeScreenRefreshing(true));
+		const { data: archiveArticlesFiltered } = await API.getArchiveArticles(
+			subId,
+			issueID
+		).catch(articlesErr => {
+			throw new Error(
+				'Archive Articles could not be fetched for subId: ',
+				subId,
+				'\tissueID: ',
+				issueID
+			);
+		});
+
+		store.dispatch(setHomeScreenRefreshing(false));
+		return store.dispatch(setArchiveArticles(archiveArticlesFiltered));
+	} catch (err) {
+		store.dispatch(setHomeScreenRefreshing(false));
+		console.error(err);
+		return err;
+	}
 };
 
 /* If content not in redux-store --> fetch from API */

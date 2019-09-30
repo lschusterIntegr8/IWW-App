@@ -2,9 +2,16 @@ import React from 'react';
 import { StyleSheet, Text, View, ImageBackground, TouchableHighlight } from 'react-native';
 import PropTypes from 'prop-types';
 import { withNavigation } from 'react-navigation';
+import { connect } from 'react-redux';
 
 import COLOR from '../config/colors';
-import { addSubscriptionArticles } from '../redux/actions/index';
+import { setHomeScreenRefreshing } from '../redux/actions/index';
+
+const mapDispatchToProps = dispatch => {
+	return {
+		setHomeScreenRefreshing: flag => dispatch(setHomeScreenRefreshing(flag))
+	};
+};
 
 const InfoTile = props => (
 	<View
@@ -32,8 +39,10 @@ const InfoTile = props => (
 
 				/* Set active filter to store */
 				try {
+					// console.log('CALLED');
+					// props.setHomeScreenRefreshing(true);
 					/* Apply current Infodienst filter to the store filter variable */
-					await props.setActiveSubFilter({ id: props.tile.id, audio: props.tile.audio });
+					props.setActiveSubFilter({ id: props.tile.id, audio: props.tile.audio });
 					/* Fetch Articles */
 					await props.storeSubscriptionArticles(
 						props.tile.id,
@@ -42,12 +51,12 @@ const InfoTile = props => (
 						undefined,
 						props.tile.audio
 					);
+
+					// props.setHomeScreenRefreshing(false);
 				} catch (err) {
 					console.log('ERROR');
 					console.log(err);
 				}
-
-				console.log('CLICKED: ', props.tile);
 			}}
 		>
 			<View
@@ -112,4 +121,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default withNavigation(InfoTile);
+export default connect(
+	undefined,
+	mapDispatchToProps
+)(withNavigation(InfoTile));

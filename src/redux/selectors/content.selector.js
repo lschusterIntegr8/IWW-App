@@ -4,6 +4,8 @@ export const getArticles = state => state.articles;
 export const getSubscriptions = state => state.subscriptionServices;
 export const getActiveSubscriptionFilter = state => state.activeSubscriptionFilter;
 export const getSubscriptionArticles = state => state.aboArticles;
+export const getArchiveIssues = state => state.archiveIssues;
+export const getArchiveArticles = state => state.archiveArticles;
 
 export const mapSubscriptionIdToShortcut = (state, subId) => {
 	for (const sub of state.subscriptionServices) {
@@ -48,5 +50,12 @@ export const getFilteredSubscriptionArticles = createSelector(
 
 		console.info('else -> general');
 		return generalArticles;
+	}
+);
+
+export const getDropdownArchiveIssuesOptions = createSelector(
+	getArchiveIssues,
+	archiveIssues => {
+		const filteredIssues = archiveIssues.map(issue => issue.title);
 	}
 );

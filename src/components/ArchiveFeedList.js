@@ -10,15 +10,13 @@ import {
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withNavigation, ScrollView } from 'react-navigation';
+import { v4 } from 'uuid';
 
 import ArchiveCard from './ArchiveCard';
 import DropdownFilter from './DropdownFilter';
+import { getArchiveContent } from '../helpers/content';
 
-const mapStateToProps = state => ({
-	archive: state.archive
-});
-
-class ArchiveFeedlist extends Component {
+class ArchiveFeedList extends Component {
 	constructor(props) {
 		super(props);
 		this.renderItem = this.renderItem.bind(this);
@@ -41,7 +39,22 @@ class ArchiveFeedlist extends Component {
 		InteractionManager.runAfterInteractions(() => {
 			// alert('Complete');
 			this.setState({ interactionsComplete: true });
+			console.log('ON ARCHIVEFEEDLISTMOUNT');
+			/* TODO load  */
+			getArchiveContent(this.props.activeSubscriptionFilter.id, undefined);
 		});
+	}
+
+	componentWillReceiveProps(nextProps) {
+		// You don't have to do this check first, but it can help prevent an unneeded render
+		console.log('PROPS-CHANGED');
+		if (nextProps.activeSubscriptionFilter !== this.props.activeSubscriptionFilter) {
+			console.log('PROP IS NOT THE SAME - FILTER CHANGED');
+			console.log(
+				`Prev ${this.props.activeSubscriptionFilter.id}, new ${nextProps.activeSubscriptionFilter.id}`
+			);
+			getArchiveContent(nextProps.activeSubscriptionFilter.id, undefined);
+		}
 	}
 	render() {
 		if (!this.state.interactionsComplete) {
@@ -54,15 +67,15 @@ class ArchiveFeedlist extends Component {
 		return (
 			<View>
 				{/* Archive category filter */}
-				<DropdownFilter />
+				<DropdownFilter archiveIssues={this.props.archiveIssues} />
 				{/* Archive flatlist (archived news cards) */}
 				<FlatList
-					data={this.props.archive}
+					data={this.props.archiveArticles}
 					renderItem={this.renderItem}
-					keyExtractor={item => item.archiveId}
+					keyExtractor={item => v4()}
 					initialNumToRender={3}
 					windowSize={3}
-					maxToRenderPerBatch={1}
+					maxToRenderPerBatch={2}
 				/>
 			</View>
 		);
@@ -74,11 +87,9 @@ const styles = StyleSheet.create({
 	}
 });
 
-ArchiveFeedlist.propTypes = {
-	archive: PropTypes.array,
+ArchiveFeedList.propTypes = {
+	archiveArticles: PropTypes.array,
 	navigation: PropTypes.object
 };
 
-const ArchiveFeedlistContainer = connect(mapStateToProps)(ArchiveFeedlist);
-
-export default withNavigation(ArchiveFeedlistContainer);
+export default withNavigation(ArchiveFeedList);

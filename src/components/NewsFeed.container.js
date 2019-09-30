@@ -12,6 +12,7 @@ import {
 	getArticles,
 	test
 } from '../redux/selectors/content.selector';
+import { getArchiveContent } from '../helpers/content';
 
 const makeMapStateToProps = () => {
 	const filteredArticles = getFilteredSubscriptionArticles;
@@ -58,15 +59,18 @@ class NewsFeedWrapper extends React.Component {
 
 	toggleFilter(filterName) {
 		if (this.state.currentFilter === filterName) {
+			// this.props.setNewsFeedFilter(undefined);
 			return this.setState({ currentFilter: undefined });
 		}
+		// this.props.setNewsFeedFilter(filterName);
 		return this.setState({ currentFilter: filterName });
 	}
 
 	renderFilteredView() {
+		/* DEFAULT - RANDOM NEWS */
 		if (!this.state.currentFilter) {
 			return <NewsFeedList articles={this.props.articles} />;
-		} else if (this.state.currentFilter === 'archive') {
+		} /* ARCHIVE */ else if (this.state.currentFilter === 'archive') {
 			if (!this.props.activeSubscriptionFilter) {
 				return (
 					<View style={{ flex: 1, textAlign: 'center' }}>
@@ -75,14 +79,20 @@ class NewsFeedWrapper extends React.Component {
 						</Text>
 					</View>
 				);
-			}
-
-			if (this.props.archiveIssues.length === 0) {
+			} else if (
+				this.props.activeSubscriptionFilter &&
+				this.props.archiveIssues.length === 0
+			) {
+				console.log('Should fetch archive ... is currently empty ...');
+				/* Fetch default archive content */
+				// console.log('Calling with subid: ', this.props.activeSubscriptionFilter.id);
+				// getArchiveContent(this.props.activeSubscriptionFilter.id, undefined);
 			}
 			return (
 				<ArchiveFeedList
 					archiveIssues={this.props.archiveIssues}
-					articles={this.props.archiveArticles}
+					archiveArticles={this.props.archiveArticles}
+					activeSubscriptionFilter={this.props.activeSubscriptionFilter}
 				/>
 			);
 		} else if (this.state.currentFilter === 'rubriken') {
@@ -170,7 +180,8 @@ class NewsFeedWrapper extends React.Component {
 
 NewsFeedWrapper.propTypes = {
 	navigation: PropTypes.object,
-	refreshing: PropTypes.bool
+	refreshing: PropTypes.bool,
+	setNewsFeedFilter: PropTypes.func
 };
 
 const styles = StyleSheet.create({

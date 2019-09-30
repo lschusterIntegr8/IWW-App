@@ -7,9 +7,10 @@ import HeaderMenu from '../components/HeaderMenu';
 import NewsFeedWrapper from '../components/NewsFeed.container';
 import InfoServiceWrapper from '../components/InfoService.container';
 import SearchBarWrapper from '../components/SearchBarWrapper';
+import LoadingScreen from '../components/LoadingScreen';
 import { addArticle, setHomeScreenRefreshing } from '../redux/actions/index';
 import { isCloseToBottom } from '../helpers/util/util';
-import { initAppContent } from '../helpers/content';
+import { initAppContent, getArchiveContent } from '../helpers/content';
 
 const mapStateToProps = state => {
 	return {
@@ -34,6 +35,10 @@ class HomeScreen extends Component {
 		header: null
 	};
 
+	state = {
+		newsFeedFilter: undefined // archive/undefined/rubriken
+	};
+
 	/* TODO: Fetch fresh articles and set to store */
 	_onRefresh = async () => {
 		console.info('Refreshing home screen...');
@@ -53,6 +58,14 @@ class HomeScreen extends Component {
 		if (isCloseToBottom(nativeEvent)) {
 			console.warn('Reached end of page --> should load more articles');
 		}
+	}
+
+	setNewsFeedFilter(value) {
+		console.log('set newsfeedfilter called');
+		this.setState({ newsFeedFilter: value });
+		// if (value !== undefined) {
+		// 	getArchiveContent(this.props.activeSubscriptionFilter, undefined);
+		// }
 	}
 
 	render() {
@@ -82,14 +95,18 @@ class HomeScreen extends Component {
 						{/*--------------------
 							Informationsdienste
 							--------------------*/}
-						<InfoServiceWrapper />
+						<InfoServiceWrapper currentFeedTab={this.state.newsFeedFilter} />
 
 						{/*--------------------
 							Meine Inhalte
 							--------------------*/}
-						<NewsFeedWrapper refreshing={this.props.homeScreenRefreshing} />
+						<NewsFeedWrapper
+							refreshing={this.props.homeScreenRefreshing}
+							setNewsFeedFilter={this.setNewsFeedFilter}
+						/>
 					</ScrollView>
 				</SafeAreaView>
+				{this.props.homeScreenRefreshing && <LoadingScreen />}
 			</View>
 		);
 	}
