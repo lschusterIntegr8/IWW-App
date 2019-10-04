@@ -16,6 +16,22 @@ import {
 } from '../redux/actions/index';
 import { cleanUrls, matchSubscriptionIdToShortcut } from './util/util';
 
+/* Get search articles */
+export const getSearchResult = async (subId, limit, skip, searchtext, audio) => {
+	const { data: searchResult } = await API.getSubscriptionArticles(
+		subId,
+		limit,
+		skip,
+		searchtext,
+		audio
+	).catch(responseContent => {
+		console.log(responseContent);
+		return searchResult;
+	});
+
+	return searchResult;
+};
+
 /* Set general articles */
 export const fetchAndSetArticles = async (subId, limit, skip, searchtext, audio) => {
 	const { data: articles } = await API.getSubscriptionArticles(
