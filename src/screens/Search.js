@@ -14,11 +14,15 @@ class Search extends Component {
 		this.onInputChange = this.onInputChange.bind(this);
 		this.openArticle = this.openArticle.bind(this);
 		this.renderSearchResults = this.renderSearchResults.bind(this);
+		this._handleLoadMore = this._handleLoadMore.bind(this);
 	}
 
 	state = {
+		currentSearchQuery: '',
 		typeTimeout: null,
 		currentSearchResults: [],
+		numOfArticlesPerFetch: 20,
+		articlesOffset: 0,
 		isFetchingResults: false
 	};
 
@@ -31,12 +35,25 @@ class Search extends Component {
 		this.setState({
 			typeTimeout: setTimeout(async () => {
 				const searchQuery = val;
+				this.setState({ articlesOffset: 0, currentSearchQuery: searchQuery });
+
+				if (!searchQuery || searchQuery.length < 3) {
+					return;
+				}
 				console.log('Input is: ', searchQuery);
 				/* FETCH SEARCH API + loading + focusing textinput after search */
 				this.setState({ isFetchingResults: true });
-				const searchResults = await getSearchResult(undefined, 100, undefined, searchQuery);
-				this.setState({ isFetchingResults: false });
-				this.setState({ currentSearchResults: searchResults });
+				const searchResults = await getSearchResult(
+					undefined,
+					this.state.numOfArticlesPerFetch,
+					this.state.articlesOffset,
+					searchQuery
+				);
+				this.setState({
+					isFetchingResults: false,
+					currentSearchResults: searchResults,
+					articlesOffset: this.state.articlesOffset + this.state.numOfArticlesPerFetch
+				});
 				this.searchInput.current.focus();
 				console.log('SEARCH RESULTS: ', searchResults);
 			}, 750)
@@ -50,6 +67,22 @@ class Search extends Component {
 		this.props.navigation.navigate('SingleArticle', {
 			article: articleContent, // single article details (content / html)
 			articleBasic: article // basic article info
+		});
+	}
+
+	async _handleLoadMore() {
+		console.info('SHOULD LOAD MORE');
+		this.setState({ isFetchingResults: true });
+		const searchResults = await getSearchResult(
+			undefined,
+			this.state.numOfArticlesPerFetch,
+			this.state.articlesOffset,
+			this.state.currentSearchQuery
+		);
+		this.setState({
+			isFetchingResults: false,
+			currentSearchResults: this.state.currentSearchResults.concat(searchResults),
+			articlesOffset: this.state.articlesOffset + this.state.numOfArticlesPerFetch
 		});
 	}
 
@@ -81,7 +114,9 @@ class Search extends Component {
 					data={this.state.currentSearchResults}
 					renderItem={this.renderSearchResults}
 					keyExtractor={item => (item.article_id ? item.article_id.toString() : '')}
-					initialNumToRender={5}
+					onEndReached={this._handleLoadMore}
+					onEndReachedThreshold={0.05}
+					initialNumToRender={20}
 				/>
 				{this.state.isFetchingResults ? <LoadingScreen /> : null}
 			</View>
