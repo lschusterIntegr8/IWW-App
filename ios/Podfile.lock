@@ -234,8 +234,6 @@ PODS:
     - React
   - RNVectorIcons (6.6.0):
     - React
-  - SajjadBlurOverlay (1.0.0):
-    - React
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -273,7 +271,6 @@ DEPENDENCIES:
   - RNKeychain (from `../node_modules/react-native-keychain`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
-  - SajjadBlurOverlay (from `../node_modules/react-native-blur-overlay/ios`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -343,8 +340,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
-  SajjadBlurOverlay:
-    :path: "../node_modules/react-native-blur-overlay/ios"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -381,7 +376,6 @@ SPEC CHECKSUMS:
   RNKeychain: 5381e340056c23de103d73ae59cbddc6ffc21d97
   RNReanimated: 9f7976535c5cde50189acd84751871f5414190b9
   RNVectorIcons: 66af4d5c8ff4f584c7b7cd9c4b0780920f27fce2
-  SajjadBlurOverlay: 5cae59ceea53422e1c453184bc8fa6b94e9cc0b7
   Yoga: 6af72bedeaea291a3a3717772d6d41836f23a1b9
 
 PODFILE CHECKSUM: db58709e234ad63b7bbf871cb65e70485adac9b0

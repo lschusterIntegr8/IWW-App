@@ -1,42 +1,36 @@
 import React, { Component } from 'react';
-import { StyleSheet, TouchableOpacity, View, SafeAreaView } from 'react-native';
-import { Header, Left, Icon } from 'native-base';
+import { StyleSheet, TouchableOpacity, View, SafeAreaView, Text, Image } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import { SearchBar } from 'react-native-elements';
 
 import COLOR from '../config/colors';
 
-class SearchBarWrapper extends React.Component {
-	state = {
-		search: ''
-	};
+class SearchBarWrapper extends Component {
+	constructor(props) {
+		super(props);
+		this.navigateToSearchScreen = this.navigateToSearchScreen.bind(this);
+	}
 
-	updateSearch = search => {
-		this.setState({ search });
-	};
+	navigateToSearchScreen() {
+		console.log('NAVIGATION TO SEARCHSCREEN');
+		this.props.navigation.navigate('SearchScreen');
+	}
 
 	render() {
-		const { search } = this.state;
+		// const { search } = this.state;
 
 		return (
-			<View>
-				<SearchBar
-					placeholder="Schreib etwas alter"
-					onChangeText={this.updateSearch}
-					value={search}
-					containerStyle={styles.container}
-					inputContainerStyle={styles.inputContainer}
-					inputStyle={styles.input}
-					leftIconContainerStyle={styles.leftIconContainer}
-					placeholderTextColor={'rgba(255, 255, 255, 0.41)'}
-					searchIcon={
-						<SafeAreaView>
-							<View>
-								<Icon name="search" style={{ color: COLOR.WHITE, fontSize: 14 }} />
-							</View>
-						</SafeAreaView>
-					}
-				/>
+			<View style={styles.container}>
+				<TouchableOpacity
+					style={styles.inputContainer}
+					onPress={this.navigateToSearchScreen}
+				>
+					<Image
+						style={styles.searchIcon}
+						source={require('../assets/images/search-icon-white.png')}
+					></Image>
+
+					<Text style={styles.searchText}>Suche</Text>
+				</TouchableOpacity>
 			</View>
 		);
 	}
@@ -44,21 +38,28 @@ class SearchBarWrapper extends React.Component {
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: COLOR.DARK_BLUE
+		backgroundColor: COLOR.DARK_BLUE,
+		height: 50
 	},
 	inputContainer: {
-		backgroundColor: COLOR.DARK_BLUE
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+		flexDirection: 'row'
 	},
-	input: {
-		// textAlign: 'center',
-		// flex: 1,
-		// alignContent: 'center',
-		// alignItems: 'center',
-		// justifyContent: 'center',
+	searchText: {
 		color: COLOR.WHITE,
+		paddingHorizontal: 6,
 		fontSize: 16
 	},
-	leftIconContainer: {}
+	searchIcon: {
+		width: 16,
+		height: 16,
+		resizeMode: 'contain'
+		// position: 'absolute',
+		// left: 16,
+		// top: 5
+	}
 });
 
-export default SearchBarWrapper;
+export default withNavigation(SearchBarWrapper);

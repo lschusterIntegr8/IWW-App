@@ -19,6 +19,7 @@ import PasswordResetInstructions from './screens/PasswordResetInstructions';
 /* Main Screens */
 import HomeScreen from './screens/HomeScreen';
 import SingleArticleMain from './screens/SingleArticleMain';
+import Search from './screens/Search';
 import CustomSidebarMenu from './components/CustomSidebarMenu';
 
 const handleCustomTransition = ({ scenes }) => {
@@ -104,6 +105,20 @@ const NewsStack = createStackNavigator(
 			screen: SingleArticleMain,
 			navigationOptions: {
 				tabBarLabel: 'Article',
+				headerBackTitle: null,
+				headerBackImage: <HeaderBackImage />,
+				/* Borderless Header */
+				headerStyle: {
+					elevation: 0,
+					shadowOpacity: 0,
+					borderBottomWidth: 0
+				}
+			}
+		},
+		SearchScreen: {
+			screen: Search,
+			navigationOptions: {
+				tabBarLabel: 'Searchy',
 				headerBackTitle: null,
 				headerBackImage: <HeaderBackImage />,
 				/* Borderless Header */
