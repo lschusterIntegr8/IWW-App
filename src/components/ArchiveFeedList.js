@@ -14,11 +14,12 @@ import { v4 } from 'uuid';
 
 import ArchiveCard from './ArchiveCard';
 import DropdownFilter from './DropdownFilter';
-import { getArchiveContent } from '../helpers/content';
+import { getArchiveContent, getArticleContent } from '../helpers/content';
 
 class ArchiveFeedList extends Component {
 	constructor(props) {
 		super(props);
+		this.openArticle = this.openArticle.bind(this);
 		this.renderItem = this.renderItem.bind(this);
 	}
 	state = {
@@ -31,6 +32,17 @@ class ArchiveFeedList extends Component {
 		]
 	};
 
+	async openArticle(article) {
+		console.log('OPEN ARTICLE CALLED:');
+		console.log(article);
+		const articleContent = getArticleContent(article.article_id, article.application_id);
+
+		this.props.navigation.navigate('SingleArticle', {
+			article: articleContent, // single article details (content / html)
+			articleBasic: article // basic article info
+		});
+	}
+
 	renderItem({ item }) {
 		return <ArchiveCard key={item.articleId} article={item} handlePress={this.openArticle} />;
 	}
@@ -41,6 +53,7 @@ class ArchiveFeedList extends Component {
 			this.setState({ interactionsComplete: true });
 			console.log('ON ARCHIVEFEEDLISTMOUNT');
 			/* TODO load  */
+			console.log('LOADING FOR: ', this.props.activeSubscriptionFilter.id);
 			getArchiveContent(this.props.activeSubscriptionFilter.id, undefined);
 		});
 	}

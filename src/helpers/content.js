@@ -18,6 +18,7 @@ import { cleanUrls, matchSubscriptionIdToShortcut } from './util/util';
 
 /* Get search articles */
 export const getSearchResult = async (subId, limit, skip, searchtext, audio) => {
+	console.log('Fetching endpoint data');
 	const { data: searchResult } = await API.getSubscriptionArticles(
 		subId,
 		limit,
@@ -34,6 +35,7 @@ export const getSearchResult = async (subId, limit, skip, searchtext, audio) => 
 
 /* Set general articles */
 export const fetchAndSetArticles = async (subId, limit, skip, searchtext, audio) => {
+	console.log('Fetching endpoint data');
 	const { data: articles } = await API.getSubscriptionArticles(
 		subId,
 		limit,
@@ -111,6 +113,7 @@ export const fetchAndSetSubscriptions = async () => {
  *	Returns cleaned/parsed content of a single article
  */
 export const getArticleContent = async (articleId, applicationId) => {
+	console.log('Fetching endpoint data');
 	const { data: articleContent } = await API.singleArticleContent(articleId).catch(err => {
 		console.log(err);
 		return err;
@@ -128,6 +131,7 @@ export const getArticleContent = async (articleId, applicationId) => {
  * Fetches and stores archive issues/articles to the Redux store, based on the (default if issueID ==== undefined) selection
  */
 export const getArchiveContent = async (subId, issueID = undefined) => {
+	console.log('Fetching endpoint data');
 	store.dispatch(setHomeScreenRefreshing(true));
 	console.info('GET ARCHIVE CONTENT CALLED with subId: ', subId, 'and issueID: ', issueID);
 	try {

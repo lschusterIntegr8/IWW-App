@@ -4,7 +4,10 @@ import PropTypes from 'prop-types';
 import { withNavigation } from 'react-navigation';
 
 import COLOR from '../config/colors';
-import { mapSubscriptionIdToShortcut } from '../redux/selectors/content.selector';
+import {
+	mapSubscriptionIdToShortcut,
+	mapSubscriptionIdToTileColor
+} from '../redux/selectors/content.selector';
 import { store } from '../redux/store';
 
 const ArticleCard = props => (
@@ -18,7 +21,17 @@ const ArticleCard = props => (
 		>
 			<View style={styles.articleImage}>
 				<View style={styles.cardBodyWrapper}>
-					<View style={styles.authorCorner}>
+					<View
+						style={[
+							styles.authorCorner,
+							{
+								backgroundColor: mapSubscriptionIdToTileColor(
+									store.getState(),
+									props.article.application_id
+								)
+							}
+						]}
+					>
 						<Text style={styles.authorText}>
 							{mapSubscriptionIdToShortcut(
 								store.getState(),

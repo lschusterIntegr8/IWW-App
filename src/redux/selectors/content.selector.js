@@ -16,15 +16,28 @@ export const mapSubscriptionIdToShortcut = (state, subId) => {
 
 	return undefined;
 };
+
+export const mapSubscriptionIdToTileColor = (state, subId) => {
+	for (const sub of state.subscriptionServices) {
+		if (sub.id === subId) {
+			return sub.color.split(';')[0];
+		}
+	}
+
+	return undefined;
+};
+
 export const test = createSelector(
 	getArticles,
 	test => {
 		return test;
 	}
 );
+
 function isObject(value) {
 	return value && typeof value === 'object' && value.constructor === Object;
 }
+
 export const getFilteredSubscriptionArticles = createSelector(
 	getSubscriptionArticles,
 	getActiveSubscriptionFilter,

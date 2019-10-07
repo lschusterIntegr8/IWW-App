@@ -4,6 +4,11 @@ import PropTypes from 'prop-types';
 import { withNavigation } from 'react-navigation';
 
 import COLOR from '../config/colors';
+import {
+	mapSubscriptionIdToShortcut,
+	mapSubscriptionIdToTileColor
+} from '../redux/selectors/content.selector';
+import { store } from '../redux/store';
 
 const ArchiveCard = props => (
 	<View style={styles.cardContainer}>
@@ -19,20 +24,32 @@ const ArchiveCard = props => (
 		<TouchableOpacity
 			style={styles.clickableArea}
 			onPress={() => {
-				/* TODO: Press handler passed via props
-				 * props.handlePress(props.article);
-				 */
-				alert('TODO');
+				props.handlePress(props.article);
 			}}
 		>
 			<View style={styles.cardBodyWrapper}>
-				<View style={styles.authorCorner}>
-					<Text style={styles.authorText}>{props.article.author}</Text>
+				<View
+					style={[
+						styles.authorCorner,
+						{
+							backgroundColor: mapSubscriptionIdToTileColor(
+								store.getState(),
+								props.article.application_id
+							)
+						}
+					]}
+				>
+					<Text style={styles.authorText}>
+						{mapSubscriptionIdToShortcut(
+							store.getState(),
+							props.article.application_id
+						)}
+					</Text>
 				</View>
 
-				<Text style={styles.dateText}>{props.article.published_on}</Text>
+				<Text style={styles.dateText}>{props.article.date}</Text>
 				<Text style={styles.titleText}>{props.article.title}</Text>
-				<Text style={styles.categoryText}>#{props.article.category}</Text>
+				<Text style={styles.categoryText}>#{props.article.catgory_title}</Text>
 			</View>
 		</TouchableOpacity>
 	</View>
