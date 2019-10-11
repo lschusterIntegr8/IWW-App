@@ -12,7 +12,8 @@ import {
 	addSubscriptionArticles,
 	setHomeScreenRefreshing,
 	setArchiveIssues,
-	setArchiveArticles
+	setArchiveArticles,
+	addToDownloads
 } from '../redux/actions/index';
 import { cleanUrls, matchSubscriptionIdToShortcut } from './util/util';
 
@@ -261,4 +262,12 @@ export const initAppContent = async (fetchNew, props) => {
 		console.error(err);
 		throw err;
 	}
+};
+
+export const storeArticleToDownloads = async (articleInfo, subId) => {
+	/* Fetch article content */
+	const articleContents = await getArticleContent(articleInfo.id, subId);
+	console.log('TRYING TO DOWNLOAD: ', articleContents);
+	/* Store to redux-persist store */
+	return store.dispatch(addToDownloads(articleContents));
 };

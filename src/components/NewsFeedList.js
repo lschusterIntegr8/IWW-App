@@ -5,6 +5,9 @@ import { withNavigation } from 'react-navigation';
 
 import ArticleCard from './ArticleCard';
 import { fetchAndAddArticles, getArticleContent } from '../helpers/content';
+import HeaderMenu from '../components/HeaderMenu';
+import SearchBarWrapper from '../components/SearchBarWrapper';
+
 // import { isCloseToBottom } from '../helpers/util/util';
 
 class NewsFeedList extends Component {
@@ -64,6 +67,12 @@ class NewsFeedList extends Component {
 				renderItem={this.renderItem}
 				keyExtractor={item => (item.article_id ? item.article_id.toString() : '')}
 				initialNumToRender={10}
+				// ListHeaderComponent={() => (
+				// 	<View style={{ flex: 1 }}>
+				// 		<HeaderMenu />
+				// 		<SearchBarWrapper />
+				// 	</View>
+				// )}
 			/>
 		);
 	}

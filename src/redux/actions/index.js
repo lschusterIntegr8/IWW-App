@@ -7,7 +7,8 @@ import {
 	SET_SUBSCRIPTIONS,
 	TOGGLE_ACTIVE_SUB_FILTER,
 	SET_ARTICLES,
-	ADD_SUBSCRIPTION_ARTICLES
+	ADD_SUBSCRIPTION_ARTICLES,
+	ADD_TO_DOWNLOADS
 } from './action-types';
 
 /* ACTIONS */
@@ -63,6 +64,13 @@ export function setSubscriptions(payload) {
 export function setActiveSubFilter(payload) {
 	return {
 		type: TOGGLE_ACTIVE_SUB_FILTER,
+		payload
+	};
+}
+
+export function addToDownloads(payload) {
+	return {
+		type: ADD_TO_DOWNLOADS,
 		payload
 	};
 }

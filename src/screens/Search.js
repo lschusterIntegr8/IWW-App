@@ -79,11 +79,17 @@ class Search extends Component {
 			this.state.articlesOffset,
 			this.state.currentSearchQuery
 		);
-		this.setState({
-			isFetchingResults: false,
-			currentSearchResults: this.state.currentSearchResults.concat(searchResults),
-			articlesOffset: this.state.articlesOffset + this.state.numOfArticlesPerFetch
-		});
+		this.setState(
+			{
+				isFetchingResults: false,
+				currentSearchResults: this.state.currentSearchResults.concat(searchResults),
+				articlesOffset: this.state.articlesOffset + this.state.numOfArticlesPerFetch
+			},
+			() => {
+				console.info('New state:');
+				console.log(this.state.currentSearchResults);
+			}
+		);
 	}
 
 	renderSearchResults({ item }) {

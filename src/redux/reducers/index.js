@@ -6,7 +6,8 @@ import {
 	TOGGLE_ACTIVE_SUB_FILTER,
 	SET_ARTICLES,
 	SET_ARCHIVE_ISSUES,
-	SET_ARCHIVE_ARTICLES
+	SET_ARCHIVE_ARTICLES,
+	ADD_TO_DOWNLOADS
 } from '../actions/action-types';
 
 const initialState = {
@@ -16,7 +17,8 @@ const initialState = {
 	articles: [],
 	aboArticles: [],
 	archiveIssues: [],
-	archiveArticles: []
+	archiveArticles: [],
+	downloadedArticles: []
 };
 
 function rootReducer(state = initialState, action) {
@@ -114,6 +116,12 @@ function rootReducer(state = initialState, action) {
 					state.activeSubscriptionFilter.audio === action.payload.audio
 						? undefined
 						: action.payload
+			};
+		}
+		case ADD_TO_DOWNLOADS: {
+			return {
+				...state,
+				downloadedArticles: [...downloadedArticles, action.payload]
 			};
 		}
 	}

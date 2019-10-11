@@ -93,6 +93,12 @@ class Login extends React.Component {
 					{},
 					NavigationActions.navigate({ routeName: 'Home' })
 				);
+			} else {
+				this.setState({
+					isLoading: false
+				});
+
+				alert('Wrong Email or Password');
 			}
 		} catch (err) {
 			console.log(err);

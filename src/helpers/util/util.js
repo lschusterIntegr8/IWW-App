@@ -4,11 +4,25 @@ import { store, persistor } from '../../redux/store/index';
 const IWW_BASE_URL = 'www.iww.de';
 
 export const checkAndPrependToUrl = (url, articleTag) => {
+	url = url.toLowerCase();
+	articleTag = articleTag.toLowerCase();
+
 	if (!/^https?:\/\//i.test(url)) {
 		console.log('Url needs to prepend: ', url);
 		if (url.substr(0, 2) === '//') {
 			return `https:${url}`;
 		} else if (url.substr(0, 1) === '/' && url.substr(1, 2) !== '/') {
+			if (
+				url.indexOf('fk') !== -1 ||
+				url.indexOf('astw') !== -1 ||
+				url.indexOf('bbp') !== -1 ||
+				url.indexOf('cb') !== -1 ||
+				url.indexOf('fao') !== -1
+			) {
+				console.info('Already has category in url');
+				return `https://${IWW_BASE_URL}${url}`;
+			}
+
 			return `https://${IWW_BASE_URL}/${articleTag}${url}`;
 		}
 	}

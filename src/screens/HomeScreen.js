@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import HeaderMenu from '../components/HeaderMenu';
 import NewsFeedWrapper from '../components/NewsFeed.container';
+import NestedNews from '../screens/NestedNews';
 import InfoServiceWrapper from '../components/InfoService.container';
 import SearchBarWrapper from '../components/SearchBarWrapper';
 import LoadingScreen from '../components/LoadingScreen';
@@ -36,7 +37,10 @@ class HomeScreen extends Component {
 	};
 
 	state = {
-		newsFeedFilter: undefined // archive/undefined/rubriken
+		newsFeedFilter: undefined, // archive/undefined/rubriken
+		routeRenderOptions: {
+			routeName: 'NewsFeed'
+		}
 	};
 
 	/* TODO: Fetch fresh articles and set to store */
@@ -51,6 +55,12 @@ class HomeScreen extends Component {
 	componentDidMount() {
 		console.log('STATE: ', this.props);
 		console.log('REFRESHING: ', this.props.homeScreenRefreshing);
+		console.log('ROUTE : ', this.props.navigation);
+		this.setState({
+			routeRenderOptions: {
+				routeName: this.props.navigation.state.routeName
+			}
+		});
 	}
 
 	handleInifiniteScroll({ nativeEvent }) {
@@ -100,9 +110,14 @@ class HomeScreen extends Component {
 						{/*--------------------
 							Meine Inhalte
 							--------------------*/}
-						<NewsFeedWrapper
+						{/* <NewsFeedWrapper
 							refreshing={this.props.homeScreenRefreshing}
 							setNewsFeedFilter={this.setNewsFeedFilter}
+						/> */}
+						<NestedNews
+							refreshing={this.props.homeScreenRefreshing}
+							setNewsFeedFilter={this.setNewsFeedFilter}
+							options={{ screenRoute: 'home' }}
 						/>
 					</ScrollView>
 				</SafeAreaView>

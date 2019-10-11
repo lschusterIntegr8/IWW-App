@@ -62,6 +62,7 @@ export const userLogin = (email, password) => {
 				return resolve({ success: true, accessToken, refreshToken });
 			})
 			.catch(err => {
+				console.warn(err.response);
 				return reject({ success: false });
 			});
 	});
@@ -149,6 +150,21 @@ export const getArchiveArticles = (subId, issueId) => {
 	return new Promise((resolve, reject) => {
 		axios
 			.get(`${BASE_ENDPOINT}/issues/${issueId}?application=${subId}`)
+			.then(response => {
+				return resolve({ success: true, data: response.data._embedded.contents });
+			})
+			.catch(err => {
+				console.log(err);
+				return reject({ success: false });
+			});
+	});
+};
+
+/* Gets favorite articles */
+export const getFavourites = (subId = '') => {
+	return new Promise((resolve, reject) => {
+		axios
+			.get(`${BASE_ENDPOINT}/favourites?application=${subId}`)
 			.then(response => {
 				return resolve({ success: true, data: response.data._embedded.contents });
 			})

@@ -142,8 +142,24 @@ const AppNavigator = createDrawerNavigator(
 		Home: {
 			screen: NewsStack,
 			navigationOptions: {
-				title: 'Home Screen',
-				drawerLabel: () => null //hidden from drawer,,
+				title: 'Startseite'
+				// drawerLabel: () => null //hidden from drawer,,
+			},
+			initialRouteName: 'NewsFeed'
+		},
+		Favoriten: {
+			screen: NewsStack,
+			navigationOptions: {
+				title: 'Favoriten',
+				// drawerLabel: () => null //hidden from drawer,,
+				initialRouteName: 'SearchScreen'
+			}
+		},
+		Downloads: {
+			screen: NewsStack,
+			navigationOptions: {
+				title: 'Downloads'
+				// drawerLabel: () => null //hidden from drawer,,
 			}
 		}
 	},

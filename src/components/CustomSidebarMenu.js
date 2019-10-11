@@ -53,7 +53,16 @@ const CustomSidebarMenu = props => (
 				</View>
 			</View>
 
+			{console.log('DRAWER PROPS: ', props)}
 			<DrawerNavigatorItems {...props} />
+			{/* <View>
+				<TouchableOpacity>
+					<Text>Favoriten</Text>
+				</TouchableOpacity>
+				<TouchableOpacity>
+					<Text>Downloads</Text>
+				</TouchableOpacity>
+			</View> */}
 
 			<View style={styles.bottomContainer}>
 				<Image
