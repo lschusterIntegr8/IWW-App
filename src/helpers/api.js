@@ -6,7 +6,6 @@ const BASE_ENDPOINT = 'https://www.vogel.de/api/iww';
 
 /*
  * Configures axios headers
- * TODO: check token age, try to refresh/ask user to log-in
  */
 export const setAxiosAuthInterceptor = async () => {
 	axios.interceptors.request.use(
@@ -178,6 +177,37 @@ export const getFavourites = (subId = '') => {
 	});
 };
 
+/* Gets all Categories (Rubriken) of 1 subscriptionAbo (infodienst) */
+export const getCategoriesIssues = subId => {
+	return new Promise((resolve, reject) => {
+		axios
+			.get(`${BASE_ENDPOINT}/categories?application=${subId}`)
+			.then(response => {
+				return resolve({ success: true, data: response.data._embedded.categories });
+			})
+			.catch(err => {
+				console.log(err);
+				return reject({ success: false });
+			});
+	});
+};
+
+/* Gets all articles of 1 category */
+export const getCategoriesArticles = (subId, categoryId) => {
+	return new Promise((resolve, reject) => {
+		axios
+			.get(`${BASE_ENDPOINT}/categories/${categoryId}?application=${subId}`)
+			.then(response => {
+				return resolve({ success: true, data: response.data._embedded.contents });
+			})
+			.catch(err => {
+				console.log(err);
+				return reject({ success: false });
+			});
+	});
+};
+
+/* Initialize axios interceptor, so that each request contains the accessToken automatically */
 (async () => {
 	console.log('Running async axios interceptor ...');
 	await setAxiosAuthInterceptor();
