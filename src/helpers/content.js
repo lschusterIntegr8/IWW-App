@@ -1,6 +1,10 @@
 /* eslint-disable no-console */
 import { store, persistor } from '../redux/store/index';
-import { getArticles, getSubscriptions } from '../redux/selectors/content.selector';
+import {
+	getArticles,
+	getSubscriptions,
+	getDownloadedArticleContents
+} from '../redux/selectors/content.selector';
 
 import * as API from './api';
 import * as storageHelper from './storage';
@@ -113,7 +117,30 @@ export const fetchAndSetSubscriptions = async () => {
 /*
  *	Returns cleaned/parsed content of a single article
  */
-export const getArticleContent = async (articleId, applicationId, audioVersion = undefined) => {
+export const getArticleContent = async (
+	articleId,
+	applicationId,
+	audioVersion = undefined,
+	srcCallerFlag
+) => {
+	/* Check if article is in downloads */
+	if (srcCallerFlag === 'downloads') {
+		const foundArticle = getDownloadedArticleContents(store.getState(), {
+			article_id: articleId,
+			audio: audioVersion,
+			application_id: applicationId
+		});
+		console.log('Searching article contents in downloads ...');
+		if (foundArticle) {
+			console.log('Found article contents inside downloads');
+			return foundArticle;
+		}
+
+		console.log('Could not find article stored in the downloads ...');
+	}
+
+	/* TODO: check if article contents are already cached */
+
 	console.log('Fetching endpoint data where audio=', audioVersion);
 	const { data: articleContent } = await API.singleArticleContent(articleId, audioVersion).catch(
 		err => {
@@ -204,6 +231,8 @@ export const initAppContent = async (fetchNew, props) => {
 
 	console.log('STORE');
 	console.log(store.getState().rootReducer);
+	console.log('initAppContent called with: ', fetchNew, props);
+
 	try {
 		if (fetchNew) {
 			console.info('HEARD FETCH NEW FLAG');
@@ -248,15 +277,19 @@ export const initAppContent = async (fetchNew, props) => {
 
 			let fetchPromises = [];
 			/* If it shouldn't fetch fresh ones --> only refresh content if it's empty */
-			if (getSubscriptions(store.getState().rootReducer).length === 0) {
+			if (getSubscriptions(store.getState()).length === 0) {
 				console.log('Subscriptions empty - fetching');
 				fetchPromises.push(fetchAndSetSubscriptions());
 			}
 
-			if (getArticles(store.getState().rootReducer).length === 0) {
+			if (getArticles(store.getState()).length === 0) {
 				console.log('Articles empty - fetching');
 				/* Fetch articles */
-				fetchPromises.push(fetchAndSetArticles(undefined, 10, undefined, undefined));
+				fetchPromises.push(
+					fetchAndSetArticles(undefined, 10, undefined, undefined).catch(err => {
+						console.warn(err);
+					})
+				);
 			}
 
 			if (fetchPromises.length > 0) {
@@ -274,10 +307,26 @@ export const initAppContent = async (fetchNew, props) => {
 	}
 };
 
-export const storeArticleToDownloads = async (articleInfo, subId) => {
-	/* Fetch article content */
-	const articleContents = await getArticleContent(articleInfo.id, subId);
-	console.log('TRYING TO DOWNLOAD: ', articleContents);
-	/* Store to redux-persist store */
-	return store.dispatch(addToDownloads(articleContents));
+export const storeArticleToDownloads = async (articleInfo, audioVersion = undefined) => {
+	console.log('Store article to downloads called ...');
+	console.log(articleInfo);
+	try {
+		/* Fetch article content */
+		const articleContents = await getArticleContent(
+			articleInfo.article_id,
+			articleInfo.application_id,
+			audioVersion
+		);
+		console.log('TRYING TO DOWNLOAD: ', articleContents);
+
+		const mergedDlArticle = { ...articleInfo, ...articleContents, audio: audioVersion };
+
+		/* Store to redux-persist store */
+		return store.dispatch(addToDownloads(mergedDlArticle));
+	} catch (err) {
+		console.warn(err);
+		console.warn(err.response);
+		console.warn('Error while trying to download article');
+		throw new Error({ status: 'error' });
+	}
 };

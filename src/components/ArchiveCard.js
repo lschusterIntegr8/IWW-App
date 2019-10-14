@@ -8,11 +8,21 @@ import {
 	mapSubscriptionIdToShortcut,
 	mapSubscriptionIdToTileColor
 } from '../redux/selectors/content.selector';
+import { storeArticleToDownloads } from '../helpers/content';
 import { store } from '../redux/store';
 
 const ArchiveCard = props => (
 	<View style={styles.cardContainer}>
-		<TouchableOpacity style={styles.downloadCorner} elevation={3}>
+		<TouchableOpacity
+			style={styles.downloadCorner}
+			elevation={3}
+			onPress={() => {
+				console.log(props.article);
+				storeArticleToDownloads(props.article).catch(err => {
+					console.warn(err);
+				});
+			}}
+		>
 			<Image
 				source={require('../assets/images/download-icon.png')}
 				style={{ width: '100%' }}
@@ -33,7 +43,7 @@ const ArchiveCard = props => (
 						styles.authorCorner,
 						{
 							backgroundColor: mapSubscriptionIdToTileColor(
-								store.getState().rootReducer,
+								store.getState(),
 								props.article.application_id
 							)
 						}
@@ -41,7 +51,7 @@ const ArchiveCard = props => (
 				>
 					<Text style={styles.authorText}>
 						{mapSubscriptionIdToShortcut(
-							store.getState().rootReducer,
+							store.getState(),
 							props.article.application_id
 						)}
 					</Text>

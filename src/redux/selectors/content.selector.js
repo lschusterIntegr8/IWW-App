@@ -6,9 +6,10 @@ export const getActiveSubscriptionFilter = state => state.sessionReducer.activeS
 export const getSubscriptionArticles = state => state.rootReducer.aboArticles;
 export const getArchiveIssues = state => state.rootReducer.archiveIssues;
 export const getArchiveArticles = state => state.rootReducer.archiveArticles;
+export const getDownloads = state => state.rootReducer.downloadedArticles;
 
 export const mapSubscriptionIdToShortcut = (state, subId) => {
-	for (const sub of state.subscriptionServices) {
+	for (const sub of getSubscriptions(state)) {
 		if (sub.id === subId) {
 			return sub.shortcut;
 		}
@@ -18,7 +19,7 @@ export const mapSubscriptionIdToShortcut = (state, subId) => {
 };
 
 export const mapSubscriptionIdToTileColor = (state, subId) => {
-	for (const sub of state.subscriptionServices) {
+	for (const sub of getSubscriptions(state)) {
 		if (sub.id === subId) {
 			return sub.color.split(';')[0];
 		}
@@ -72,3 +73,22 @@ export const getDropdownArchiveIssuesOptions = createSelector(
 		const filteredIssues = archiveIssues.map(issue => issue.title);
 	}
 );
+
+export const getDownloadedArticleContents = (state, articleInfo) => {
+	const currentDownloads = getDownloads(state);
+	console.log('Current downloads', currentDownloads);
+	if (currentDownloads.length === 0) {
+		return undefined;
+	}
+
+	for (const downloadedArticle of currentDownloads) {
+		if (
+			downloadedArticle.article_id === articleInfo.article_id &&
+			downloadedArticle.audio === articleInfo.audio
+		) {
+			return downloadedArticle;
+		}
+	}
+
+	return undefined;
+};

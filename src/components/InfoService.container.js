@@ -26,6 +26,10 @@ class InfoServiceWrapper extends React.Component {
 		super(props);
 	}
 
+	componentDidMount() {
+		console.log('INFOSERVICEWRAPPER: ', this.props.subscriptionServices);
+	}
+
 	render() {
 		return (
 			<View>

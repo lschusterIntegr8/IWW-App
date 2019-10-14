@@ -97,9 +97,19 @@ function rootReducer(state = initialState, action) {
 			};
 		}
 		case ADD_TO_DOWNLOADS: {
+			for (const dlArticle of state.downloadedArticles) {
+				if (
+					dlArticle.article_id === action.payload.article_id &&
+					dlArticle.audio === action.payload.audio
+				) {
+					console.info('Article is already stored inside downloads');
+					return state;
+				}
+			}
+
 			return {
 				...state,
-				downloadedArticles: [...downloadedArticles, action.payload]
+				downloadedArticles: [...state.downloadedArticles, action.payload]
 			};
 		}
 	}

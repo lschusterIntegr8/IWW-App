@@ -31,8 +31,8 @@ export const checkAndPrependToUrl = (url, articleTag) => {
 };
 
 export const matchSubscriptionIdToShortcut = async subId => {
-	const subscriptions = await getSubscriptions(await store.getState().rootReducer);
-	for (abo of subscriptions) {
+	const subscriptions = await getSubscriptions(await store.getState());
+	for (const abo of subscriptions) {
 		if (abo.id === subId) {
 			return abo.shortcut;
 		}

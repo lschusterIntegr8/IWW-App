@@ -65,13 +65,6 @@ class NewsFeedList extends Component {
 	// }
 
 	render() {
-		// if (!this.state.interactionsComplete) {
-		// 	return (
-		// 		<View style={styles.indicatorContainer}>
-		// 			<ActivityIndicator size="large" color="#E3001B" />
-		// 		</View>
-		// 	);
-		// }
 		return (
 			<FlatList
 				data={this.props.articles}

@@ -21,6 +21,7 @@ import HomeScreen from './screens/HomeScreen';
 import SingleArticleMain from './screens/SingleArticleMain';
 import Search from './screens/Search';
 import CustomSidebarMenu from './components/CustomSidebarMenu';
+import Downloads from './screens/Downloads';
 
 const handleCustomTransition = ({ scenes }) => {
 	const prevScene = scenes[scenes.length - 2];
@@ -144,22 +145,19 @@ const AppNavigator = createDrawerNavigator(
 			navigationOptions: {
 				title: 'Startseite'
 				// drawerLabel: () => null //hidden from drawer,,
-			},
-			initialRouteName: 'NewsFeed'
+			}
 		},
 		Favoriten: {
 			screen: NewsStack,
 			navigationOptions: {
-				title: 'Favoriten',
+				title: 'Favoriten'
 				// drawerLabel: () => null //hidden from drawer,,
-				initialRouteName: 'SearchScreen'
 			}
 		},
 		Downloads: {
-			screen: NewsStack,
+			screen: Downloads,
 			navigationOptions: {
-				title: 'Downloads'
-				// drawerLabel: () => null //hidden from drawer,,
+				tabBarLabel: 'Downloads'
 			}
 		}
 	},
