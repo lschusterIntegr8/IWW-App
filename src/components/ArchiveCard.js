@@ -33,7 +33,7 @@ const ArchiveCard = props => (
 						styles.authorCorner,
 						{
 							backgroundColor: mapSubscriptionIdToTileColor(
-								store.getState(),
+								store.getState().rootReducer,
 								props.article.application_id
 							)
 						}
@@ -41,7 +41,7 @@ const ArchiveCard = props => (
 				>
 					<Text style={styles.authorText}>
 						{mapSubscriptionIdToShortcut(
-							store.getState(),
+							store.getState().rootReducer,
 							props.article.application_id
 						)}
 					</Text>

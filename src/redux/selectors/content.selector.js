@@ -1,11 +1,11 @@
 import { createSelector } from 'reselect';
 
-export const getArticles = state => state.articles;
-export const getSubscriptions = state => state.subscriptionServices;
-export const getActiveSubscriptionFilter = state => state.activeSubscriptionFilter;
-export const getSubscriptionArticles = state => state.aboArticles;
-export const getArchiveIssues = state => state.archiveIssues;
-export const getArchiveArticles = state => state.archiveArticles;
+export const getArticles = state => state.rootReducer.articles;
+export const getSubscriptions = state => state.rootReducer.subscriptionServices;
+export const getActiveSubscriptionFilter = state => state.sessionReducer.activeSubscriptionFilter;
+export const getSubscriptionArticles = state => state.rootReducer.aboArticles;
+export const getArchiveIssues = state => state.rootReducer.archiveIssues;
+export const getArchiveArticles = state => state.rootReducer.archiveArticles;
 
 export const mapSubscriptionIdToShortcut = (state, subId) => {
 	for (const sub of state.subscriptionServices) {

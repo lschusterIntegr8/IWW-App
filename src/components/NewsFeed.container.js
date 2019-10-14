@@ -19,9 +19,9 @@ const makeMapStateToProps = () => {
 	const mapStateToProps = state => {
 		return {
 			articles: filteredArticles(state),
-			archiveIssues: state.archiveIssues,
-			archiveArticles: state.archiveArticles,
-			activeSubscriptionFilter: state.activeSubscriptionFilter
+			archiveIssues: state.rootReducer.archiveIssues,
+			archiveArticles: state.rootReducer.archiveArticles,
+			activeSubscriptionFilter: state.sessionReducer.activeSubscriptionFilter
 		};
 	};
 
@@ -69,7 +69,12 @@ class NewsFeedWrapper extends React.Component {
 	renderFilteredView() {
 		/* DEFAULT - RANDOM NEWS */
 		if (!this.state.currentFilter) {
-			return <NewsFeedList articles={this.props.articles} />;
+			return (
+				<NewsFeedList
+					articles={this.props.articles}
+					activeSubscriptionFilter={this.props.activeSubscriptionFilter}
+				/>
+			);
 		} /* ARCHIVE */ else if (this.state.currentFilter === 'archive') {
 			if (!this.props.activeSubscriptionFilter) {
 				return (

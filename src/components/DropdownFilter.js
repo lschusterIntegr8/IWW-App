@@ -24,7 +24,7 @@ import COLOR from '../config/colors';
 
 const mapStateToProps = state => {
 	return {
-		activeSubscriptionFilter: state.activeSubscriptionFilter
+		activeSubscriptionFilter: state.rootReducer.activeSubscriptionFilter
 	};
 };
 

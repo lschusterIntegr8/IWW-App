@@ -116,10 +116,13 @@ export const getSubscriptionArticles = (subId, limit, skip, searchtext, audio) =
 };
 
 /* Returns HTML content of the specified article */
-export const singleArticleContent = articleId => {
+export const singleArticleContent = (articleId, audioVersion = undefined) => {
+	const params = {};
+	if (audioVersion) params.audio = audioVersion;
+
 	return new Promise((resolve, reject) => {
 		axios
-			.get(`${BASE_ENDPOINT}/contents/${articleId}`)
+			.get(`${BASE_ENDPOINT}/contents/${articleId}`, { params })
 			.then(response => {
 				return resolve({ success: true, data: response.data._embedded });
 			})

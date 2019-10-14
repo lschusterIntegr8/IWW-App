@@ -26,7 +26,7 @@ const ArticleCard = props => (
 							styles.authorCorner,
 							{
 								backgroundColor: mapSubscriptionIdToTileColor(
-									store.getState(),
+									store.getState().rootReducer,
 									props.article.application_id
 								)
 							}
@@ -34,7 +34,7 @@ const ArticleCard = props => (
 					>
 						<Text style={styles.authorText}>
 							{mapSubscriptionIdToShortcut(
-								store.getState(),
+								store.getState().rootReducer,
 								props.article.application_id
 							)}
 						</Text>

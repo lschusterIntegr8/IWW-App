@@ -9,8 +9,8 @@ import { setActiveSubFilter } from '../redux/actions/index';
 import { storeSubscriptionArticles } from '../helpers/content';
 
 const mapStateToProps = state => ({
-	subscriptionServices: state.subscriptionServices,
-	activeSubscriptionFilter: state.activeSubscriptionFilter
+	subscriptionServices: state.rootReducer.subscriptionServices,
+	activeSubscriptionFilter: state.sessionReducer.activeSubscriptionFilter
 });
 
 const mapDispatchToProps = dispatch => {

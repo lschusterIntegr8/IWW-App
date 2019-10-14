@@ -55,7 +55,7 @@ export const fetchAndSetArticles = async (subId, limit, skip, searchtext, audio)
 export const storeSubscriptionArticles = async (subId, limit, skip, searchtext, audio) => {
 	console.info('STORE SUBS ARTICLES CALLED (content)');
 	/* Check if subscription articles are already present in the store  */
-	const subscriptionArticles = store.getState().aboArticles;
+	const subscriptionArticles = store.getState().rootReducer.aboArticles;
 	console.log('SUB ART:', subscriptionArticles);
 
 	if (subscriptionArticles) {
@@ -113,17 +113,24 @@ export const fetchAndSetSubscriptions = async () => {
 /*
  *	Returns cleaned/parsed content of a single article
  */
-export const getArticleContent = async (articleId, applicationId) => {
-	console.log('Fetching endpoint data');
-	const { data: articleContent } = await API.singleArticleContent(articleId).catch(err => {
-		console.log(err);
-		return err;
-	});
+export const getArticleContent = async (articleId, applicationId, audioVersion = undefined) => {
+	console.log('Fetching endpoint data where audio=', audioVersion);
+	const { data: articleContent } = await API.singleArticleContent(articleId, audioVersion).catch(
+		err => {
+			console.log(err);
+			return err;
+		}
+	);
 
-	const articleTag = await matchSubscriptionIdToShortcut(applicationId);
-	const cleanHTML = cleanUrls(articleContent.content, articleTag);
-	const resultObj = articleContent;
-	resultObj.content = cleanHTML;
+	let resultObj = articleContent;
+
+	if (!audioVersion) {
+		const articleTag = await matchSubscriptionIdToShortcut(applicationId);
+		const cleanHTML = cleanUrls(articleContent.content, articleTag);
+		resultObj.content = cleanHTML;
+	} else {
+		resultObj.audio = true;
+	}
 
 	return resultObj;
 };
@@ -194,6 +201,9 @@ export const initAppContent = async (fetchNew, props) => {
 	 *	1. refresh token (to not receive cached data)
 	 *	2. fetch content with the new token
 	 */
+
+	console.log('STORE');
+	console.log(store.getState().rootReducer);
 	try {
 		if (fetchNew) {
 			console.info('HEARD FETCH NEW FLAG');
@@ -217,10 +227,10 @@ export const initAppContent = async (fetchNew, props) => {
 			console.log('SETTING REFRESHED TOKEN');
 			await setActiveTokens(refreshedTokens);
 
-			console.time('FETCHPROMISES');
+			// console.time('FETCHPROMISES');
 			const fetchedSubscriptions = await fetchAndSetSubscriptions();
 			const fetchedArticles = await fetchAndSetArticles(undefined, 10, undefined, undefined);
-			console.timeEnd('FETCHPROMISES');
+			// console.timeEnd('FETCHPROMISES');
 
 			if (fetchedSubscriptions.navigation) {
 				// return props.navigation.navigate(fetchedSubscriptions.navigation);
@@ -238,12 +248,12 @@ export const initAppContent = async (fetchNew, props) => {
 
 			let fetchPromises = [];
 			/* If it shouldn't fetch fresh ones --> only refresh content if it's empty */
-			if (getSubscriptions(store.getState()).length === 0) {
+			if (getSubscriptions(store.getState().rootReducer).length === 0) {
 				console.log('Subscriptions empty - fetching');
 				fetchPromises.push(fetchAndSetSubscriptions());
 			}
 
-			if (getArticles(store.getState()).length === 0) {
+			if (getArticles(store.getState().rootReducer).length === 0) {
 				console.log('Articles empty - fetching');
 				/* Fetch articles */
 				fetchPromises.push(fetchAndSetArticles(undefined, 10, undefined, undefined));
@@ -258,7 +268,7 @@ export const initAppContent = async (fetchNew, props) => {
 			// return props.navigation.navigate('App');
 		}
 	} catch (err) {
-		console.error('INIT APP CONNTENT ERR');
+		console.error('INIT APP CONTENT ERR');
 		console.error(err);
 		throw err;
 	}

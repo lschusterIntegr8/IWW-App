@@ -1,9 +1,7 @@
 import {
-	SET_HOME_SCREEN_REFRESHING,
 	ADD_ARTICLE,
 	ADD_SUBSCRIPTION_ARTICLES,
 	SET_SUBSCRIPTIONS,
-	TOGGLE_ACTIVE_SUB_FILTER,
 	SET_ARTICLES,
 	SET_ARCHIVE_ISSUES,
 	SET_ARCHIVE_ARTICLES,
@@ -11,8 +9,6 @@ import {
 } from '../actions/action-types';
 
 const initialState = {
-	homeScreenRefreshing: false,
-	activeSubscriptionFilter: undefined,
 	subscriptionServices: [],
 	articles: [],
 	aboArticles: [],
@@ -25,12 +21,6 @@ function rootReducer(state = initialState, action) {
 	console.log('PAYLOAD:\n', action.payload);
 	console.log('TYPE:\n', action.type);
 	switch (action.type) {
-		case SET_HOME_SCREEN_REFRESHING: {
-			return {
-				...state,
-				homeScreenRefreshing: action.payload
-			};
-		}
 		case SET_ARCHIVE_ISSUES: {
 			return {
 				...state,
@@ -104,18 +94,6 @@ function rootReducer(state = initialState, action) {
 						articles: receivedArticles.articles
 					}
 				]
-			};
-		}
-		case TOGGLE_ACTIVE_SUB_FILTER: {
-			return {
-				...state,
-				activeSubscriptionFilter:
-					state.activeSubscriptionFilter &&
-					state.activeSubscriptionFilter.id &&
-					state.activeSubscriptionFilter.id === action.payload.id &&
-					state.activeSubscriptionFilter.audio === action.payload.audio
-						? undefined
-						: action.payload
 			};
 		}
 		case ADD_TO_DOWNLOADS: {

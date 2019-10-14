@@ -15,8 +15,8 @@ import { initAppContent, getArchiveContent } from '../helpers/content';
 
 const mapStateToProps = state => {
 	return {
-		activeSubscriptionFilter: state.activeSubscriptionFilter,
-		homeScreenRefreshing: state.homeScreenRefreshing
+		activeSubscriptionFilter: state.sessionReducer.activeSubscriptionFilter,
+		homeScreenRefreshing: state.sessionReducer.homeScreenRefreshing
 	};
 };
 

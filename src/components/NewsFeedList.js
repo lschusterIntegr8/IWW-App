@@ -25,6 +25,7 @@ class NewsFeedList extends Component {
 	componentDidMount() {
 		console.log('ARTICLES MOUNT:');
 		console.log(this.props.articles);
+		console.log(this.props.activeSubscriptionFilter);
 		InteractionManager.runAfterInteractions(() => {
 			// alert('Complete');
 			this.setState({ interactionsComplete: true });
@@ -32,7 +33,17 @@ class NewsFeedList extends Component {
 	}
 
 	async openArticle(article) {
-		const articleContent = getArticleContent(article.article_id, article.application_id);
+		let audioVersion = undefined;
+		console.log('Opening: ', this.props.activeSubscriptionFilter);
+		if (this.props.activeSubscriptionFilter && this.props.activeSubscriptionFilter.audio) {
+			audioVersion = true;
+		}
+
+		const articleContent = getArticleContent(
+			article.article_id,
+			article.application_id,
+			audioVersion
+		);
 
 		this.props.navigation.navigate('SingleArticle', {
 			article: articleContent, // single article details (content / html)
@@ -54,13 +65,13 @@ class NewsFeedList extends Component {
 	// }
 
 	render() {
-		if (!this.state.interactionsComplete) {
-			return (
-				<View style={styles.indicatorContainer}>
-					<ActivityIndicator size="large" color="#E3001B" />
-				</View>
-			);
-		}
+		// if (!this.state.interactionsComplete) {
+		// 	return (
+		// 		<View style={styles.indicatorContainer}>
+		// 			<ActivityIndicator size="large" color="#E3001B" />
+		// 		</View>
+		// 	);
+		// }
 		return (
 			<FlatList
 				data={this.props.articles}

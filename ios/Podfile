@@ -47,6 +47,9 @@ pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVecto
 
   pod 'RNKeychain', :path => '../node_modules/react-native-keychain'
 
+  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
+
+
   target 'myIWWTests' do
     inherit! :search_paths
     # Pods for testing
