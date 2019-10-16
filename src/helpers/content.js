@@ -167,10 +167,17 @@ export const getArticleContent = async (
 /*
  * Fetches and stores archive issues/articles to the Redux store, based on the (default if issueID ==== undefined) selection
  */
-export const getArchiveContent = async (subId, issueID = undefined) => {
+export const getArchiveContent = async (subId, issueID = undefined, audioVersion = undefined) => {
 	console.log('Fetching endpoint data');
 	store.dispatch(setHomeScreenRefreshing(true));
-	console.info('GET ARCHIVE CONTENT CALLED with subId: ', subId, 'and issueID: ', issueID);
+	console.info(
+		'GET ARCHIVE CONTENT CALLED with subId: ',
+		subId,
+		'and issueID: ',
+		issueID,
+		'and audio: ',
+		audioVersion
+	);
 	try {
 		/* Default case (usually when archive tab is opened) */
 		if (!issueID) {
@@ -190,7 +197,8 @@ export const getArchiveContent = async (subId, issueID = undefined) => {
 			/* Fetch default archive articles and set to store */
 			const { data: archiveArticles } = await API.getArchiveArticles(
 				subId,
-				firstIssueID
+				firstIssueID,
+				audioVersion
 			).catch(articlesErr => {
 				throw new Error(
 					'Archive Articles could not be fetched for subId: ',
@@ -207,7 +215,8 @@ export const getArchiveContent = async (subId, issueID = undefined) => {
 		store.dispatch(setHomeScreenRefreshing(true));
 		const { data: archiveArticlesFiltered } = await API.getArchiveArticles(
 			subId,
-			issueID
+			issueID,
+			audioVersion
 		).catch(articlesErr => {
 			throw new Error(
 				'Archive Articles could not be fetched for subId: ',
@@ -229,15 +238,22 @@ export const getArchiveContent = async (subId, issueID = undefined) => {
 /*
  * Fetches and stores category (RUBRIKEN) issues/articles to the Redux store, based on the (default if issueID ==== undefined) selection
  */
-export const getCategoryContent = async (subId, issueID = undefined) => {
+export const getCategoryContent = async (subId, issueID = undefined, audioVersion = undefined) => {
 	console.log('Fetching endpoint data');
 	store.dispatch(setHomeScreenRefreshing(true));
-	console.info('GET CATEGORY CONTENT CALLED with subId: ', subId, 'and issueID: ', issueID);
+	console.info(
+		'GET CATEGORY CONTENT CALLED with subId: ',
+		subId,
+		'and issueID: ',
+		issueID,
+		'and audio: ',
+		audioVersion
+	);
 	try {
 		/* Default case (usually when category tab is opened) */
 		if (!issueID) {
 			/* Get category issues and select first issue (default) and set to store */
-			console.info('ArchiveIssueID not provided --> fetching category issues');
+			console.info('CategoryIssueID not provided --> fetching category issues');
 			let categoryIssues = await API.getCategoryIssues(subId).catch(issuesErr => {
 				throw new Error('Category issues could not be fetched for subId: ', subId);
 			});
@@ -247,13 +263,16 @@ export const getCategoryContent = async (subId, issueID = undefined) => {
 
 			/* Set automatically issue id to the first element/issue */
 			const firstIssueID = categoryIssues[0].id;
+			console.log('FIRST CATEGORY ISSUE ID: ', firstIssueID);
 			store.dispatch(setCategoryIssues(categoryIssues));
 
 			/* Fetch default category articles and set to store */
 			const { data: categoryArticles } = await API.getCategoryArticles(
 				subId,
-				firstIssueID
+				firstIssueID,
+				audioVersion
 			).catch(articlesErr => {
+				console.warn(articlesErr.response);
 				throw new Error(
 					'Category Articles could not be fetched for subId: ',
 					subId,
@@ -269,8 +288,11 @@ export const getCategoryContent = async (subId, issueID = undefined) => {
 		store.dispatch(setHomeScreenRefreshing(true));
 		const { data: categoryArticlesFiltered } = await API.getCategoryArticles(
 			subId,
-			issueID
+			issueID,
+			audioVersion
 		).catch(articlesErr => {
+			console.warn(articlesErr.response);
+
 			throw new Error(
 				'Category Articles could not be fetched for subId: ',
 				subId,

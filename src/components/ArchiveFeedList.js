@@ -63,7 +63,14 @@ class ArchiveFeedList extends Component {
 			console.log('ON ARCHIVEFEEDLISTMOUNT');
 			/* TODO load  */
 			console.log('LOADING FOR: ', this.props.activeSubscriptionFilter.id);
-			getArchiveContent(this.props.activeSubscriptionFilter.id, undefined);
+			getArchiveContent(
+				this.props.activeSubscriptionFilter.id,
+				undefined,
+				this.props.activeSubscriptionFilter.audio &&
+					this.props.activeSubscriptionFilter.audio === true
+					? true
+					: undefined
+			);
 		});
 	}
 
@@ -75,7 +82,14 @@ class ArchiveFeedList extends Component {
 			console.log(
 				`Prev ${this.props.activeSubscriptionFilter.id}, new ${nextProps.activeSubscriptionFilter.id}`
 			);
-			getArchiveContent(nextProps.activeSubscriptionFilter.id, undefined);
+			getArchiveContent(
+				nextProps.activeSubscriptionFilter.id,
+				undefined,
+				nextProps.activeSubscriptionFilter.audio &&
+					nextProps.activeSubscriptionFilter.audio === true
+					? true
+					: undefined
+			);
 		}
 	}
 	render() {
