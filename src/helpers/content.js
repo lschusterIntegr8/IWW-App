@@ -250,7 +250,7 @@ export const getCategoryContent = async (subId, issueID = undefined) => {
 			store.dispatch(setCategoryIssues(categoryIssues));
 
 			/* Fetch default category articles and set to store */
-			const { data: categoryArticles } = await API.getArchiveArticles(
+			const { data: categoryArticles } = await API.getCategoryArticles(
 				subId,
 				firstIssueID
 			).catch(articlesErr => {
@@ -267,7 +267,7 @@ export const getCategoryContent = async (subId, issueID = undefined) => {
 		}
 
 		store.dispatch(setHomeScreenRefreshing(true));
-		const { data: categoryArticlesFiltered } = await API.getArchiveArticles(
+		const { data: categoryArticlesFiltered } = await API.getCategoryArticles(
 			subId,
 			issueID
 		).catch(articlesErr => {

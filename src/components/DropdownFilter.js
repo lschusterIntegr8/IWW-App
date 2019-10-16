@@ -38,9 +38,17 @@ class DropdownFilter extends Component {
 	};
 
 	returnFilteredData() {
-		let FILTER_DATA = this.props.archiveIssues
-			? this.props.archiveIssues.map(issue => issue.title)
-			: [];
+		console.log('ISSUES props: ', this.props.issues);
+		const issues = this.props.issues ? this.props.issues : [];
+		let FILTER_DATA =
+			issues && issues.length > 0
+				? issues.map(issue => {
+						if (issue.title) return issue.title;
+						else if (issue.label) return issue.label;
+				  })
+				: undefined;
+
+		if (!FILTER_DATA) return [[]];
 
 		FILTER_DATA = FILTER_DATA.slice(0, 10);
 		return [FILTER_DATA];
@@ -48,8 +56,11 @@ class DropdownFilter extends Component {
 
 	mapTitleToIssueId(title, issues) {
 		for (const issue of issues) {
-			if (issue.title === title) {
-				console.log('Mapped to ', issue.id);
+			if (this.props.activeView === 'archive' && issue.title === title) {
+				console.log('Mapped archive issue to ', issue.id);
+				return issue.id;
+			} else if (this.props.activeView === 'rubriken' && issue.label === title) {
+				console.log('Mapped category issue to ', issue.id);
 				return issue.id;
 			}
 		}
@@ -92,7 +103,7 @@ class DropdownFilter extends Component {
 									this.props.activeSubscriptionFilter.id,
 									this.mapTitleToIssueId(
 										this.state.selectedFilter,
-										this.props.archiveIssues
+										this.props.issues
 									)
 								);
 							} /* Rubriken */ else if (this.props.activeView === 'rubriken') {
@@ -100,7 +111,7 @@ class DropdownFilter extends Component {
 									this.props.activeSubscriptionFilter.id,
 									this.mapTitleToIssueId(
 										this.state.selectedFilter,
-										this.props.categoryIssues
+										this.props.issues
 									)
 								);
 							}
@@ -120,8 +131,7 @@ class DropdownFilter extends Component {
 
 DropdownFilter.propTypes = {
 	activeView: PropTypes.string,
-	archiveIssues: PropTypes.array,
-	categoryIssues: PropTypes.array
+	issues: PropTypes.array
 };
 
 const styles = StyleSheet.create({});

@@ -14,9 +14,9 @@ import { v4 } from 'uuid';
 
 import ArchiveCard from './ArchiveCard';
 import DropdownFilter from './DropdownFilter';
-import { getArchiveContent, getArticleContent } from '../helpers/content';
+import { getCategoryContent, getArticleContent } from '../helpers/content';
 
-class ArchiveFeedList extends Component {
+class CategoryFeedList extends Component {
 	constructor(props) {
 		super(props);
 		this.openArticle = this.openArticle.bind(this);
@@ -63,7 +63,7 @@ class ArchiveFeedList extends Component {
 			console.log('ON ARCHIVEFEEDLISTMOUNT');
 			/* TODO load  */
 			console.log('LOADING FOR: ', this.props.activeSubscriptionFilter.id);
-			getArchiveContent(this.props.activeSubscriptionFilter.id, undefined);
+			getCategoryContent(this.props.activeSubscriptionFilter.id, undefined);
 		});
 	}
 
@@ -75,7 +75,7 @@ class ArchiveFeedList extends Component {
 			console.log(
 				`Prev ${this.props.activeSubscriptionFilter.id}, new ${nextProps.activeSubscriptionFilter.id}`
 			);
-			getArchiveContent(nextProps.activeSubscriptionFilter.id, undefined);
+			getCategoryContent(nextProps.activeSubscriptionFilter.id, undefined);
 		}
 	}
 	render() {
@@ -109,11 +109,11 @@ const styles = StyleSheet.create({
 	}
 });
 
-ArchiveFeedList.propTypes = {
+CategoryFeedList.propTypes = {
 	articles: PropTypes.array,
 	issues: PropTypes.array,
 	navigation: PropTypes.object,
 	activeView: PropTypes.string
 };
 
-export default withNavigation(ArchiveFeedList);
+export default withNavigation(CategoryFeedList);

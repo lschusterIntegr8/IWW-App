@@ -183,6 +183,7 @@ export const getCategoryIssues = subId => {
 		axios
 			.get(`${BASE_ENDPOINT}/categories?application=${subId}`)
 			.then(response => {
+				console.log('cat issues: ', response.data._embedded.categories);
 				return resolve({ success: true, data: response.data._embedded.categories });
 			})
 			.catch(err => {
@@ -198,6 +199,7 @@ export const getCategoryArticles = (subId, categoryId) => {
 		axios
 			.get(`${BASE_ENDPOINT}/categories/${categoryId}?application=${subId}`)
 			.then(response => {
+				console.log('cat articles: ', response.data._embedded.contents);
 				return resolve({ success: true, data: response.data._embedded.contents });
 			})
 			.catch(err => {

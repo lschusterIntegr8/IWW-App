@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 
 import NewsFeedList from './NewsFeedList';
 import ArchiveFeedList from './ArchiveFeedList';
+import CategoryFeedList from './CategoryFeedList';
 import COLOR from '../config/colors';
 import {
 	getFilteredSubscriptionArticles,
@@ -21,7 +22,9 @@ const makeMapStateToProps = () => {
 			articles: filteredArticles(state),
 			archiveIssues: state.rootReducer.archiveIssues,
 			archiveArticles: state.rootReducer.archiveArticles,
-			activeSubscriptionFilter: state.sessionReducer.activeSubscriptionFilter
+			activeSubscriptionFilter: state.sessionReducer.activeSubscriptionFilter,
+			categoryIssues: state.rootReducer.categoryIssues,
+			categoryArticles: state.rootReducer.categoryArticles
 		};
 	};
 
@@ -88,8 +91,8 @@ class NewsFeedWrapper extends React.Component {
 
 			return (
 				<ArchiveFeedList
-					archiveIssues={this.props.archiveIssues}
-					archiveArticles={this.props.archiveArticles}
+					issues={this.props.archiveIssues}
+					articles={this.props.archiveArticles}
 					activeSubscriptionFilter={this.props.activeSubscriptionFilter}
 					activeView={this.state.currentFilter}
 				/>
@@ -106,9 +109,12 @@ class NewsFeedWrapper extends React.Component {
 			}
 
 			return (
-				<View>
-					<Text>THIS IS THE RUBRIKEN</Text>
-				</View>
+				<CategoryFeedList
+					issues={this.props.categoryIssues}
+					articles={this.props.categoryArticles}
+					activeSubscriptionFilter={this.props.activeSubscriptionFilter}
+					activeView={this.state.currentFilter}
+				/>
 			);
 		}
 	}
