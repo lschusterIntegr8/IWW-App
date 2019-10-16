@@ -70,21 +70,24 @@ const AuthNavigator = createStackNavigator(
 				tabBarLabel: 'Login',
 				headerBackImage: <HeaderBackImage />
 			}
-		},
-		ForgottenPassword: {
-			screen: ForgottenPassword,
-			navigationOptions: {
-				tabBarLabel: 'ForgottenPassword',
-				headerBackImage: <HeaderBackImage />
-			}
-		},
-		PasswordResetInstructions: {
-			screen: PasswordResetInstructions,
-			navigationOptions: {
-				tabBarLabel: 'PasswordResetInstructions',
-				headerLeft: null
-			}
 		}
+		/* THESE SCREENS ARE NOT IN USE ANYMORE -->
+		 PASSWORD-RESET/FORGOTTEN HAPPENS NOW DIRECTLY ON THE WEBSITE */
+
+		// ForgottenPassword: {
+		// 	screen: ForgottenPassword,
+		// 	navigationOptions: {
+		// 		tabBarLabel: 'ForgottenPassword',
+		// 		headerBackImage: <HeaderBackImage />
+		// 	}
+		// },
+		// PasswordResetInstructions: {
+		// 	screen: PasswordResetInstructions,
+		// 	navigationOptions: {
+		// 		tabBarLabel: 'PasswordResetInstructions',
+		// 		headerLeft: null
+		// 	}
+		// }
 	},
 	{
 		initialRouteName: 'WelcomeOnboarding',

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Image, Platform } from 'react-native';
+import { StyleSheet, View, Text, Image, Platform, Linking } from 'react-native';
 import PropTypes from 'prop-types';
 import { Button } from 'react-native-elements';
 import AppIntroSlider from 'react-native-app-intro-slider';
@@ -91,9 +91,9 @@ class WelcomeOnboarding extends Component {
 		header: null
 	};
 
-	componentDidMount() {
-		// alert(slides[0]);
-	}
+	state = {
+		registerURL: 'https://www.iww.de/registrierung'
+	};
 
 	_renderItem = props => {
 		const { item } = props;
@@ -127,7 +127,7 @@ class WelcomeOnboarding extends Component {
 						fontWeight: 'bold'
 					}}
 					title="Noch keinen Account?"
-					onPress={() => alert('BRE')}
+					onPress={() => Linking.openURL(this.state.registerURL)}
 				/>
 			</View>
 		);

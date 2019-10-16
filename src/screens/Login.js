@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator, Linking } from 'react-native';
 import { Button } from 'react-native-elements';
 import PropTypes from 'prop-types';
 import validator from 'validator';
@@ -23,7 +23,8 @@ class Login extends React.Component {
 		isLoading: false,
 		isValidInput: false,
 		email: '',
-		password: ''
+		password: '',
+		forgetPasswordURL: 'https://www.iww.de/passwort-vergessen'
 	};
 
 	static navigationOptions = {
@@ -140,7 +141,8 @@ class Login extends React.Component {
 						fontWeight: 'bold'
 					}}
 					title="Passwort vergessen?"
-					onPress={() => this.props.navigation.navigate('ForgottenPassword')}
+					// onPress={() => this.props.navigation.navigate('ForgottenPassword')}
+					onPress={() => Linking.openURL(this.state.forgetPasswordURL)}
 				/>
 			</View>
 		);
