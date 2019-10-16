@@ -178,7 +178,7 @@ export const getFavourites = (subId = '') => {
 };
 
 /* Gets all Categories (Rubriken) of 1 subscriptionAbo (infodienst) */
-export const getCategoriesIssues = subId => {
+export const getCategoryIssues = subId => {
 	return new Promise((resolve, reject) => {
 		axios
 			.get(`${BASE_ENDPOINT}/categories?application=${subId}`)
@@ -193,7 +193,7 @@ export const getCategoriesIssues = subId => {
 };
 
 /* Gets all articles of 1 category */
-export const getCategoriesArticles = (subId, categoryId) => {
+export const getCategoryArticles = (subId, categoryId) => {
 	return new Promise((resolve, reject) => {
 		axios
 			.get(`${BASE_ENDPOINT}/categories/${categoryId}?application=${subId}`)

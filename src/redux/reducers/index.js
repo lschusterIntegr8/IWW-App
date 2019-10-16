@@ -5,6 +5,8 @@ import {
 	SET_ARTICLES,
 	SET_ARCHIVE_ISSUES,
 	SET_ARCHIVE_ARTICLES,
+	SET_CATEGORY_ISSUES,
+	SET_CATEGORY_ARTICLES,
 	ADD_TO_DOWNLOADS
 } from '../actions/action-types';
 
@@ -14,6 +16,8 @@ const initialState = {
 	aboArticles: [],
 	archiveIssues: [],
 	archiveArticles: [],
+	categoryIssues: [],
+	categoryArticles: [],
 	downloadedArticles: []
 };
 
@@ -21,6 +25,18 @@ function rootReducer(state = initialState, action) {
 	console.log('PAYLOAD:\n', action.payload);
 	console.log('TYPE:\n', action.type);
 	switch (action.type) {
+		case SET_CATEGORY_ISSUES: {
+			return {
+				...state,
+				categoryIssues: action.payload
+			};
+		}
+		case SET_CATEGORY_ARTICLES: {
+			return {
+				...state,
+				categoryArticles: action.payload
+			};
+		}
 		case SET_ARCHIVE_ISSUES: {
 			return {
 				...state,

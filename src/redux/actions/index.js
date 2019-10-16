@@ -4,6 +4,8 @@ import {
 	GET_TOKEN,
 	SET_ARCHIVE_ISSUES,
 	SET_ARCHIVE_ARTICLES,
+	SET_CATEGORY_ISSUES,
+	SET_CATEGORY_ARTICLES,
 	SET_SUBSCRIPTIONS,
 	TOGGLE_ACTIVE_SUB_FILTER,
 	SET_ARTICLES,
@@ -50,6 +52,19 @@ export function setArchiveIssues(payload) {
 export function setArchiveArticles(payload) {
 	return {
 		type: SET_ARCHIVE_ARTICLES,
+		payload
+	};
+}
+export function setCategoryIssues(payload) {
+	return {
+		type: SET_CATEGORY_ISSUES,
+		payload
+	};
+}
+
+export function setCategoryArticles(payload) {
+	return {
+		type: SET_CATEGORY_ARTICLES,
 		payload
 	};
 }
