@@ -13,8 +13,8 @@ import HeaderBackImage from './components/HeaderBackImage';
 import SplashScreen from './screens/SplashScreen';
 import WelcomeOnboarding from './screens/WelcomeOnboarding';
 import Login from './screens/Login';
-import ForgottenPassword from './screens/ForgottenPassword';
-import PasswordResetInstructions from './screens/PasswordResetInstructions';
+// import ForgottenPassword from './screens/ForgottenPassword';
+// import PasswordResetInstructions from './screens/PasswordResetInstructions';
 
 /* Main Screens */
 import HomeScreen from './screens/HomeScreen';
@@ -23,6 +23,7 @@ import Search from './screens/Search';
 import CustomSidebarMenu from './components/CustomSidebarMenu';
 import Downloads from './screens/Downloads';
 
+/* Detect in-out screen and create a transition of your choice */
 const handleCustomTransition = ({ scenes }) => {
 	const prevScene = scenes[scenes.length - 2];
 	const nextScene = scenes[scenes.length - 1];
