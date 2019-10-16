@@ -17,6 +17,8 @@ import {
 	setHomeScreenRefreshing,
 	setArchiveIssues,
 	setArchiveArticles,
+	setCategoryIssues,
+	setCategoryArticles,
 	addToDownloads
 } from '../redux/actions/index';
 import { cleanUrls, matchSubscriptionIdToShortcut } from './util/util';
@@ -180,6 +182,8 @@ export const getArchiveContent = async (subId, issueID = undefined) => {
 			console.info('ARCHIVE ISSUES');
 			archiveIssues = archiveIssues.data;
 			console.log(archiveIssues);
+
+			/* Set automatically issue id to the first element/issue */
 			const firstIssueID = archiveIssues[0].id;
 			store.dispatch(setArchiveIssues(archiveIssues));
 
@@ -215,6 +219,68 @@ export const getArchiveContent = async (subId, issueID = undefined) => {
 
 		store.dispatch(setHomeScreenRefreshing(false));
 		return store.dispatch(setArchiveArticles(archiveArticlesFiltered));
+	} catch (err) {
+		store.dispatch(setHomeScreenRefreshing(false));
+		console.error(err);
+		return err;
+	}
+};
+
+/*
+ * Fetches and stores category (RUBRIKEN) issues/articles to the Redux store, based on the (default if issueID ==== undefined) selection
+ */
+export const getCategoryContent = async (subId, issueID = undefined) => {
+	console.log('Fetching endpoint data');
+	store.dispatch(setHomeScreenRefreshing(true));
+	console.info('GET CATEGORY CONTENT CALLED with subId: ', subId, 'and issueID: ', issueID);
+	try {
+		/* Default case (usually when category tab is opened) */
+		if (!issueID) {
+			/* Get category issues and select first issue (default) and set to store */
+			console.info('ArchiveIssueID not provided --> fetching category issues');
+			let categoryIssues = await API.getCategoryIssues(subId).catch(issuesErr => {
+				throw new Error('Category issues could not be fetched for subId: ', subId);
+			});
+			console.info('CATEGORY ISSUES');
+			categoryIssues = categoryIssues.data;
+			console.log(categoryIssues);
+
+			/* Set automatically issue id to the first element/issue */
+			const firstIssueID = categoryIssues[0].id;
+			store.dispatch(setCategoryIssues(categoryIssues));
+
+			/* Fetch default category articles and set to store */
+			const { data: categoryArticles } = await API.getArchiveArticles(
+				subId,
+				firstIssueID
+			).catch(articlesErr => {
+				throw new Error(
+					'Category Articles could not be fetched for subId: ',
+					subId,
+					'\tissueID: ',
+					issueID
+				);
+			});
+
+			store.dispatch(setHomeScreenRefreshing(false));
+			return store.dispatch(setCategoryArticles(categoryArticles));
+		}
+
+		store.dispatch(setHomeScreenRefreshing(true));
+		const { data: categoryArticlesFiltered } = await API.getArchiveArticles(
+			subId,
+			issueID
+		).catch(articlesErr => {
+			throw new Error(
+				'Category Articles could not be fetched for subId: ',
+				subId,
+				'\tissueID: ',
+				issueID
+			);
+		});
+
+		store.dispatch(setHomeScreenRefreshing(false));
+		return store.dispatch(setCategoryArticles(categoryArticlesFiltered));
 	} catch (err) {
 		store.dispatch(setHomeScreenRefreshing(false));
 		console.error(err);

@@ -36,6 +36,7 @@ class NewsFeedList extends Component {
 		let audioVersion = undefined;
 		console.log('Opening: ', this.props.activeSubscriptionFilter);
 		if (this.props.activeSubscriptionFilter && this.props.activeSubscriptionFilter.audio) {
+			console.log('SHOULD OPEN AUDIO VERSION');
 			audioVersion = true;
 		}
 

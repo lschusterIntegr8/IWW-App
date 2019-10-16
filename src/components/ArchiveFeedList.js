@@ -33,9 +33,18 @@ class ArchiveFeedList extends Component {
 	};
 
 	async openArticle(article) {
-		console.log('OPEN ARTICLE CALLED:');
-		console.log(article);
-		const articleContent = getArticleContent(article.article_id, article.application_id);
+		let audioVersion = undefined;
+		console.log('Opening: ', this.props.activeSubscriptionFilter);
+		if (this.props.activeSubscriptionFilter && this.props.activeSubscriptionFilter.audio) {
+			console.log('SHOULD OPEN AUDIO VERSION');
+			audioVersion = true;
+		}
+
+		const articleContent = getArticleContent(
+			article.article_id,
+			article.application_id,
+			audioVersion
+		);
 
 		this.props.navigation.navigate('SingleArticle', {
 			article: articleContent, // single article details (content / html)
@@ -80,7 +89,10 @@ class ArchiveFeedList extends Component {
 		return (
 			<View>
 				{/* Archive category filter */}
-				<DropdownFilter archiveIssues={this.props.archiveIssues} />
+				<DropdownFilter
+					archiveIssues={this.props.archiveIssues}
+					activeView={this.props.activeView}
+				/>
 				{/* Archive flatlist (archived news cards) */}
 				<FlatList
 					data={this.props.archiveArticles}
@@ -102,7 +114,8 @@ const styles = StyleSheet.create({
 
 ArchiveFeedList.propTypes = {
 	archiveArticles: PropTypes.array,
-	navigation: PropTypes.object
+	navigation: PropTypes.object,
+	activeView: PropTypes.string
 };
 
 export default withNavigation(ArchiveFeedList);

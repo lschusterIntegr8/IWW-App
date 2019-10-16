@@ -84,23 +84,27 @@ class NewsFeedWrapper extends React.Component {
 						</Text>
 					</View>
 				);
-			} else if (
-				this.props.activeSubscriptionFilter &&
-				this.props.archiveIssues.length === 0
-			) {
-				console.log('Should fetch archive ... is currently empty ...');
-				/* Fetch default archive content */
-				// console.log('Calling with subid: ', this.props.activeSubscriptionFilter.id);
-				// getArchiveContent(this.props.activeSubscriptionFilter.id, undefined);
 			}
+
 			return (
 				<ArchiveFeedList
 					archiveIssues={this.props.archiveIssues}
 					archiveArticles={this.props.archiveArticles}
 					activeSubscriptionFilter={this.props.activeSubscriptionFilter}
+					activeView={this.state.currentFilter}
 				/>
 			);
 		} else if (this.state.currentFilter === 'rubriken') {
+			if (!this.props.activeSubscriptionFilter) {
+				return (
+					<View style={{ flex: 1, textAlign: 'center' }}>
+						<Text style={{ textAlign: 'center' }}>
+							Bitte wählen sie einen Informationsdiensten aus.
+						</Text>
+					</View>
+				);
+			}
+
 			return (
 				<View>
 					<Text>THIS IS THE RUBRIKEN</Text>

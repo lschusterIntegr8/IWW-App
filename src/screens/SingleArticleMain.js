@@ -98,7 +98,12 @@ class SingleArticleMain extends Component {
 				</View>
 			);
 		} else if (this.state.article && this.state.article.audio) {
-			console.log('RECOGNIZED AUDIO PLAYVACK');
+			console.log('RECOGNIZED AUDIO PLAYBACK');
+			return (
+				<View style={styles.indicatorContainer}>
+					<Text>SHOULD RENDER AUDIO</Text>
+				</View>
+			);
 		} else {
 			return (
 				<View style={styles.indicatorContainer}>

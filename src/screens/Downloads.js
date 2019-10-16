@@ -52,17 +52,15 @@ class Downloads extends Component {
 		return (
 			<View style={styles.mainContent}>
 				{/* <HeaderMenu /> */}
+				<HeaderMenu />
 				<FlatList
 					data={this.props.downloadedArticles}
 					renderItem={this.renderItem}
 					keyExtractor={item => (item.article_id ? item.article_id.toString() : '')}
 					initialNumToRender={10}
 					ListHeaderComponent={() => (
-						<View>
-							<HeaderMenu />
-							<View style={styles.inhalteHeaderWrapper}>
-								<Text style={styles.inhalteHeading}>Downloads</Text>
-							</View>
+						<View style={styles.inhalteHeaderWrapper}>
+							<Text style={styles.inhalteHeading}>Downloads</Text>
 						</View>
 					)}
 				/>
@@ -78,15 +76,10 @@ Downloads.propTypes = {
 const styles = StyleSheet.create({
 	mainContent: {
 		flex: 1
-		// alignItems: 'center',
-		// justifyContent: 'center',
-		// paddingHorizontal: 16,
-		// color: COLOR.RED
 	},
 	inhalteHeaderWrapper: {
 		paddingHorizontal: 16,
 		paddingVertical: 30,
-		// marginBottom: 30,
 		display: 'flex',
 		flexDirection: 'row',
 		alignItems: 'flex-end'

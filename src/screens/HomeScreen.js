@@ -11,7 +11,7 @@ import SearchBarWrapper from '../components/SearchBarWrapper';
 import LoadingScreen from '../components/LoadingScreen';
 import { addArticle, setHomeScreenRefreshing } from '../redux/actions/index';
 import { isCloseToBottom } from '../helpers/util/util';
-import { initAppContent, getArchiveContent } from '../helpers/content';
+import { initAppContent } from '../helpers/content';
 
 const mapStateToProps = state => {
 	return {
@@ -73,9 +73,6 @@ class HomeScreen extends Component {
 	setNewsFeedFilter(value) {
 		console.log('set newsfeedfilter called');
 		this.setState({ newsFeedFilter: value });
-		// if (value !== undefined) {
-		// 	getArchiveContent(this.props.activeSubscriptionFilter, undefined);
-		// }
 	}
 
 	render() {
