@@ -36,6 +36,17 @@ class DropdownMenu extends Component {
 		};
 	}
 
+	componentDidUpdate(prevProps, prevState) {
+		if (prevProps.data !== this.props.data) {
+			/* Set to 0th element */
+			var selectIndex = new Array(this.props.data.length);
+			for (var i = 0; i < selectIndex.length; i++) {
+				selectIndex[i] = 0;
+			}
+			this.setState({ selectIndex: selectIndex });
+		}
+	}
+
 	renderChcek(index, title) {
 		var activityIndex = this.state.activityIndex;
 		if (this.state.selectIndex[activityIndex] == index) {

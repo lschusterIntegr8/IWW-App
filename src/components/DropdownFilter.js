@@ -34,13 +34,28 @@ class DropdownFilter extends Component {
 	}
 
 	state = {
-		selectedFilter: undefined
+		selectedFilter: undefined,
+		FILTER_DATA: [[]]
 	};
 
-	returnFilteredData() {
+	componentDidMount() {
+		this.returnFilteredData();
+		console.log('UPDATED FILTER_DATA');
+		console.log(this.state.FILTER_DATA);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		/* Reinit dropdown menu when content changes */
+		if (nextProps.issues !== this.props.issues) {
+			this.returnFilteredData(nextProps.issues);
+		}
+	}
+
+	returnFilteredData(nextIssues = undefined) {
 		console.log('ISSUES props: ', this.props.issues);
-		const issues = this.props.issues ? this.props.issues : [];
-		let FILTER_DATA =
+		// const issues = this.props.issues ? this.props.issues : [];
+		const issues = nextIssues ? nextIssues : this.props.issues ? this.props.issues : [];
+		let tmpFilteredData =
 			issues && issues.length > 0
 				? issues.map(issue => {
 						if (issue.title) return issue.title;
@@ -48,10 +63,13 @@ class DropdownFilter extends Component {
 				  })
 				: undefined;
 
-		if (!FILTER_DATA) return [[]];
+		if (!tmpFilteredData) return this.setState({ FILTER_DATA: [[]] });
 
-		FILTER_DATA = FILTER_DATA.slice(0, 10);
-		return [FILTER_DATA];
+		tmpFilteredData = tmpFilteredData.slice(0, 10);
+		// return [FILTER_DATA];
+		return this.setState({ FILTER_DATA: [tmpFilteredData] }, () => {
+			this.setState({ selectedFilter: this.state.FILTER_DATA[0][0] });
+		});
 	}
 
 	mapTitleToIssueId(title, issues) {
@@ -69,18 +87,9 @@ class DropdownFilter extends Component {
 	}
 
 	render() {
-		// console.log(this.props.activeView);
-		// console.log(this.props.archiveIssues ? this.props.archiveIssues : 'No archive issues');
-		// console.log(this.props.categoryIssues ? this.props.categoryIssues : 'No category issues');
-		let FILTER_DATA = this.returnFilteredData();
-		console.log('UPDATED FILTER_DATA');
-		console.log(FILTER_DATA);
-		// this.setState({ selectedFilter: FILTER_DATA[0][0] });
-
 		return (
 			<View style={{ flex: 1, position: 'relative' }}>
 				<DropdownMenu
-					dropdownPosition={0}
 					style={{ flex: 2, position: 'relative' }}
 					bgColor={'white'}
 					tintColor={'#666666'}
@@ -92,32 +101,50 @@ class DropdownFilter extends Component {
 					// titleStyle={{color: '#333333'}}
 					// maxHeight={300}
 					handler={(selection, row) => {
-						this.setState({ selectedFilter: FILTER_DATA[selection][row] }, () => {
-							console.log('ACTIVE VIEW:', this.props.activeView);
-							console.log('props: ', this.props);
-							console.log(this.props.activeSubscriptionFilter);
+						this.setState(
+							{ selectedFilter: this.state.FILTER_DATA[selection][row] },
+							() => {
+								console.log('ACTIVE VIEW:', this.props.activeView);
+								console.log('props: ', this.props);
+								console.log(this.props.activeSubscriptionFilter);
+								console.log(
+									'ONCHANGE AUDIO: ',
+									this.props.activeSubscriptionFilter.audio &&
+										this.props.activeSubscriptionFilter.audio === true
+										? true
+										: undefined
+								);
 
-							/* If current view is Archiv */
-							if (this.props.activeView === 'archive') {
-								getArchiveContent(
-									this.props.activeSubscriptionFilter.id,
-									this.mapTitleToIssueId(
-										this.state.selectedFilter,
-										this.props.issues
-									)
-								);
-							} /* Rubriken */ else if (this.props.activeView === 'rubriken') {
-								getCategoryContent(
-									this.props.activeSubscriptionFilter.id,
-									this.mapTitleToIssueId(
-										this.state.selectedFilter,
-										this.props.issues
-									)
-								);
+								/* If current view is Archiv */
+								if (this.props.activeView === 'archive') {
+									getArchiveContent(
+										this.props.activeSubscriptionFilter.id,
+										this.mapTitleToIssueId(
+											this.state.selectedFilter,
+											this.props.issues
+										),
+										this.props.activeSubscriptionFilter.audio &&
+											this.props.activeSubscriptionFilter.audio === true
+											? true
+											: undefined
+									);
+								} /* Rubriken */ else if (this.props.activeView === 'rubriken') {
+									getCategoryContent(
+										this.props.activeSubscriptionFilter.id,
+										this.mapTitleToIssueId(
+											this.state.selectedFilter,
+											this.props.issues
+										),
+										this.props.activeSubscriptionFilter.audio &&
+											this.props.activeSubscriptionFilter.audio === true
+											? true
+											: undefined
+									);
+								}
 							}
-						});
+						);
 					}}
-					data={FILTER_DATA}
+					data={this.state.FILTER_DATA}
 				></DropdownMenu>
 				<View style={{ flex: 1 }}>
 					<Text style={{ textAlign: 'center' }}>

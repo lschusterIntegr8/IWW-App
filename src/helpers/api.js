@@ -148,10 +148,14 @@ export const getArchiveIssues = subId => {
 };
 
 /* Returns all archive articles for :issueId and subId */
-export const getArchiveArticles = (subId, issueId) => {
+export const getArchiveArticles = (subId, issueId, audio = undefined) => {
+	const params = {};
+	if (subId) params.application = subId;
+	if (audio) params.audio = audio;
+
 	return new Promise((resolve, reject) => {
 		axios
-			.get(`${BASE_ENDPOINT}/issues/${issueId}?application=${subId}`)
+			.get(`${BASE_ENDPOINT}/issues/${issueId}`, { params })
 			.then(response => {
 				return resolve({ success: true, data: response.data._embedded.contents });
 			})
@@ -194,10 +198,14 @@ export const getCategoryIssues = subId => {
 };
 
 /* Gets all articles of 1 category */
-export const getCategoryArticles = (subId, categoryId) => {
+export const getCategoryArticles = (subId, categoryId, audio = undefined) => {
+	const params = {};
+	if (subId) params.application = subId;
+	if (audio) params.audio = audio;
+
 	return new Promise((resolve, reject) => {
 		axios
-			.get(`${BASE_ENDPOINT}/categories/${categoryId}?application=${subId}`)
+			.get(`${BASE_ENDPOINT}/categories/${categoryId}`, { params })
 			.then(response => {
 				console.log('cat articles: ', response.data._embedded.contents);
 				return resolve({ success: true, data: response.data._embedded.contents });
