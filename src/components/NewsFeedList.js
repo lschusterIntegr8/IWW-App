@@ -9,13 +9,13 @@ import HeaderMenu from '../components/HeaderMenu';
 import SearchBarWrapper from '../components/SearchBarWrapper';
 
 // import { isCloseToBottom } from '../helpers/util/util';
-import {openAudioPlayerModal} from '../redux/actions/index'
+import { openAudioPlayerModal } from '../redux/actions/index';
 import { connect } from 'react-redux';
-import {addTrackToQueu} from '../helpers/audioPlayer'
+import { addTrackToQueu } from '../helpers/audioPlayer';
 
 const mapDispatchToProps = dispatch => {
 	return {
-		openAudioPlayerModal: article => dispatch(openAudioPlayerModal(article)),
+		openAudioPlayerModal: article => dispatch(openAudioPlayerModal(article))
 	};
 };
 class NewsFeedList extends Component {
@@ -54,16 +54,16 @@ class NewsFeedList extends Component {
 			audioVersion
 		);
 
-		if (audioVersion){
+		if (audioVersion) {
 			const articleObj = {
 				audio: articleContent.audio,
 				content: articleContent.content,
 				title: article.title
-			}
-			console.log("article content for audio player: ",articleObj);
-			this.props.openAudioPlayerModal(articleObj); 
+			};
+			console.log('article content for audio player: ', articleObj);
+			this.props.openAudioPlayerModal(articleObj);
 			return addTrackToQueu(articleObj);
-		} 
+		}
 
 		this.props.navigation.navigate('SingleArticle', {
 			article: articleContent, // single article details (content / html)
@@ -113,4 +113,7 @@ NewsFeedList.propTypes = {
 	navigation: PropTypes.object
 };
 
-export default connect(null, mapDispatchToProps)(withNavigation(NewsFeedList));
+export default connect(
+	null,
+	mapDispatchToProps
+)(withNavigation(NewsFeedList));

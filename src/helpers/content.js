@@ -13,7 +13,6 @@ import { getActiveTokens, setActiveTokens } from './tokens';
 import {
 	setSubscriptions,
 	setArticles,
-	addArticle,
 	addSubscriptionArticles,
 	setHomeScreenRefreshing,
 	setArchiveIssues,

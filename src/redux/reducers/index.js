@@ -1,5 +1,4 @@
 import {
-	ADD_ARTICLE,
 	ADD_SUBSCRIPTION_ARTICLES,
 	SET_SUBSCRIPTIONS,
 	SET_ARTICLES,
@@ -9,7 +8,8 @@ import {
 	SET_CATEGORY_ARTICLES,
 	ADD_TO_DOWNLOADS,
 	OPEN_AUDIO_PLAYER_MODAL,
-	SET_FAVOURITES
+	SET_FAVOURITES,
+	APPEND_ARTICLES
 } from '../actions/action-types';
 
 const initialState = {
@@ -65,10 +65,10 @@ function rootReducer(state = initialState, action) {
 				articles: action.payload
 			};
 		}
-		case ADD_ARTICLE: {
+		case APPEND_ARTICLES: {
 			return {
 				...state,
-				articles: [...state.articles, action.payload]
+				articles: [...state.articles, ...action.payload]
 			};
 		}
 		case ADD_SUBSCRIPTION_ARTICLES: {

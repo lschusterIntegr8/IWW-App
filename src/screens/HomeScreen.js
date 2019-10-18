@@ -10,7 +10,7 @@ import InfoServiceWrapper from '../components/InfoService.container';
 import SearchBarWrapper from '../components/SearchBarWrapper';
 import LoadingScreen from '../components/LoadingScreen';
 import AudioPlayerModal from '../components/AudioPlayerModal';
-import { addArticle, setHomeScreenRefreshing, openAudioPlayerModal } from '../redux/actions/index';
+import { setHomeScreenRefreshing, openAudioPlayerModal } from '../redux/actions/index';
 import { isCloseToBottom } from '../helpers/util/util';
 import { initAppContent } from '../helpers/content';
 import TrackPlayer from 'react-native-track-player';
@@ -25,7 +25,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		addArticle: article => dispatch(addArticle(article)),
 		setHomeScreenRefreshing: flag => dispatch(setHomeScreenRefreshing(flag)),
 		openAudioPlayerModal: article => dispatch(openAudioPlayerModal(article))
 	};
@@ -116,6 +115,7 @@ class HomeScreen extends Component {
 		console.log('Onscroll');
 		if (isCloseToBottom(nativeEvent)) {
 			console.warn('Reached end of page --> should load more articles');
+			/* TODO: load next N articles */
 		}
 	}
 

@@ -1,6 +1,5 @@
 import {
 	SET_HOME_SCREEN_REFRESHING,
-	ADD_ARTICLE,
 	GET_TOKEN,
 	SET_ARCHIVE_ISSUES,
 	SET_ARCHIVE_ARTICLES,
@@ -12,7 +11,8 @@ import {
 	ADD_SUBSCRIPTION_ARTICLES,
 	ADD_TO_DOWNLOADS,
 	OPEN_AUDIO_PLAYER_MODAL,
-	SET_FAVOURITES
+	SET_FAVOURITES,
+	APPEND_ARTICLES
 } from './action-types';
 
 /* ACTIONS */
@@ -22,10 +22,10 @@ export function setHomeScreenRefreshing(payload) {
 		payload
 	};
 }
-/* articles */
-export function addArticle(payload) {
+
+export function appendArticles(payload) {
 	return {
-		type: ADD_ARTICLE,
+		type: APPEND_ARTICLES,
 		payload
 	};
 }
