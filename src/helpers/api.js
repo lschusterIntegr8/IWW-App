@@ -231,8 +231,16 @@ export const getCategoryIssues = subId => {
 };
 
 /* Gets all articles of 1 category */
-export const getCategoryArticles = (subId, categoryId, audio = undefined) => {
+export const getCategoryArticles = (
+	subId,
+	categoryId,
+	audio = undefined,
+	skip = undefined,
+	limit = undefined
+) => {
 	const params = {};
+	if (limit) params.limit = limit;
+	if (skip) params.skip = skip;
 	if (subId) params.application = subId;
 	if (audio) params.audio = audio;
 

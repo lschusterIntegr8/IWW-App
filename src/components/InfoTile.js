@@ -121,7 +121,9 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default connect(
-	undefined,
+const InfoTileContainer = connect(
+	null,
 	mapDispatchToProps
-)(withNavigation(InfoTile));
+)(InfoTile);
+
+export default withNavigation(InfoTileContainer);

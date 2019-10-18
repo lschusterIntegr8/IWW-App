@@ -20,7 +20,8 @@ import {
 	setCategoryIssues,
 	setCategoryArticles,
 	addToDownloads,
-	setFavourites
+	setFavourites,
+	appendArticles
 } from '../redux/actions/index';
 import { cleanUrls, matchSubscriptionIdToShortcut } from './util/util';
 
@@ -58,6 +59,41 @@ export const fetchAndSetArticles = async (subId, limit, skip, searchtext, audio)
 	return store.dispatch(setArticles(articles));
 };
 
+export const loadMoreArticles = async (
+	subId,
+	limit,
+	skip,
+	searchtext,
+	audio,
+	issueId,
+	categoryId,
+	articleType // can be: general, subscription, category
+) => {
+	/* CASE1: load more general articles */
+	let articles;
+
+	if (['general', 'subscription'].includes(articleType)) {
+		({ data: articles } = await API.getSubscriptionArticles(
+			subId,
+			limit,
+			skip,
+			searchtext,
+			audio
+		).catch(responseContent => {
+			console.log(responseContent);
+			return responseContent;
+		}));
+	} else if (articleType === 'category') {
+		({ data: articles } = await API.getCategoryArticles(subId, categoryId, audio, skip, limit));
+	} else {
+		console.warn('Unsupported articleType used for loadMoreArticles...');
+	}
+
+	console.info('Appending: ', { articles: articles, articleType });
+
+	return store.dispatch(appendArticles({ articles: articles, articleType }));
+};
+
 /* Set subscription articles */
 export const storeSubscriptionArticles = async (subId, limit, skip, searchtext, audio) => {
 	console.info('STORE SUBS ARTICLES CALLED (content)');
@@ -81,7 +117,6 @@ export const storeSubscriptionArticles = async (subId, limit, skip, searchtext, 
 	}
 
 	/* If subscription articles are not already cached --> fetch and store them to store */
-
 	const { data: articles } = await API.getSubscriptionArticles(
 		subId,
 		limit,

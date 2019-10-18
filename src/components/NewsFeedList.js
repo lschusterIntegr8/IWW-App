@@ -42,19 +42,29 @@ class NewsFeedList extends Component {
 
 	async openArticle(article) {
 		let audioVersion = undefined;
+		let articleContent;
+
 		console.log('Opening: ', this.props.activeSubscriptionFilter);
 		if (this.props.activeSubscriptionFilter && this.props.activeSubscriptionFilter.audio) {
 			console.log('SHOULD OPEN AUDIO VERSION');
 			audioVersion = true;
 		}
 
-		const articleContent = await getArticleContent(
-			article.article_id,
-			article.application_id,
-			audioVersion
-		);
+		if (!audioVersion) {
+			articleContent = getArticleContent(
+				article.article_id,
+				article.application_id,
+				audioVersion
+			);
+		}
 
 		if (audioVersion) {
+			articleContent = await getArticleContent(
+				article.article_id,
+				article.application_id,
+				audioVersion
+			);
+
 			const articleObj = {
 				audio: articleContent.audio,
 				content: articleContent.content,
@@ -113,7 +123,9 @@ NewsFeedList.propTypes = {
 	navigation: PropTypes.object
 };
 
-export default connect(
+const NewsFeedListContainer = connect(
 	null,
 	mapDispatchToProps
-)(withNavigation(NewsFeedList));
+)(NewsFeedList);
+
+export default withNavigation(NewsFeedListContainer);

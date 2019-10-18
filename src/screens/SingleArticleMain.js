@@ -86,6 +86,7 @@ class SingleArticleMain extends Component {
 		if (!this.state.article) {
 			console.log('single article props: ', this.props);
 			const { navigation } = this.props;
+			console.log(navigation.getParam('article', {}));
 			navigation.getParam('article', {}).then(data => {
 				console.log('PROMISE DATA: ', data);
 				let articleBasic = navigation.getParam('articleBasic', {});

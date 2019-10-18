@@ -27,14 +27,12 @@ const migrations = {
 			activeSubscriptionFilter: undefined
 		};
 	},
-	7: state => {
+	12: state => {
 		return {
-			...state,
-			aboArticles: [],
-			homeScreenRefreshing: false,
-			activeSubscriptionFilter: undefined,
-			archiveIssues: [],
-			archiveArticles: []
+			rootReducer: {
+				...state.rootReducer,
+				audioPlayerModal: []
+			}
 		};
 	}
 };
@@ -45,7 +43,7 @@ const persistConfig = {
 	// Storage Method (React Native)
 	storage: AsyncStorage,
 	// migrate: createMigrate(migrations, { debug: true }),
-	// version: 7,
+	// version: 12,
 	blacklist: ['sessionReducer']
 	// stateReconciler: autoMergeLevel2
 

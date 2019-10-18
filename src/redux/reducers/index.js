@@ -9,7 +9,8 @@ import {
 	ADD_TO_DOWNLOADS,
 	OPEN_AUDIO_PLAYER_MODAL,
 	SET_FAVOURITES,
-	APPEND_ARTICLES
+	APPEND_ARTICLES,
+	APPEND_SUBSCRIPTION_ARTICLES
 } from '../actions/action-types';
 
 const initialState = {
@@ -24,6 +25,51 @@ const initialState = {
 	audioPlayerModal: [],
 	favouriteArticles: []
 };
+
+const addSubscriptionArticles = (state, action) => {
+	console.log('ADD_SUBSCRIPTION_ARTICLES');
+	console.log(action.payload); // .
+	/* Find place where to store articles */
+	const receivedArticles = action.payload;
+	const storedArticles = state.aboArticles;
+	let aboIndex = 0;
+	for (const storedAbo of storedArticles) {
+		aboIndex++;
+		if (storedAbo.id === receivedArticles.id && storedAbo.audio === receivedArticles.audio) {
+			/* If abo articles with ID already exist --> set new ones there */
+			let storedAboArticles = storedAbo;
+			storedAboArticles.articles = receivedArticles.articles;
+
+			storedArticles[aboIndex] = storedAboArticles;
+
+			console.info('TRYING TO RETURN');
+			console.log({
+				...state,
+				aboArticles: storedArticles
+			});
+
+			return {
+				...state,
+				aboArticles: storedArticles
+			};
+		}
+	}
+
+	/* If the artilces are not yet stored --> append them to the articles abo */
+	return {
+		...state,
+		aboArticles: [
+			...state.aboArticles,
+			{
+				id: receivedArticles.id,
+				audio: receivedArticles.audio,
+				articles: receivedArticles.articles
+			}
+		]
+	};
+};
+
+const appendSubscriptionArticles = (state, action) => {};
 
 function rootReducer(state = initialState, action) {
 	console.log('PAYLOAD:\n', action.payload);
@@ -66,55 +112,30 @@ function rootReducer(state = initialState, action) {
 			};
 		}
 		case APPEND_ARTICLES: {
-			return {
-				...state,
-				articles: [...state.articles, ...action.payload]
-			};
+			if (action.payload.articleType === 'general') {
+				return {
+					...state,
+					articles: [...state.articles, ...action.payload.articles]
+				};
+			} else if (action.payload.articleType === 'subscription') {
+				// return appendSubscriptionArticles(state, action);
+			} else if (action.payload.articleType === 'category') {
+				return {
+					...state,
+					categoryArticles: [...state.categoryArticles, ...action.payload.articles]
+				};
+			} else {
+				console.log('Missing flag articleType inside reducer ...');
+				return {
+					...state
+				};
+			}
 		}
 		case ADD_SUBSCRIPTION_ARTICLES: {
-			console.log('ADD_SUBSCRIPTION_ARTICLES');
-			console.log(action.payload); // .
-			/* Find place where to store articles */
-			const receivedArticles = action.payload;
-			const storedArticles = state.aboArticles;
-			let aboIndex = 0;
-			for (const storedAbo of storedArticles) {
-				aboIndex++;
-				if (
-					storedAbo.id === receivedArticles.id &&
-					storedAbo.audio === receivedArticles.audio
-				) {
-					/* If abo articles with ID already exist --> set new ones there */
-					let storedAboArticles = storedAbo;
-					storedAboArticles.articles = receivedArticles.articles;
-
-					storedArticles[aboIndex] = storedAboArticles;
-
-					console.info('TRYING TO RETURN');
-					console.log({
-						...state,
-						aboArticles: storedArticles
-					});
-
-					return {
-						...state,
-						aboArticles: storedArticles
-					};
-				}
-			}
-
-			/* If the artilces are not yet stored --> append them to the articles abo */
-			return {
-				...state,
-				aboArticles: [
-					...state.aboArticles,
-					{
-						id: receivedArticles.id,
-						audio: receivedArticles.audio,
-						articles: receivedArticles.articles
-					}
-				]
-			};
+			return addSubscriptionArticles(state, action);
+		}
+		case APPEND_SUBSCRIPTION_ARTICLES: {
+			return appendSubscriptionArticles(state, action);
 		}
 		case ADD_TO_DOWNLOADS: {
 			for (const dlArticle of state.downloadedArticles) {

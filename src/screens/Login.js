@@ -182,9 +182,4 @@ const styles = {
 	}
 };
 
-// const LoginScreen = connect(
-// 	mapStateToProps,
-// 	mapDispatchToProps
-// )(Login);
-
 export default withNavigation(Login);

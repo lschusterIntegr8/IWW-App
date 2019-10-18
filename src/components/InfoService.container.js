@@ -80,4 +80,5 @@ const InfoServiceWrapperContainer = connect(
 	mapStateToProps,
 	mapDispatchToProps
 )(InfoServiceWrapper);
+
 export default InfoServiceWrapperContainer;
