@@ -1,16 +1,27 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, Image, StyleSheet, ScrollView, FlatList } from 'react-native';
+import {
+	View,
+	Text,
+	TextInput,
+	Image,
+	StyleSheet,
+	ScrollView,
+	FlatList,
+	RefreshControl
+} from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ArticleCard from '../components/ArticleCard';
 import HeaderMenu from '../components/HeaderMenu';
 import { getArticleContent, getAllFavourites } from '../helpers/content';
+import LoadingScreen from '../components/LoadingScreen';
 
 import COLOR from '../config/colors';
 
 const mapStateToProps = state => {
 	return {
-		favouriteArticles: state.rootReducer.favouriteArticles
+		favouriteArticles: state.rootReducer.favouriteArticles,
+		homeScreenRefreshing: state.sessionReducer.homeScreenRefreshing
 	};
 };
 
@@ -30,7 +41,9 @@ class Favourites extends Component {
 	componentDidMount() {
 		console.log(this.props.favouriteArticles);
 		if (this.props.favouriteArticles.length === 0) {
-			getAllFavourites();
+			getAllFavourites().catch(err => {
+				console.warn(err);
+			});
 		}
 	}
 
@@ -48,6 +61,12 @@ class Favourites extends Component {
 		});
 	}
 
+	_onRefresh() {
+		getAllFavourites().catch(err => {
+			console.warn(err);
+		});
+	}
+
 	renderItem({ item }) {
 		return <ArticleCard key={item.article_id} article={item} handlePress={this.openArticle} />;
 	}
@@ -57,6 +76,7 @@ class Favourites extends Component {
 			<View style={styles.mainContent}>
 				{/* <HeaderMenu /> */}
 				<HeaderMenu />
+				{this.props.homeScreenRefreshing && <LoadingScreen />}
 				<FlatList
 					data={this.props.favouriteArticles}
 					renderItem={this.renderItem}
@@ -67,6 +87,14 @@ class Favourites extends Component {
 							<Text style={styles.inhalteHeading}>Favoriten</Text>
 						</View>
 					)}
+					refreshControl={
+						<RefreshControl
+							refreshing={false}
+							onRefresh={this._onRefresh}
+							style={{ zIndex: 99 }}
+							zIndex={99}
+						/>
+					}
 				/>
 			</View>
 		);

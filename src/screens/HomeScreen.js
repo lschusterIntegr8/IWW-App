@@ -27,7 +27,7 @@ const mapDispatchToProps = dispatch => {
 	return {
 		addArticle: article => dispatch(addArticle(article)),
 		setHomeScreenRefreshing: flag => dispatch(setHomeScreenRefreshing(flag)),
-		openAudioPlayerModal: (article) => dispatch(openAudioPlayerModal(article))
+		openAudioPlayerModal: article => dispatch(openAudioPlayerModal(article))
 	};
 };
 
@@ -49,13 +49,15 @@ class HomeScreen extends Component {
 
 	BackGroundHandler = async () => {
 		TrackPlayer.setupPlayer();
-		TrackPlayer.updateOptions({capabilities: [
+		TrackPlayer.updateOptions({
+			capabilities: [
 				TrackPlayer.CAPABILITY_PLAY,
 				TrackPlayer.CAPABILITY_PAUSE,
 				TrackPlayer.CAPABILITY_STOP,
 				TrackPlayer.CAPABILITY_SEEK_TO
-			],});		
-		}
+			]
+		});
+	};
 	/* TODO: Fetch fresh articles and set to store */
 	_onRefresh = async () => {
 		console.info('Refreshing home screen...');
@@ -64,37 +66,37 @@ class HomeScreen extends Component {
 		await initAppContent(true, this.props);
 		this.props.setHomeScreenRefreshing(false);
 	};
-	
-	_playHandler = async ()=>{
+
+	_playHandler = async () => {
 		try {
 			await TrackPlayer.play();
 		} catch (error) {
-			console.error(error)
+			console.error(error);
 		}
 	};
-	
+
 	_pauseHandler = async () => {
 		try {
 			await TrackPlayer.pause();
 		} catch (error) {
-			console.error(error)
+			console.error(error);
 		}
 	};
-	
+
 	_stopHandler = async () => {
 		try {
 			await TrackPlayer.reset();
 			this.props.openAudioPlayerModal([]);
 		} catch (error) {
-			console.error(error)
+			console.error(error);
 		}
 	};
-	
-	_audioPositionHandler = async (value) =>{
+
+	_audioPositionHandler = async value => {
 		try {
 			await TrackPlayer.seekTo(value);
 		} catch (error) {
-			console.error(error)
+			console.error(error);
 		}
 	};
 
@@ -139,7 +141,7 @@ class HomeScreen extends Component {
 						}}
 						refreshControl={
 							<RefreshControl
-								refreshing={this.props.homeScreenRefreshing}
+								refreshing={false}
 								onRefresh={this._onRefresh}
 								style={{ zIndex: 99 }}
 								zIndex={99}
@@ -164,15 +166,17 @@ class HomeScreen extends Component {
 							options={{ screenRoute: 'home' }}
 						/>
 					</ScrollView>
-					{this.props.activeSubscriptionFilter && this.props.activeSubscriptionFilter.audio  && this.props.audioPlayerModal.audio && 
-										<AudioPlayerModal 
-										article = {this.props.audioPlayerModal}
-										playHandler={this._playHandler}
-										stopHandler={this._stopHandler}
-										pauseHandler={this._pauseHandler}
-										audioPositionHandler={this._audioPositionHandler}
-					/>}
-
+					{this.props.activeSubscriptionFilter &&
+						this.props.activeSubscriptionFilter.audio &&
+						this.props.audioPlayerModal.audio && (
+							<AudioPlayerModal
+								article={this.props.audioPlayerModal}
+								playHandler={this._playHandler}
+								stopHandler={this._stopHandler}
+								pauseHandler={this._pauseHandler}
+								audioPositionHandler={this._audioPositionHandler}
+							/>
+						)}
 				</SafeAreaView>
 				{this.props.homeScreenRefreshing && <LoadingScreen />}
 			</View>
