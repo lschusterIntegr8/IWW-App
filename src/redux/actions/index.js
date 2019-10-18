@@ -11,7 +11,8 @@ import {
 	SET_ARTICLES,
 	ADD_SUBSCRIPTION_ARTICLES,
 	ADD_TO_DOWNLOADS,
-	OPEN_AUDIO_PLAYER_MODAL
+	OPEN_AUDIO_PLAYER_MODAL,
+	SET_FAVOURITES
 } from './action-types';
 
 /* ACTIONS */
@@ -94,6 +95,13 @@ export function addToDownloads(payload) {
 export function openAudioPlayerModal(payload) {
 	return {
 		type: OPEN_AUDIO_PLAYER_MODAL,
+		payload
+	};
+}
+
+export function setFavourites(payload) {
+	return {
+		type: SET_FAVOURITES,
 		payload
 	};
 }

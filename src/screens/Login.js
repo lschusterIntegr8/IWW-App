@@ -125,6 +125,7 @@ class Login extends React.Component {
 					setValidity={this.setValidity}
 					isValidInput={this.state.isValidInput}
 					handleSubmit={this.handleSubmit}
+					isLoading={this.state.isLoading}
 				/>
 				{this.state.isLoading ? (
 					<View style={styles.indicatorContainer}>

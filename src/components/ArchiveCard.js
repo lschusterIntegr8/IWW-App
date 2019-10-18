@@ -11,6 +11,17 @@ import {
 import { storeArticleToDownloads } from '../helpers/content';
 import { store } from '../redux/store';
 
+const isArticleAlreadyDownloaded = (downloadedArticles, article) => {
+	// console.log('Called isarticlealreadydl with: ', article.article_id);
+
+	for (const downloadedArticle of downloadedArticles) {
+		if (downloadedArticle.article_id === article.article_id) {
+			return true;
+		}
+	}
+	return false;
+};
+
 const ArchiveCard = props => (
 	<View style={styles.cardContainer}>
 		<TouchableOpacity
@@ -22,10 +33,16 @@ const ArchiveCard = props => (
 					console.warn(err);
 				});
 			}}
+			disabled={isArticleAlreadyDownloaded(props.downloadedArticles, props.article)}
 		>
 			<Image
 				source={require('../assets/images/download-icon.png')}
-				style={{ width: '100%' }}
+				style={[
+					styles.fullWidthImage,
+					isArticleAlreadyDownloaded(props.downloadedArticles, props.article)
+						? { opacity: 0.12 }
+						: { opacity: 1 }
+				]}
 				elevation={3}
 				resizeMode="contain"
 			/>
@@ -79,6 +96,9 @@ const styles = StyleSheet.create({
 		width: '100%',
 		paddingHorizontal: 16,
 		alignSelf: 'center'
+	},
+	fullWidthImage: {
+		width: '100%'
 	},
 	clickableArea: {
 		flex: 1,

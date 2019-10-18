@@ -71,7 +71,14 @@ class ArchiveFeedList extends Component {
 	}
 
 	renderItem({ item }) {
-		return <ArchiveCard key={item.articleId} article={item} handlePress={this.openArticle} />;
+		return (
+			<ArchiveCard
+				key={item.articleId}
+				article={item}
+				handlePress={this.openArticle}
+				downloadedArticles={this.props.downloadedArticles}
+			/>
+		);
 	}
 
 	componentDidMount() {
@@ -145,7 +152,8 @@ ArchiveFeedList.propTypes = {
 	articles: PropTypes.array,
 	issues: PropTypes.array,
 	navigation: PropTypes.object,
-	activeView: PropTypes.string
+	activeView: PropTypes.string,
+	downloadedArticles: PropTypes.array
 };
 const ArchiveFeedListContainer = connect(null, mapDispatchToProps)(ArchiveFeedList)
 export default withNavigation(ArchiveFeedListContainer);

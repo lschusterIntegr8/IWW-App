@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import { store, persistor } from '../redux/store/index';
+import { NavigationActions } from 'react-navigation';
 
 import * as API from './api';
 import * as storageHelper from './storage';
@@ -39,7 +40,15 @@ export const initAppStart = async props => {
 
 		if (fetchedTokens.navigation) {
 			console.log('Navigating to: ', fetchedTokens.navigation);
-			return props.navigation.navigate(fetchedTokens.navigation);
+
+			const navigateAction = NavigationActions.navigate({
+				routeName: fetchedTokens.navigation,
+				params: {},
+
+				action: NavigationActions.navigate({ routeName: fetchedTokens.navigation })
+			});
+
+			return props.navigation.dispatch(navigateAction);
 		}
 
 		await setActiveTokens(fetchedTokens);

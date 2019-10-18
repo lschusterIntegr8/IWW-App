@@ -8,7 +8,8 @@ import {
 	SET_CATEGORY_ISSUES,
 	SET_CATEGORY_ARTICLES,
 	ADD_TO_DOWNLOADS,
-	OPEN_AUDIO_PLAYER_MODAL
+	OPEN_AUDIO_PLAYER_MODAL,
+	SET_FAVOURITES
 } from '../actions/action-types';
 
 const initialState = {
@@ -21,6 +22,7 @@ const initialState = {
 	categoryArticles: [],
 	downloadedArticles: [],
 	audioPlayerModal: [],
+	favouriteArticles: []
 };
 
 function rootReducer(state = initialState, action) {
@@ -134,6 +136,12 @@ function rootReducer(state = initialState, action) {
 			return {
 				...state,
 				audioPlayerModal: action.payload
+			};
+		}
+		case SET_FAVOURITES: {
+			return {
+				...state,
+				favouriteArticles: action.payload
 			};
 		}
 	}

@@ -3,6 +3,7 @@ import { store, persistor } from '../redux/store/index';
 import {
 	getArticles,
 	getSubscriptions,
+	getSubscriptionIDs,
 	getDownloadedArticleContents
 } from '../redux/selectors/content.selector';
 
@@ -19,7 +20,8 @@ import {
 	setArchiveArticles,
 	setCategoryIssues,
 	setCategoryArticles,
-	addToDownloads
+	addToDownloads,
+	setFavourites
 } from '../redux/actions/index';
 import { cleanUrls, matchSubscriptionIdToShortcut } from './util/util';
 
@@ -111,8 +113,9 @@ export const fetchAndSetSubscriptions = async () => {
 		store.dispatch(setSubscriptions(subscriptions));
 		return { navigation: 'App' };
 	} catch (err) {
-		console.error('Error fetchAndSetSubscriptions');
-		console.error(err);
+		console.warn('Error fetchAndSetSubscriptions');
+		console.warn(err);
+		throw err;
 	}
 };
 
@@ -147,7 +150,7 @@ export const getArticleContent = async (
 	const { data: articleContent } = await API.singleArticleContent(articleId, audioVersion).catch(
 		err => {
 			console.log(err);
-			return err;
+			throw err;
 		}
 	);
 
@@ -183,8 +186,12 @@ export const getArchiveContent = async (subId, issueID = undefined, audioVersion
 		if (!issueID) {
 			/* Get archive issues and select first issue (default) and set to store */
 			console.info('ArchiveIssueID not provided --> fetching archive issues');
-			let archiveIssues = await API.getArchiveIssues(subId).catch(issuesErr => {
-				throw new Error('Archive issues could not be fetched for subId: ', subId);
+			let archiveIssues = await API.getArchiveIssues(subId).catch(async issuesErr => {
+				console.warn('Archive issues could not be fetched for subId: ', subId);
+				console.info('RETRYING ARCHIVE CONTENT in 1 sec');
+				await new Promise(r => setTimeout(r, 1000));
+				console.info('RETRY');
+				return getArchiveContent(subId, issueID, audioVersion);
 			});
 			console.info('ARCHIVE ISSUES');
 			archiveIssues = archiveIssues.data;
@@ -230,8 +237,8 @@ export const getArchiveContent = async (subId, issueID = undefined, audioVersion
 		return store.dispatch(setArchiveArticles(archiveArticlesFiltered));
 	} catch (err) {
 		store.dispatch(setHomeScreenRefreshing(false));
-		console.error(err);
-		return err;
+		console.warn(err);
+		throw err;
 	}
 };
 
@@ -255,7 +262,10 @@ export const getCategoryContent = async (subId, issueID = undefined, audioVersio
 			/* Get category issues and select first issue (default) and set to store */
 			console.info('CategoryIssueID not provided --> fetching category issues');
 			let categoryIssues = await API.getCategoryIssues(subId).catch(issuesErr => {
-				throw new Error('Category issues could not be fetched for subId: ', subId);
+				console.warn('Category issues could not be fetched for subId: ', subId);
+				setTimeout(() => {
+					return getCategoryContent(subId, issueID, audioVersion);
+				}, 1000);
 			});
 			console.info('CATEGORY ISSUES');
 			categoryIssues = categoryIssues.data;
@@ -305,8 +315,41 @@ export const getCategoryContent = async (subId, issueID = undefined, audioVersio
 		return store.dispatch(setCategoryArticles(categoryArticlesFiltered));
 	} catch (err) {
 		store.dispatch(setHomeScreenRefreshing(false));
-		console.error(err);
+		console.warn(err);
 		return err;
+	}
+};
+
+/* Fetches for every infodienst the favourites list and combines + stores to redux */
+export const getAllFavourites = async () => {
+	try {
+		const allSubIds = getSubscriptionIDs(store.getState());
+		console.log('ALL SUB IDS: ', allSubIds);
+		store.dispatch(setHomeScreenRefreshing(true));
+		const favPromises = [];
+		/* Fetch for all infodienste --> doing multiple requests for every infodienst (*tnx iww*) */
+		for (let subIndex = 0; subIndex < allSubIds.length; subIndex += 1) {
+			console.log('Called for '.subIndex);
+			favPromises.push(API.getFavourites(allSubIds[subIndex]));
+		}
+
+		Promise.all(favPromises).then(combinedPromiseData => {
+			console.log('combinedPromiseData: ', combinedPromiseData);
+			const formattedFavourites = [];
+
+			/* Combine all responses to a single formatted array of favourites */
+			for (const req of combinedPromiseData) {
+				for (const reqData of req.data) {
+					formattedFavourites.push(reqData);
+				}
+			}
+
+			console.log('formattedFavourites: ', formattedFavourites);
+			store.dispatch(setHomeScreenRefreshing(false));
+			store.dispatch(setFavourites(formattedFavourites));
+		});
+	} catch (err) {
+		console.warn(err);
 	}
 };
 
@@ -325,8 +368,8 @@ export const initAppContent = async (fetchNew, props) => {
 		if (fetchNew) {
 			console.info('HEARD FETCH NEW FLAG');
 			const tokens = await getActiveTokens().catch(err => {
-				console.error("TOKEN CAN'T BE fetched");
-				console.error(err);
+				console.warn("TOKEN CAN'T BE fetched");
+				console.warn(err);
 				return err;
 			});
 
@@ -336,8 +379,8 @@ export const initAppContent = async (fetchNew, props) => {
 			}
 
 			const refreshedTokens = await API.refreshToken(tokens.refreshToken).catch(err => {
-				console.error("TOKEN CAN'T BE REFRESHED");
-				console.error(err);
+				console.warn("TOKEN CAN'T BE REFRESHED");
+				console.warn(err);
 				return err;
 			});
 
@@ -389,9 +432,9 @@ export const initAppContent = async (fetchNew, props) => {
 			// return props.navigation.navigate('App');
 		}
 	} catch (err) {
-		console.error('INIT APP CONTENT ERR');
-		console.error(err);
-		throw err;
+		console.warn('INIT APP CONTENT ERR');
+		console.warn(err);
+		return props.navigation.navigate('Authentication');
 	}
 };
 

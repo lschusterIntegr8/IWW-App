@@ -22,6 +22,7 @@ import SingleArticleMain from './screens/SingleArticleMain';
 import Search from './screens/Search';
 import CustomSidebarMenu from './components/CustomSidebarMenu';
 import Downloads from './screens/Downloads';
+import Favourites from './screens/Favourites';
 
 /* Detect in-out screen and create a transition of your choice */
 const handleCustomTransition = ({ scenes }) => {
@@ -152,7 +153,7 @@ const AppNavigator = createDrawerNavigator(
 			}
 		},
 		Favoriten: {
-			screen: NewsStack,
+			screen: Favourites,
 			navigationOptions: {
 				title: 'Favoriten'
 				// drawerLabel: () => null //hidden from drawer,,
