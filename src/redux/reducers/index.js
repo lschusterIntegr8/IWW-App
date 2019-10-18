@@ -7,7 +7,8 @@ import {
 	SET_ARCHIVE_ARTICLES,
 	SET_CATEGORY_ISSUES,
 	SET_CATEGORY_ARTICLES,
-	ADD_TO_DOWNLOADS
+	ADD_TO_DOWNLOADS,
+	OPEN_AUDIO_PLAYER_MODAL
 } from '../actions/action-types';
 
 const initialState = {
@@ -18,7 +19,8 @@ const initialState = {
 	archiveArticles: [],
 	categoryIssues: [],
 	categoryArticles: [],
-	downloadedArticles: []
+	downloadedArticles: [],
+	audioPlayerModal: [],
 };
 
 function rootReducer(state = initialState, action) {
@@ -126,6 +128,12 @@ function rootReducer(state = initialState, action) {
 			return {
 				...state,
 				downloadedArticles: [...state.downloadedArticles, action.payload]
+			};
+		}
+		case OPEN_AUDIO_PLAYER_MODAL: {
+			return {
+				...state,
+				audioPlayerModal: action.payload
 			};
 		}
 	}

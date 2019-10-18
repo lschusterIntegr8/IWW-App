@@ -10,7 +10,8 @@ import {
 	TOGGLE_ACTIVE_SUB_FILTER,
 	SET_ARTICLES,
 	ADD_SUBSCRIPTION_ARTICLES,
-	ADD_TO_DOWNLOADS
+	ADD_TO_DOWNLOADS,
+	OPEN_AUDIO_PLAYER_MODAL
 } from './action-types';
 
 /* ACTIONS */
@@ -86,6 +87,13 @@ export function setActiveSubFilter(payload) {
 export function addToDownloads(payload) {
 	return {
 		type: ADD_TO_DOWNLOADS,
+		payload
+	};
+}
+
+export function openAudioPlayerModal(payload) {
+	return {
+		type: OPEN_AUDIO_PLAYER_MODAL,
 		payload
 	};
 }

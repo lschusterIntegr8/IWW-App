@@ -15,7 +15,14 @@ import { v4 } from 'uuid';
 import ArchiveCard from './ArchiveCard';
 import DropdownFilter from './DropdownFilter';
 import { getArchiveContent, getArticleContent } from '../helpers/content';
+import {openAudioPlayerModal} from '../redux/actions/index'
+import {addTrackToQueu} from '../helpers/audioPlayer'
 
+const mapDispatchToProps = dispatch => {
+	return {
+		openAudioPlayerModal: article => dispatch(openAudioPlayerModal(article)),
+	};
+};
 class ArchiveFeedList extends Component {
 	constructor(props) {
 		super(props);
@@ -40,11 +47,22 @@ class ArchiveFeedList extends Component {
 			audioVersion = true;
 		}
 
-		const articleContent = getArticleContent(
+		const articleContent =  getArticleContent(
 			article.article_id,
 			article.application_id,
 			audioVersion
 		);
+		if (audioVersion){
+			let articleContentData = await articleContent;
+			const articleObj = {
+				audio: articleContentData.audio,
+				content: articleContentData.content,
+				title: article.title
+			}
+			console.log("article content for audio player: ",articleObj);
+			this.props.openAudioPlayerModal(articleObj); 
+			return addTrackToQueu(articleObj);
+		} 
 
 		this.props.navigation.navigate('SingleArticle', {
 			article: articleContent, // single article details (content / html)
@@ -129,5 +147,5 @@ ArchiveFeedList.propTypes = {
 	navigation: PropTypes.object,
 	activeView: PropTypes.string
 };
-
-export default withNavigation(ArchiveFeedList);
+const ArchiveFeedListContainer = connect(null, mapDispatchToProps)(ArchiveFeedList)
+export default withNavigation(ArchiveFeedListContainer);

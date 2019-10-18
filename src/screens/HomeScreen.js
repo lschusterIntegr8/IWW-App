@@ -9,21 +9,25 @@ import NestedNews from '../screens/NestedNews';
 import InfoServiceWrapper from '../components/InfoService.container';
 import SearchBarWrapper from '../components/SearchBarWrapper';
 import LoadingScreen from '../components/LoadingScreen';
-import { addArticle, setHomeScreenRefreshing } from '../redux/actions/index';
+import AudioPlayerModal from '../components/AudioPlayerModal';
+import { addArticle, setHomeScreenRefreshing, openAudioPlayerModal } from '../redux/actions/index';
 import { isCloseToBottom } from '../helpers/util/util';
 import { initAppContent } from '../helpers/content';
+import TrackPlayer from 'react-native-track-player';
 
 const mapStateToProps = state => {
 	return {
 		activeSubscriptionFilter: state.sessionReducer.activeSubscriptionFilter,
-		homeScreenRefreshing: state.sessionReducer.homeScreenRefreshing
+		homeScreenRefreshing: state.sessionReducer.homeScreenRefreshing,
+		audioPlayerModal: state.rootReducer.audioPlayerModal
 	};
 };
 
 const mapDispatchToProps = dispatch => {
 	return {
 		addArticle: article => dispatch(addArticle(article)),
-		setHomeScreenRefreshing: flag => dispatch(setHomeScreenRefreshing(flag))
+		setHomeScreenRefreshing: flag => dispatch(setHomeScreenRefreshing(flag)),
+		openAudioPlayerModal: (article) => dispatch(openAudioPlayerModal(article))
 	};
 };
 
@@ -43,6 +47,15 @@ class HomeScreen extends Component {
 		}
 	};
 
+	BackGroundHandler = async () => {
+		TrackPlayer.setupPlayer();
+		TrackPlayer.updateOptions({capabilities: [
+				TrackPlayer.CAPABILITY_PLAY,
+				TrackPlayer.CAPABILITY_PAUSE,
+				TrackPlayer.CAPABILITY_STOP,
+				TrackPlayer.CAPABILITY_SEEK_TO
+			],});		
+		}
 	/* TODO: Fetch fresh articles and set to store */
 	_onRefresh = async () => {
 		console.info('Refreshing home screen...');
@@ -51,11 +64,45 @@ class HomeScreen extends Component {
 		await initAppContent(true, this.props);
 		this.props.setHomeScreenRefreshing(false);
 	};
+	
+	_playHandler = async ()=>{
+		try {
+			await TrackPlayer.play();
+		} catch (error) {
+			console.error(error)
+		}
+	};
+	
+	_pauseHandler = async () => {
+		try {
+			await TrackPlayer.pause();
+		} catch (error) {
+			console.error(error)
+		}
+	};
+	
+	_stopHandler = async () => {
+		try {
+			await TrackPlayer.reset();
+			this.props.openAudioPlayerModal([]);
+		} catch (error) {
+			console.error(error)
+		}
+	};
+	
+	_audioPositionHandler = async (value) =>{
+		try {
+			await TrackPlayer.seekTo(value);
+		} catch (error) {
+			console.error(error)
+		}
+	};
 
 	componentDidMount() {
 		console.log('STATE: ', this.props);
 		console.log('REFRESHING: ', this.props.homeScreenRefreshing);
 		console.log('ROUTE : ', this.props.navigation);
+		this.BackGroundHandler();
 		this.setState({
 			routeRenderOptions: {
 				routeName: this.props.navigation.state.routeName
@@ -117,6 +164,15 @@ class HomeScreen extends Component {
 							options={{ screenRoute: 'home' }}
 						/>
 					</ScrollView>
+					{this.props.activeSubscriptionFilter && this.props.activeSubscriptionFilter.audio  && this.props.audioPlayerModal.audio && 
+										<AudioPlayerModal 
+										article = {this.props.audioPlayerModal}
+										playHandler={this._playHandler}
+										stopHandler={this._stopHandler}
+										pauseHandler={this._pauseHandler}
+										audioPositionHandler={this._audioPositionHandler}
+					/>}
+
 				</SafeAreaView>
 				{this.props.homeScreenRefreshing && <LoadingScreen />}
 			</View>
