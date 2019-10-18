@@ -10,7 +10,8 @@ import {
 	TOGGLE_ACTIVE_SUB_FILTER,
 	SET_ARTICLES,
 	ADD_SUBSCRIPTION_ARTICLES,
-	ADD_TO_DOWNLOADS
+	ADD_TO_DOWNLOADS,
+	SET_FAVOURITES
 } from './action-types';
 
 /* ACTIONS */
@@ -86,6 +87,13 @@ export function setActiveSubFilter(payload) {
 export function addToDownloads(payload) {
 	return {
 		type: ADD_TO_DOWNLOADS,
+		payload
+	};
+}
+
+export function setFavourites(payload) {
+	return {
+		type: SET_FAVOURITES,
 		payload
 	};
 }

@@ -7,6 +7,18 @@ export const getSubscriptionArticles = state => state.rootReducer.aboArticles;
 export const getArchiveIssues = state => state.rootReducer.archiveIssues;
 export const getArchiveArticles = state => state.rootReducer.archiveArticles;
 export const getDownloads = state => state.rootReducer.downloadedArticles;
+export const isHomescreenRefreshing = state => state.sessionReducer.homeScreenRefreshing;
+
+export const getSubscriptionIDs = state => {
+	const allSubIDs = [];
+	for (const sub of getSubscriptions(state)) {
+		if (!allSubIDs.includes(sub.id)) {
+			allSubIDs.push(sub.id);
+		}
+	}
+
+	return allSubIDs;
+};
 
 export const mapSubscriptionIdToShortcut = (state, subId) => {
 	for (const sub of getSubscriptions(state)) {
@@ -28,12 +40,20 @@ export const mapSubscriptionIdToTileColor = (state, subId) => {
 	return undefined;
 };
 
-export const test = createSelector(
-	getArticles,
-	test => {
-		return test;
-	}
-);
+// export const isArticleAlreadyDownloaded = (state, article) => {
+// 	if (!isHomescreenRefreshing(state)) {
+// 		console.log('Called isarticlealreadydl with: ', article.article_id);
+
+// 		for (const downloadedArticle of getDownloads(state)) {
+// 			if (downloadedArticle.article_id === article.article_id) {
+// 				return true;
+// 			}
+// 		}
+// 		return false;
+// 	}
+
+// 	console.log('Still refreshing ...');
+// };
 
 function isObject(value) {
 	return value && typeof value === 'object' && value.constructor === Object;

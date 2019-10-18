@@ -53,7 +53,14 @@ class CategoryFeedList extends Component {
 	}
 
 	renderItem({ item }) {
-		return <ArchiveCard key={item.articleId} article={item} handlePress={this.openArticle} />;
+		return (
+			<ArchiveCard
+				key={item.articleId}
+				article={item}
+				handlePress={this.openArticle}
+				downloadedArticles={this.props.downloadedArticles}
+			/>
+		);
 	}
 
 	componentDidMount() {
@@ -82,6 +89,8 @@ class CategoryFeedList extends Component {
 			console.log(
 				`Prev ${this.props.activeSubscriptionFilter.id}, new ${nextProps.activeSubscriptionFilter.id}`
 			);
+
+			console.log('SUBID GETCATEGORYCONTENT: ', nextProps.activeSubscriptionFilter.id);
 			getCategoryContent(
 				nextProps.activeSubscriptionFilter.id,
 				undefined,

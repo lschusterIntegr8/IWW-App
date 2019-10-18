@@ -47,7 +47,13 @@ class FormGroup extends React.Component<any, any> {
 									titleStyle={{ fontSize: 13, fontWeight: 'bold' }}
 									title="ANMELDEN"
 									onPress={this.props.handleSubmit}
-									disabled={!this.props.isValidInput ? true : false}
+									disabled={
+										!this.props.isValidInput
+											? true
+											: this.props.isLoading
+											? true
+											: false
+									}
 								/>
 							</Fragment>
 						),
@@ -103,6 +109,7 @@ const styles = StyleSheet.create({
 FormGroup.propTypes = {
 	navigation: PropTypes.object,
 	formType: PropTypes.string,
-	handleSubmit: PropTypes.func
+	handleSubmit: PropTypes.func,
+	isLoading: PropTypes.bool
 };
 export default withNavigation(FormGroup);

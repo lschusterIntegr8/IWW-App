@@ -13,7 +13,7 @@ import { WebView } from 'react-native-webview';
 import PropTypes from 'prop-types';
 import HTML from 'react-native-render-html';
 import Video from 'react-native-video';
-import TrackPlayer from 'react-native-track-player'
+import TrackPlayer from 'react-native-track-player';
 
 import { checkAndPrependToUrl } from '../helpers/util/util';
 
@@ -25,23 +25,37 @@ class SingleArticleMain extends Component {
 	state = {
 		article: undefined
 	};
-	componentDidMount(){
-		this.backgroundAudioRender();
+	componentDidMount() {
+		// this.backgroundAudioRender();
 	}
 	backgroundAudioRender(article) {
 		TrackPlayer.setupPlayer().then(async () => {
+			// TrackPlayer.registerPlaybackService(async () => {
+			// 	TrackPlayer.addEventListener('remote-play', () => TrackPlayer.play());
+
+			// 	TrackPlayer.addEventListener('remote-pause', () => TrackPlayer.pause());
+
+			// 	TrackPlayer.addEventListener('remote-stop', () => TrackPlayer.destroy());
+			// });
+
+			TrackPlayer.updateOptions({
+				capabilities: [
+					TrackPlayer.CAPABILITY_PLAY,
+					TrackPlayer.CAPABILITY_PAUSE,
+					TrackPlayer.CAPABILITY_STOP
+				]
+			});
 
 			// Adds a track to the queue
 			await TrackPlayer.add({
 				id: 'trackId',
 				url: require('../assets/audio/test.wav'),
 				title: 'Track Title',
-				artist: 'Track Artist',
+				artist: 'Track Artist'
 			});
-		
+
 			// Starts playing it
 			TrackPlayer.play();
-		
 		});
 		// if (this.state.article.audio) {
 		// 	const audioSource = `../assets/audio/test.wav`;

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { fetchTokens } from './storage';
+import { fetchTokens, storeTokens } from './storage';
 
 const BASE_ENDPOINT = 'https://www.vogel.de/api/iww';
 
@@ -8,11 +8,13 @@ const BASE_ENDPOINT = 'https://www.vogel.de/api/iww';
  * Configures axios headers
  */
 export const setAxiosAuthInterceptor = async () => {
+	/* Request interceptor --> Appends token to the Authorization header */
 	axios.interceptors.request.use(
 		async config => {
 			const tokens = await fetchTokens();
-			if (tokens) {
-				config.headers['Authorization'] = 'Bearer ' + tokens.accessToken;
+			if (tokens && tokens.accessToken) {
+				console.info('Setting header token: ', tokens.accessToken);
+				config.headers['Authorization'] = `Bearer ${tokens.accessToken}`;
 			} else {
 				console.log('Axios interceptor did not find any tokens ...');
 			}
@@ -23,6 +25,36 @@ export const setAxiosAuthInterceptor = async () => {
 			Promise.reject(error);
 		}
 	);
+
+	/* Response interceptor --> Refreshes token if error response === 401 (unauthorized) */
+	axios.interceptors.response.use(null, async error => {
+		console.warn('[Interceptor]: Response interceptor error');
+		try {
+			if (error.config && error.response && error.response.status === 401) {
+				console.warn('Axios response interceptor: detected 401 --> refreshing token');
+				const storedTokens = await fetchTokens();
+				console.log('Previously stored tokens: ', storedTokens);
+
+				if (storedTokens && storedTokens.refreshToken) {
+					const refreshedTokens = await refreshToken(storedTokens.refreshToken);
+					console.log('[Interceptor]: refreshed token: ', refreshedTokens);
+					await storeTokens(refreshedTokens);
+					error.config.headers['Authorization'] = `Bearer ${storedTokens.accessToken}`;
+				} else {
+					console.log('Axios interceptor did not find any tokens ...');
+				}
+
+				/* TODO: refresh token */
+				/* TODO: Store new token */
+
+				return axios.request(error.config);
+			}
+		} catch (err) {
+			console.warn(err);
+		}
+
+		return Promise.reject(error);
+	});
 };
 
 export const refreshToken = refreshToken => {
@@ -40,7 +72,7 @@ export const refreshToken = refreshToken => {
 				return resolve({ success: true, accessToken, refreshToken });
 			})
 			.catch(err => {
-				console.log(err);
+				console.log(err.response);
 				return reject({ success: false });
 			});
 	});
@@ -75,7 +107,8 @@ export const getSubscriptions = () => {
 				return resolve({ success: true, data: response.data._embedded.subscriptions });
 			})
 			.catch(err => {
-				console.log(err);
+				console.warn(err);
+				console.warn(err.response);
 				return reject({ success: false });
 			});
 	});
@@ -108,7 +141,7 @@ export const getSubscriptionArticles = (subId, limit, skip, searchtext, audio) =
 				return resolve({ success: true, data: response.data._embedded.contents });
 			})
 			.catch(err => {
-				console.log(err);
+				console.log(err.response);
 				return reject({ success: false });
 			});
 	});
@@ -126,7 +159,7 @@ export const singleArticleContent = (articleId, audioVersion = undefined) => {
 				return resolve({ success: true, data: response.data._embedded });
 			})
 			.catch(err => {
-				console.log(err);
+				console.log(err.response);
 				return reject({ success: false });
 			});
 	});
@@ -141,7 +174,7 @@ export const getArchiveIssues = subId => {
 				return resolve({ success: true, data: response.data._embedded.issues });
 			})
 			.catch(err => {
-				console.log(err);
+				console.log(err.response);
 				return reject({ success: false });
 			});
 	});
@@ -160,7 +193,7 @@ export const getArchiveArticles = (subId, issueId, audio = undefined) => {
 				return resolve({ success: true, data: response.data._embedded.contents });
 			})
 			.catch(err => {
-				console.log(err);
+				console.log(err.response);
 				return reject({ success: false });
 			});
 	});
@@ -172,10 +205,10 @@ export const getFavourites = (subId = '') => {
 		axios
 			.get(`${BASE_ENDPOINT}/favourites?application=${subId}`)
 			.then(response => {
-				return resolve({ success: true, data: response.data._embedded.contents });
+				return resolve({ success: true, data: response.data._embedded.favourites });
 			})
 			.catch(err => {
-				console.log(err);
+				console.log(err.response);
 				return reject({ success: false });
 			});
 	});
@@ -191,7 +224,7 @@ export const getCategoryIssues = subId => {
 				return resolve({ success: true, data: response.data._embedded.categories });
 			})
 			.catch(err => {
-				console.log(err);
+				console.log(err.response);
 				return reject({ success: false });
 			});
 	});
@@ -211,7 +244,7 @@ export const getCategoryArticles = (subId, categoryId, audio = undefined) => {
 				return resolve({ success: true, data: response.data._embedded.contents });
 			})
 			.catch(err => {
-				console.log(err);
+				console.log(err.response);
 				return reject({ success: false });
 			});
 	});

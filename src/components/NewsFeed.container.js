@@ -24,7 +24,8 @@ const makeMapStateToProps = () => {
 			archiveArticles: state.rootReducer.archiveArticles,
 			activeSubscriptionFilter: state.sessionReducer.activeSubscriptionFilter,
 			categoryIssues: state.rootReducer.categoryIssues,
-			categoryArticles: state.rootReducer.categoryArticles
+			categoryArticles: state.rootReducer.categoryArticles,
+			downloadedArticles: state.rootReducer.downloadedArticles
 		};
 	};
 
@@ -95,6 +96,7 @@ class NewsFeedWrapper extends React.Component {
 					articles={this.props.archiveArticles}
 					activeSubscriptionFilter={this.props.activeSubscriptionFilter}
 					activeView={this.state.currentFilter}
+					downloadedArticles={this.props.downloadedArticles}
 				/>
 			);
 		} else if (this.state.currentFilter === 'rubriken') {
@@ -114,6 +116,7 @@ class NewsFeedWrapper extends React.Component {
 					articles={this.props.categoryArticles}
 					activeSubscriptionFilter={this.props.activeSubscriptionFilter}
 					activeView={this.state.currentFilter}
+					downloadedArticles={this.props.downloadedArticles}
 				/>
 			);
 		}
