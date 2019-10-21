@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, ScrollView, RefreshControl, SafeAreaView } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import TrackPlayer from 'react-native-track-player';
 
 import HeaderMenu from '../components/HeaderMenu';
 import NewsFeedWrapper from '../components/NewsFeed.container';
@@ -12,8 +13,8 @@ import LoadingScreen from '../components/LoadingScreen';
 import AudioPlayerModal from '../components/AudioPlayerModal';
 import { setHomeScreenRefreshing, openAudioPlayerModal } from '../redux/actions/index';
 import { isCloseToBottom } from '../helpers/util/util';
-import { initAppContent } from '../helpers/content';
-import TrackPlayer from 'react-native-track-player';
+import { initAppContent, loadMoreArticles } from '../helpers/content';
+import config from '../config/main';
 
 const mapStateToProps = state => {
 	return {
@@ -33,6 +34,7 @@ const mapDispatchToProps = dispatch => {
 class HomeScreen extends Component {
 	constructor(props) {
 		super(props);
+		this.handleInifiniteScroll = this.handleInifiniteScroll.bind(this);
 	}
 
 	static navigationOptions = {
@@ -40,10 +42,13 @@ class HomeScreen extends Component {
 	};
 
 	state = {
-		newsFeedFilter: undefined, // archive/undefined/rubriken
+		newsFeedFilter: undefined, // possible: archive / undefined / rubriken
 		routeRenderOptions: {
 			routeName: 'NewsFeed'
-		}
+		},
+		numOfArticlesPerFetch: config.NUM_OF_ARTICLES_PER_FETCH,
+		articlesOffset: config.NUM_OF_ARTICLES_PER_FETCH, // hack to go around IWW's faulty API
+		loadingArticles: false
 	};
 
 	BackGroundHandler = async () => {
@@ -111,11 +116,49 @@ class HomeScreen extends Component {
 		});
 	}
 
-	handleInifiniteScroll({ nativeEvent }) {
+	async handleInifiniteScroll(event) {
+		let nativeEvent = event.nativeEvent;
 		console.log('Onscroll');
-		if (isCloseToBottom(nativeEvent)) {
+		console.log(nativeEvent);
+
+		if (isCloseToBottom(nativeEvent) && !this.state.loadingArticles) {
+			this.setState({ loadingArticles: true }, () => {
+				console.info('loadingArticles: ', true);
+			});
+			console.log(this.props);
+
 			console.warn('Reached end of page --> should load more articles');
 			/* TODO: load next N articles */
+			// loadMoreArticles()
+			const articleType = this.props.activeSubscriptionFilter ? 'subscription' : 'general';
+			console.log('SKIP OFFSET: ', this.state.articlesOffset);
+
+			await loadMoreArticles(
+				articleType === 'subscription' ? this.props.activeSubscriptionFilter.id : undefined,
+				this.state.numOfArticlesPerFetch,
+				this.state.articlesOffset,
+				undefined,
+				articleType === 'subscription'
+					? this.props.activeSubscriptionFilter.audio
+					: undefined,
+				undefined,
+				undefined,
+				articleType
+			);
+
+			this.setState(
+				{
+					articlesOffset: this.state.articlesOffset + this.state.numOfArticlesPerFetch
+				},
+				() => {
+					setTimeout(() => {
+						console.info('loadingArticles: ', false);
+						this.setState({
+							loadingArticles: false
+						});
+					}, 4000);
+				}
+			);
 		}
 	}
 
@@ -134,7 +177,7 @@ class HomeScreen extends Component {
 						contentInsetAdjustmentBehavior="automatic"
 						style={{ flex: 1 }}
 						onScroll={this.handleInifiniteScroll}
-						scrollEventThrottle={0}
+						scrollEventThrottle={300}
 						contentContainerStyle={{
 							flexGrow: 1,
 							paddingVertical: 30

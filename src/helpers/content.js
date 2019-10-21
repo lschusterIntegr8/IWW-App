@@ -24,6 +24,7 @@ import {
 	appendArticles
 } from '../redux/actions/index';
 import { cleanUrls, matchSubscriptionIdToShortcut } from './util/util';
+import config from '../config/main';
 
 /* Get search articles */
 export const getSearchResult = async (subId, limit, skip, searchtext, audio) => {
@@ -91,14 +92,14 @@ export const loadMoreArticles = async (
 
 	console.info('Appending: ', { articles: articles, articleType });
 
-	return store.dispatch(appendArticles({ articles: articles, articleType }));
+	return store.dispatch(appendArticles({ articles: articles, articleType, id: subId, audio }));
 };
 
 /* Set subscription articles */
 export const storeSubscriptionArticles = async (subId, limit, skip, searchtext, audio) => {
 	console.info('STORE SUBS ARTICLES CALLED (content)');
 	/* Check if subscription articles are already present in the store  */
-	const subscriptionArticles = store.getState().rootReducer.aboArticles;
+	const subscriptionArticles = store.getState().rootReducer.aboArticles.entries;
 	console.log('SUB ART:', subscriptionArticles);
 
 	if (subscriptionArticles) {
@@ -423,7 +424,12 @@ export const initAppContent = async (fetchNew, props) => {
 
 			// console.time('FETCHPROMISES');
 			const fetchedSubscriptions = await fetchAndSetSubscriptions();
-			const fetchedArticles = await fetchAndSetArticles(undefined, 10, undefined, undefined);
+			const fetchedArticles = await fetchAndSetArticles(
+				undefined,
+				config.NUM_OF_ARTICLES_PER_FETCH,
+				undefined,
+				undefined
+			);
 			// console.timeEnd('FETCHPROMISES');
 
 			if (fetchedSubscriptions.navigation) {
@@ -451,7 +457,12 @@ export const initAppContent = async (fetchNew, props) => {
 				console.log('Articles empty - fetching');
 				/* Fetch articles */
 				fetchPromises.push(
-					fetchAndSetArticles(undefined, 10, undefined, undefined).catch(err => {
+					fetchAndSetArticles(
+						undefined,
+						config.NUM_OF_ARTICLES_PER_FETCH,
+						undefined,
+						undefined
+					).catch(err => {
 						console.warn(err);
 					})
 				);

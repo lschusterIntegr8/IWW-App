@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 
 import COLOR from '../config/colors';
 import { setHomeScreenRefreshing } from '../redux/actions/index';
+import config from '../config/main';
 
 const mapDispatchToProps = dispatch => {
 	return {
@@ -46,7 +47,7 @@ const InfoTile = props => (
 					/* Fetch Articles */
 					await props.storeSubscriptionArticles(
 						props.tile.id,
-						10,
+						config.NUM_OF_ARTICLES_PER_FETCH,
 						undefined,
 						undefined,
 						props.tile.audio

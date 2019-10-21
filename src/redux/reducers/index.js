@@ -16,7 +16,7 @@ import {
 const initialState = {
 	subscriptionServices: [],
 	articles: [],
-	aboArticles: [],
+	aboArticles: { entries: [], lastModified: '' },
 	archiveIssues: [],
 	archiveArticles: [],
 	categoryIssues: [],
@@ -31,7 +31,7 @@ const addSubscriptionArticles = (state, action) => {
 	console.log(action.payload); // .
 	/* Find place where to store articles */
 	const receivedArticles = action.payload;
-	const storedArticles = state.aboArticles;
+	const storedArticles = state.aboArticles.entries;
 	let aboIndex = 0;
 	for (const storedAbo of storedArticles) {
 		aboIndex++;
@@ -45,12 +45,12 @@ const addSubscriptionArticles = (state, action) => {
 			console.info('TRYING TO RETURN');
 			console.log({
 				...state,
-				aboArticles: storedArticles
+				aboArticles: { entries: storedArticles, lastModified: Date.now() }
 			});
 
 			return {
 				...state,
-				aboArticles: storedArticles
+				aboArticles: { entries: storedArticles, lastModified: Date.now() }
 			};
 		}
 	}
@@ -58,18 +58,73 @@ const addSubscriptionArticles = (state, action) => {
 	/* If the artilces are not yet stored --> append them to the articles abo */
 	return {
 		...state,
-		aboArticles: [
+		aboArticles: {
 			...state.aboArticles,
-			{
-				id: receivedArticles.id,
-				audio: receivedArticles.audio,
-				articles: receivedArticles.articles
-			}
-		]
+			lastModified: Date.now(),
+			entries: [
+				...state.aboArticles.entries,
+				{
+					id: receivedArticles.id,
+					audio: receivedArticles.audio,
+					articles: receivedArticles.articles
+				}
+			]
+		}
 	};
 };
 
-const appendSubscriptionArticles = (state, action) => {};
+const appendSubscriptionArticles = (state, action) => {
+	console.log('APPEND_SUBSCRIPTION_ARTICLES');
+	console.log(action.payload); // .
+	/* Find place where to store articles */
+	const receivedArticles = action.payload;
+	const storedArticles = state.aboArticles.entries;
+	let aboIndex = 0;
+	for (const storedAbo of storedArticles) {
+		if (storedAbo.id === receivedArticles.id && storedAbo.audio === receivedArticles.audio) {
+			/* If abo articles with ID already exist --> set new ones there */
+			let storedAboArticles = storedAbo;
+			let newStoredAboArticles = [
+				...storedAboArticles.articles,
+				...receivedArticles.articles
+			];
+
+			console.log('NEW ABO ARTICLES: ', newStoredAboArticles);
+			storedAboArticles.articles = newStoredAboArticles;
+			console.log(storedArticles[aboIndex], ' is becoming: ', storedAboArticles);
+			storedArticles[aboIndex] = storedAboArticles;
+
+			console.info('TRYING TO RETURN');
+			console.log({
+				...state,
+				aboArticles: { entries: storedArticles, lastModified: Date.now() }
+			});
+
+			return {
+				...state,
+				aboArticles: { entries: storedArticles, lastModified: Date.now() }
+			};
+		}
+		aboIndex++;
+	}
+
+	/* If the artilces are not yet stored --> append them to the articles abo */
+	return {
+		...state,
+		aboArticles: {
+			...state.aboArticles,
+			lastModified: Date.now(),
+			entries: [
+				...state.aboArticles.entries,
+				{
+					id: receivedArticles.id,
+					audio: receivedArticles.audio,
+					articles: receivedArticles.articles
+				}
+			]
+		}
+	};
+};
 
 function rootReducer(state = initialState, action) {
 	console.log('PAYLOAD:\n', action.payload);
@@ -118,7 +173,7 @@ function rootReducer(state = initialState, action) {
 					articles: [...state.articles, ...action.payload.articles]
 				};
 			} else if (action.payload.articleType === 'subscription') {
-				// return appendSubscriptionArticles(state, action);
+				return appendSubscriptionArticles(state, action);
 			} else if (action.payload.articleType === 'category') {
 				return {
 					...state,

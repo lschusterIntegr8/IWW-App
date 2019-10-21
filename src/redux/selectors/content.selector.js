@@ -3,7 +3,8 @@ import { createSelector } from 'reselect';
 export const getArticles = state => state.rootReducer.articles;
 export const getSubscriptions = state => state.rootReducer.subscriptionServices;
 export const getActiveSubscriptionFilter = state => state.sessionReducer.activeSubscriptionFilter;
-export const getSubscriptionArticles = state => state.rootReducer.aboArticles;
+export const getSubscriptionArticles = state => state.rootReducer.aboArticles.entries;
+export const subLastModified = state => state.rootReducer.aboArticles.lastModified;
 export const getArchiveIssues = state => state.rootReducer.archiveIssues;
 export const getArchiveArticles = state => state.rootReducer.archiveArticles;
 export const getDownloads = state => state.rootReducer.downloadedArticles;
@@ -60,10 +61,8 @@ function isObject(value) {
 }
 
 export const getFilteredSubscriptionArticles = createSelector(
-	getSubscriptionArticles,
-	getActiveSubscriptionFilter,
-	getArticles,
-	(aboArticles, subFilter, generalArticles) => {
+	[getSubscriptionArticles, getActiveSubscriptionFilter, getArticles, subLastModified],
+	(aboArticles, subFilter, generalArticles, lastModified) => {
 		console.log('GET FILTERED SUBS ARTICLES');
 		console.log('ARTICLES: ', aboArticles);
 		console.log('SUB FILTER: ', subFilter);
@@ -74,10 +73,11 @@ export const getFilteredSubscriptionArticles = createSelector(
 			return generalArticles;
 		}
 
-		for (const subArticleGroup of aboArticles) {
+		for (let subArticleGroup of aboArticles) {
 			console.log(`Comparing ${subArticleGroup.id} to ${subFilter.id}`);
 			if (subArticleGroup.id === subFilter.id && subArticleGroup.audio === subFilter.audio) {
 				console.info('subfilter match -> filtered');
+				console.log('Filtered: ', subArticleGroup.articles);
 				return subArticleGroup.articles;
 			}
 		}
