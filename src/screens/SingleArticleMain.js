@@ -7,7 +7,8 @@ import {
 	StyleSheet,
 	ActivityIndicator,
 	Alert,
-	Linking
+	Linking,
+	SafeAreaView
 } from 'react-native';
 import { WebView } from 'react-native-webview';
 import PropTypes from 'prop-types';
@@ -98,7 +99,7 @@ class SingleArticleMain extends Component {
 
 		if (this.state.article && this.state.article.content && !this.state.article.audio) {
 			return (
-				<View style={styles.htmlContainer}>
+				<SafeAreaView style={styles.htmlContainer}>
 					<WebView
 						ref={ref => {
 							this.webview = ref;
@@ -123,12 +124,12 @@ class SingleArticleMain extends Component {
 									<link rel="stylesheet" type="text/css" href="https://www.iww.de/css/product.css"/>
 								</head>
 								<body>
-									<div style="padding: 12px; padding-bottom: 42px;">${this.state.article.content}</div>
+									<div style="padding: 12px; padding-bottom: 64px;">${this.state.article.content}</div>
 								</body>
 							</html>`
 						}}
 					/>
-				</View>
+				</SafeAreaView>
 			);
 		} else {
 			return (
