@@ -137,9 +137,9 @@ class CategoryFeedList extends Component {
 					data={this.props.articles}
 					renderItem={this.renderItem}
 					keyExtractor={item => v4()}
-					initialNumToRender={3}
-					windowSize={3}
-					maxToRenderPerBatch={2}
+					initialNumToRender={5}
+					windowSize={5}
+					maxToRenderPerBatch={5}
 				/>
 			</View>
 		);

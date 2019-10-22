@@ -8,7 +8,8 @@ import {
 	Image,
 	View,
 	TouchableOpacity,
-	Platform
+	Platform,
+	Linking
 } from 'react-native';
 import { Icon } from 'native-base';
 import PropTypes from 'prop-types';
@@ -80,6 +81,9 @@ const CustomSidebarMenu = props => (
 							textAlign: 'right',
 							marginRight: 10
 						}}
+						onPress={() => {
+							Linking.openURL('https://www.iww.de/datenschutz');
+						}}
 					>
 						Datenschutz
 					</Text>
@@ -88,6 +92,9 @@ const CustomSidebarMenu = props => (
 							flex: 1,
 							textAlign: 'left',
 							marginLeft: 10
+						}}
+						onPress={() => {
+							Linking.openURL('https://www.iww.de/impressum');
 						}}
 					>
 						Impressum

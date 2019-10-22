@@ -98,7 +98,7 @@ class DropdownFilter extends Component {
 
 	render() {
 		return (
-			<View style={{ flex: 1, position: 'relative' }}>
+			<View style={{ flex: 1, position: 'relative', marginBottom: 24 }}>
 				<DropdownMenu
 					style={{ flex: 2, position: 'relative' }}
 					bgColor={'white'}
@@ -162,11 +162,6 @@ class DropdownFilter extends Component {
 					}}
 					data={this.state.FILTER_DATA}
 				></DropdownMenu>
-				<View style={{ flex: 1 }}>
-					<Text style={{ textAlign: 'center' }}>
-						Selected: {this.state.selectedFilter}
-					</Text>
-				</View>
 			</View>
 		);
 	}

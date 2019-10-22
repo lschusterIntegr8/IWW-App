@@ -135,6 +135,7 @@ class DropdownMenu extends Component {
 					</TouchableOpacity>
 
 					<ScrollView
+						nestedScrollEnabled={true}
 						removeClippedSubviews={true}
 						style={[
 							{
