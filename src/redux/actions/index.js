@@ -12,7 +12,8 @@ import {
 	ADD_TO_DOWNLOADS,
 	OPEN_AUDIO_PLAYER_MODAL,
 	SET_FAVOURITES,
-	APPEND_ARTICLES
+	APPEND_ARTICLES,
+	SET_ACTIVE_DROPDOWN_ITEM
 } from './action-types';
 
 /* ACTIONS */
@@ -102,6 +103,13 @@ export function openAudioPlayerModal(payload) {
 export function setFavourites(payload) {
 	return {
 		type: SET_FAVOURITES,
+		payload
+	};
+}
+
+export function setActiveDropdownItem(payload) {
+	return {
+		type: SET_ACTIVE_DROPDOWN_ITEM,
 		payload
 	};
 }

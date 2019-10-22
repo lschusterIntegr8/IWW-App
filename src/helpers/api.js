@@ -243,6 +243,13 @@ export const getCategoryArticles = (
 	if (skip) params.skip = skip;
 	if (subId) params.application = subId;
 	if (audio) params.audio = audio;
+	console.info(`CATEGORY articles called with:
+	subid: ${subId},
+	categoryId: ${categoryId},
+	limit: ${limit},
+	skip: ${skip},
+	audio: ${audio}
+	`);
 
 	return new Promise((resolve, reject) => {
 		axios

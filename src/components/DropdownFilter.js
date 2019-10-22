@@ -13,6 +13,7 @@ import PropTypes from 'prop-types';
 
 import DropdownMenu from './util/react-native-dropdown-menu';
 import { getArchiveContent, getCategoryContent } from '../helpers/content';
+import { setActiveDropdownItem } from '../redux/actions/index';
 import COLOR from '../config/colors';
 
 // const IC_ARR_DOWN = require('./icons/ic_arr_down.png');
@@ -21,6 +22,12 @@ import COLOR from '../config/colors';
 // const FILTER_DATA = [
 // 	['Ausgabe 01 / 2019', 'Ausgabe 12 / 2018', 'Ausgabe 11 / 2018', 'Ausgabe 10 / 2018']
 // ];
+
+const mapDispatchToProps = dispatch => {
+	return {
+		setActiveDropdownItem: payload => dispatch(setActiveDropdownItem(payload))
+	};
+};
 
 const mapStateToProps = state => {
 	return {
@@ -69,6 +76,9 @@ class DropdownFilter extends Component {
 		// return [FILTER_DATA];
 		return this.setState({ FILTER_DATA: [tmpFilteredData] }, () => {
 			this.setState({ selectedFilter: this.state.FILTER_DATA[0][0] });
+			this.props.setActiveDropdownItem(
+				this.mapTitleToIssueId(this.state.FILTER_DATA[0][0], this.props.issues)
+			);
 		});
 	}
 
@@ -101,6 +111,12 @@ class DropdownFilter extends Component {
 					// titleStyle={{color: '#333333'}}
 					// maxHeight={300}
 					handler={(selection, row) => {
+						this.props.setActiveDropdownItem(
+							this.mapTitleToIssueId(
+								this.state.FILTER_DATA[selection][row],
+								this.props.issues
+							)
+						);
 						this.setState(
 							{ selectedFilter: this.state.FILTER_DATA[selection][row] },
 							() => {
@@ -163,4 +179,7 @@ DropdownFilter.propTypes = {
 
 const styles = StyleSheet.create({});
 
-export default connect(mapStateToProps)(DropdownFilter);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(DropdownFilter);

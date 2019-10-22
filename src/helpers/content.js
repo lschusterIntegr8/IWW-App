@@ -85,7 +85,9 @@ export const loadMoreArticles = async (
 			return responseContent;
 		}));
 	} else if (articleType === 'category') {
+		console.log('CATEGORY ARTICLETYPE');
 		({ data: articles } = await API.getCategoryArticles(subId, categoryId, audio, skip, limit));
+		console.log('Fetched cat articles');
 	} else {
 		console.warn('Unsupported articleType used for loadMoreArticles...');
 	}
@@ -315,7 +317,9 @@ export const getCategoryContent = async (subId, issueID = undefined, audioVersio
 			const { data: categoryArticles } = await API.getCategoryArticles(
 				subId,
 				firstIssueID,
-				audioVersion
+				audioVersion,
+				0,
+				config.NUM_OF_ARTICLES_PER_FETCH
 			).catch(articlesErr => {
 				console.warn(articlesErr.response);
 				throw new Error(

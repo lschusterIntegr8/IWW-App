@@ -9,6 +9,7 @@ export const getArchiveIssues = state => state.rootReducer.archiveIssues;
 export const getArchiveArticles = state => state.rootReducer.archiveArticles;
 export const getDownloads = state => state.rootReducer.downloadedArticles;
 export const isHomescreenRefreshing = state => state.sessionReducer.homeScreenRefreshing;
+export const getCategoryArticles = state => state.rootReducer.categoryArticles;
 
 export const getSubscriptionIDs = state => {
 	const allSubIDs = [];
@@ -76,6 +77,7 @@ export const getFilteredSubscriptionArticles = createSelector(
 		for (let subArticleGroup of aboArticles) {
 			console.log(`Comparing ${subArticleGroup.id} to ${subFilter.id}`);
 			if (subArticleGroup.id === subFilter.id && subArticleGroup.audio === subFilter.audio) {
+				console.log('Filtered subarticleGroup.');
 				console.info('subfilter match -> filtered');
 				console.log('Filtered: ', subArticleGroup.articles);
 				return subArticleGroup.articles;

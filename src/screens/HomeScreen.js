@@ -14,7 +14,10 @@ import AudioPlayerModal from '../components/AudioPlayerModal';
 import { setHomeScreenRefreshing, openAudioPlayerModal } from '../redux/actions/index';
 import { isCloseToBottom } from '../helpers/util/util';
 import { initAppContent, loadMoreArticles } from '../helpers/content';
-import { getFilteredSubscriptionArticles } from '../redux/selectors/content.selector';
+import {
+	getFilteredSubscriptionArticles,
+	getCategoryArticles
+} from '../redux/selectors/content.selector';
 import config from '../config/main';
 import { store, persistor } from '../redux/store/index';
 
@@ -22,7 +25,8 @@ const mapStateToProps = state => {
 	return {
 		activeSubscriptionFilter: state.sessionReducer.activeSubscriptionFilter,
 		homeScreenRefreshing: state.sessionReducer.homeScreenRefreshing,
-		audioPlayerModal: state.rootReducer.audioPlayerModal
+		audioPlayerModal: state.rootReducer.audioPlayerModal,
+		activeDropdownItem: state.sessionReducer.activeDropdownItem
 	};
 };
 
@@ -138,11 +142,21 @@ class HomeScreen extends Component {
 			console.warn('Reached end of page --> should load more articles');
 			/* TODO: load next N articles */
 			// loadMoreArticles()
-			const articleType = this.props.activeSubscriptionFilter ? 'subscription' : 'general';
-			console.log('SKIP OFFSET: ', this.state.articlesOffset);
+			let articleType = this.props.activeSubscriptionFilter ? 'subscription' : 'general';
+			if (this.state.newsFeedFilter === 'rubriken') {
+				articleType = 'category';
+			}
 
-			const filteredArticles = getFilteredSubscriptionArticles(store.getState());
+			let filteredArticles;
+
+			if (articleType === 'category') {
+				filteredArticles = getCategoryArticles(store.getState());
+			} else {
+				filteredArticles = getFilteredSubscriptionArticles(store.getState());
+			}
+
 			const newOffset = filteredArticles.length;
+
 			console.log('NEW OFFSET: ', newOffset);
 
 			this.setState(
@@ -151,17 +165,19 @@ class HomeScreen extends Component {
 				},
 				async () => {
 					await loadMoreArticles(
-						articleType === 'subscription'
+						['subscription', 'category'].includes(articleType)
 							? this.props.activeSubscriptionFilter.id
 							: undefined,
 						this.state.numOfArticlesPerFetch,
 						this.state.articlesOffset,
 						undefined,
-						articleType === 'subscription'
+						['subscription', 'category'].includes(articleType)
 							? this.props.activeSubscriptionFilter.audio
 							: undefined,
 						undefined,
-						undefined,
+						['category'].includes(articleType) && this.props.activeDropdownItem
+							? this.props.activeDropdownItem
+							: undefined,
 						articleType
 					).catch(err => {
 						console.warn(

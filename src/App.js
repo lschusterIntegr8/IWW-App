@@ -19,7 +19,7 @@ const resetAppStorage = async () => {
 	await persistor.flush();
 };
 (async () => {
-	// await resetAppStorage();
+	await resetAppStorage();
 })();
 
 const App = () => {

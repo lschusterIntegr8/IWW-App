@@ -1,8 +1,13 @@
-import { SET_HOME_SCREEN_REFRESHING, TOGGLE_ACTIVE_SUB_FILTER } from '../actions/action-types';
+import {
+	SET_HOME_SCREEN_REFRESHING,
+	TOGGLE_ACTIVE_SUB_FILTER,
+	SET_ACTIVE_DROPDOWN_ITEM
+} from '../actions/action-types';
 
 const initialState = {
 	homeScreenRefreshing: false, // reset
-	activeSubscriptionFilter: undefined // reset
+	activeSubscriptionFilter: undefined, // reset
+	activeDropdownItem: undefined
 };
 
 /* These values should not be persisted (session) */
@@ -26,6 +31,12 @@ function sessionReducer(state = initialState, action) {
 					state.activeSubscriptionFilter.audio === action.payload.audio
 						? undefined
 						: action.payload
+			};
+		}
+		case SET_ACTIVE_DROPDOWN_ITEM: {
+			return {
+				...state,
+				activeDropdownItem: action.payload
 			};
 		}
 	}
