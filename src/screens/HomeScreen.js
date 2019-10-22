@@ -56,8 +56,10 @@ class HomeScreen extends Component {
 	};
 
 	BackGroundHandler = async () => {
+		console.log('BACKGROUND PLAYER INIT');
 		TrackPlayer.setupPlayer();
 		TrackPlayer.updateOptions({
+			stopWithApp: true,
 			capabilities: [
 				TrackPlayer.CAPABILITY_PLAY,
 				TrackPlayer.CAPABILITY_PAUSE,
