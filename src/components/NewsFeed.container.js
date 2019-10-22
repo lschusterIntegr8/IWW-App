@@ -15,22 +15,22 @@ import {
 } from '../redux/selectors/content.selector';
 import { getArchiveContent } from '../helpers/content';
 
-// const makeMapStateToProps = () => {
-// 	const filteredArticles = getFilteredSubscriptionArticles();
-const mapStateToProps = state => {
-	return {
-		articles: getFilteredSubscriptionArticles(state),
-		archiveIssues: state.rootReducer.archiveIssues,
-		archiveArticles: state.rootReducer.archiveArticles,
-		activeSubscriptionFilter: state.sessionReducer.activeSubscriptionFilter,
-		categoryIssues: state.rootReducer.categoryIssues,
-		categoryArticles: state.rootReducer.categoryArticles,
-		downloadedArticles: state.rootReducer.downloadedArticles
+const makeMapStateToProps = () => {
+	const filteredArticles = getFilteredSubscriptionArticles;
+	const mapStateToProps = state => {
+		return {
+			articles: filteredArticles(state),
+			archiveIssues: state.rootReducer.archiveIssues,
+			archiveArticles: state.rootReducer.archiveArticles,
+			activeSubscriptionFilter: state.sessionReducer.activeSubscriptionFilter,
+			categoryIssues: state.rootReducer.categoryIssues,
+			categoryArticles: state.rootReducer.categoryArticles,
+			downloadedArticles: state.rootReducer.downloadedArticles
+		};
 	};
-};
 
-// 	return mapStateToProps;
-// };
+	return mapStateToProps;
+};
 
 class NewsFeedWrapper extends React.Component {
 	constructor(props) {
@@ -63,10 +63,10 @@ class NewsFeedWrapper extends React.Component {
 
 	toggleFilter(filterName) {
 		if (this.state.currentFilter === filterName) {
-			// this.props.setNewsFeedFilter(undefined);
+			this.props.setNewsFeedFilter(undefined);
 			return this.setState({ currentFilter: undefined });
 		}
-		// this.props.setNewsFeedFilter(filterName);
+		this.props.setNewsFeedFilter(filterName);
 		return this.setState({ currentFilter: filterName });
 	}
 
@@ -124,17 +124,20 @@ class NewsFeedWrapper extends React.Component {
 
 	/* Handle refresh animation state */
 	componentDidUpdate(prevProps, prevState) {
-		console.log('PROPS UPDATED: ', prevProps, this.props);
-		if (!prevProps.refreshing && this.props.refreshing) {
+		if (!prevProps.animateLoading && this.props.animateLoading) {
+			console.log('Run animation');
 			this.setState({ runRefreshAnimation: true }, () => {
 				this.opacity();
 			});
-		} else if (prevProps.refreshing && !this.props.refreshing) {
-			this.setState({ runRefreshAnimation: false }, () => {
-				this.opacityValue.stopAnimation(() => {
-					this.opacityValue.setValue(0);
+		} else if (prevProps.animateLoading && !this.props.animateLoading) {
+			console.log('Stop animation');
+			setTimeout(() => {
+				this.setState({ runRefreshAnimation: false }, () => {
+					this.opacityValue.stopAnimation(() => {
+						this.opacityValue.setValue(0);
+					});
 				});
-			});
+			}, 1000);
 		}
 	}
 
@@ -247,6 +250,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-const NewsFeedWrapperContainer = connect(mapStateToProps)(NewsFeedWrapper);
+const NewsFeedWrapperContainer = connect(makeMapStateToProps)(NewsFeedWrapper);
 
 export default NewsFeedWrapperContainer;

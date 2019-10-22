@@ -71,6 +71,5 @@ export const cleanUrls = (html, articleTag) => {
 };
 
 export const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
-	console.log(layoutMeasurement.height + contentOffset.y, contentSize.height - 700);
 	return layoutMeasurement.height + contentOffset.y >= contentSize.height - 700;
 };

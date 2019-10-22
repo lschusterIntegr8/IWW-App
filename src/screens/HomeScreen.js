@@ -14,7 +14,9 @@ import AudioPlayerModal from '../components/AudioPlayerModal';
 import { setHomeScreenRefreshing, openAudioPlayerModal } from '../redux/actions/index';
 import { isCloseToBottom } from '../helpers/util/util';
 import { initAppContent, loadMoreArticles } from '../helpers/content';
+import { getFilteredSubscriptionArticles } from '../redux/selectors/content.selector';
 import config from '../config/main';
+import { store, persistor } from '../redux/store/index';
 
 const mapStateToProps = state => {
 	return {
@@ -35,6 +37,7 @@ class HomeScreen extends Component {
 	constructor(props) {
 		super(props);
 		this.handleInifiniteScroll = this.handleInifiniteScroll.bind(this);
+		this.setNewsFeedFilter = this.setNewsFeedFilter.bind(this);
 	}
 
 	static navigationOptions = {
@@ -48,7 +51,8 @@ class HomeScreen extends Component {
 		},
 		numOfArticlesPerFetch: config.NUM_OF_ARTICLES_PER_FETCH,
 		articlesOffset: config.NUM_OF_ARTICLES_PER_FETCH, // hack to go around IWW's faulty API
-		loadingArticles: false
+		loadingArticles: false,
+		animateLoading: false
 	};
 
 	BackGroundHandler = async () => {
@@ -118,14 +122,16 @@ class HomeScreen extends Component {
 
 	async handleInifiniteScroll(event) {
 		let nativeEvent = event.nativeEvent;
-		console.log('Onscroll');
-		console.log(nativeEvent);
+		// console.log('NEWSFEEDFILTER: ', this.state.newsFeedFilter);
 
-		if (isCloseToBottom(nativeEvent) && !this.state.loadingArticles) {
-			this.setState({ loadingArticles: true }, () => {
+		if (
+			isCloseToBottom(nativeEvent) &&
+			!this.state.loadingArticles &&
+			this.state.newsFeedFilter !== 'archive'
+		) {
+			this.setState({ loadingArticles: true, animateLoading: true }, () => {
 				console.info('loadingArticles: ', true);
 			});
-			console.log(this.props);
 
 			console.warn('Reached end of page --> should load more articles');
 			/* TODO: load next N articles */
@@ -133,31 +139,82 @@ class HomeScreen extends Component {
 			const articleType = this.props.activeSubscriptionFilter ? 'subscription' : 'general';
 			console.log('SKIP OFFSET: ', this.state.articlesOffset);
 
-			await loadMoreArticles(
-				articleType === 'subscription' ? this.props.activeSubscriptionFilter.id : undefined,
-				this.state.numOfArticlesPerFetch,
-				this.state.articlesOffset,
-				undefined,
-				articleType === 'subscription'
-					? this.props.activeSubscriptionFilter.audio
-					: undefined,
-				undefined,
-				undefined,
-				articleType
-			);
+			const filteredArticles = getFilteredSubscriptionArticles(store.getState());
+			const newOffset = filteredArticles.length;
+			console.log('NEW OFFSET: ', newOffset);
 
 			this.setState(
 				{
-					articlesOffset: this.state.articlesOffset + this.state.numOfArticlesPerFetch
+					articlesOffset: newOffset
 				},
-				() => {
-					setTimeout(() => {
-						console.info('loadingArticles: ', false);
-						this.setState({
-							loadingArticles: false
-						});
-					}, 4000);
+				async () => {
+					await loadMoreArticles(
+						articleType === 'subscription'
+							? this.props.activeSubscriptionFilter.id
+							: undefined,
+						this.state.numOfArticlesPerFetch,
+						this.state.articlesOffset,
+						undefined,
+						articleType === 'subscription'
+							? this.props.activeSubscriptionFilter.audio
+							: undefined,
+						undefined,
+						undefined,
+						articleType
+					).catch(err => {
+						console.warn(
+							'Could not load more articles: ',
+							this.state.articlesOffset,
+							articleType
+						);
+						console.warn(err);
+						return;
+					});
+
+					this.setState(
+						{
+							articlesOffset:
+								this.state.articlesOffset + this.state.numOfArticlesPerFetch,
+							animateLoading: false
+						},
+						() => {
+							setTimeout(() => {
+								console.info('loadingArticles: ', false);
+								this.setState({
+									loadingArticles: false
+								});
+							}, 4000);
+						}
+					);
 				}
+			);
+		}
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		//
+		if (prevProps.activeSubscriptionFilter && this.props.activeSubscriptionFilter) {
+			if (
+				prevProps.activeSubscriptionFilter.id === this.props.activeSubscriptionFilter.id ||
+				prevProps.activeSubscriptionFilter.audio ===
+					this.props.activeSubscriptionFilter.audio
+			) {
+				console.log('Not changing - same props.');
+			} else {
+				console.info(`Resetting offset to ${config.NUM_OF_ARTICLES_PER_FETCH}.`);
+				this.setState({ articlesOffset: config.NUM_OF_ARTICLES_PER_FETCH });
+			}
+		} else if (
+			(!prevProps.activeSubscriptionFilter && this.props.activeSubscriptionFilter) ||
+			(prevProps.activeSubscriptionFilter && !this.props.activeSubscriptionFilter)
+		) {
+			console.info(`Resetting offset to ${config.NUM_OF_ARTICLES_PER_FETCH}.`);
+			this.setState({ articlesOffset: config.NUM_OF_ARTICLES_PER_FETCH });
+		} else {
+			console.warn(
+				'Prop case not defined: ',
+				prevProps.activeSubscriptionFilter,
+				this.props.activeSubscriptionFilter
 			);
 		}
 	}
@@ -177,7 +234,7 @@ class HomeScreen extends Component {
 						contentInsetAdjustmentBehavior="automatic"
 						style={{ flex: 1 }}
 						onScroll={this.handleInifiniteScroll}
-						scrollEventThrottle={300}
+						scrollEventThrottle={150}
 						contentContainerStyle={{
 							flexGrow: 1,
 							paddingVertical: 30
@@ -207,6 +264,7 @@ class HomeScreen extends Component {
 							refreshing={this.props.homeScreenRefreshing}
 							setNewsFeedFilter={this.setNewsFeedFilter}
 							options={{ screenRoute: 'home' }}
+							animateLoading={this.state.animateLoading}
 						/>
 					</ScrollView>
 					{this.props.activeSubscriptionFilter &&

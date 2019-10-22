@@ -4,11 +4,16 @@ import { View, Text, ScrollView, RefreshControl, SafeAreaView } from 'react-nati
 import NewsFeedWrapper from '../components/NewsFeed.container';
 import FavouritesWrapper from '../components/FavouritesWrapper';
 
-const NewsFeedSelector = ({ options }) => {
+const NewsFeedSelector = ({ options, setNewsFeedFilter, refreshing, animateLoading }) => {
 	let sel;
 	console.log('Screen options: ', options);
 	if (options.screenRoute === 'home') {
-		sel = <NewsFeedWrapper />;
+		sel = (
+			<NewsFeedWrapper
+				setNewsFeedFilter={setNewsFeedFilter}
+				animateLoading={animateLoading}
+			/>
+		);
 	} else if (options.screenRoute === 'downloads') {
 		sel = (
 			<View>
