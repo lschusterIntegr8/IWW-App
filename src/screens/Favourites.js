@@ -76,7 +76,6 @@ class Favourites extends Component {
 			<View style={styles.mainContent}>
 				{/* <HeaderMenu /> */}
 				<HeaderMenu />
-				{this.props.homeScreenRefreshing && <LoadingScreen />}
 				<FlatList
 					data={this.props.favouriteArticles}
 					renderItem={this.renderItem}
@@ -96,6 +95,7 @@ class Favourites extends Component {
 						/>
 					}
 				/>
+				{this.props.homeScreenRefreshing && <LoadingScreen />}
 			</View>
 		);
 	}

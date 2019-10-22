@@ -26,7 +26,7 @@ const InfoTile = props => (
 						? 1
 						: !props.activeSubscriptionFilter
 						? 1
-						: 0.2
+						: 0.45
 			}
 		]}
 	>

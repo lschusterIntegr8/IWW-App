@@ -50,7 +50,7 @@ const CustomSidebarMenu = props => (
 		>
 			<View style={styles.imageContainer}>
 				<View style={styles.drawerHeader}>
-					<Text style={{ fontSize: 22 }}>N.J.</Text>
+					<Text style={{ fontSize: 22 }}>X.Y.</Text>
 				</View>
 			</View>
 

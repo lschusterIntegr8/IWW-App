@@ -15,12 +15,12 @@ import { v4 } from 'uuid';
 import ArchiveCard from './ArchiveCard';
 import DropdownFilter from './DropdownFilter';
 import { getArchiveContent, getArticleContent } from '../helpers/content';
-import {openAudioPlayerModal} from '../redux/actions/index'
-import {addTrackToQueu} from '../helpers/audioPlayer'
+import { openAudioPlayerModal } from '../redux/actions/index';
+import { addTrackToQueu } from '../helpers/audioPlayer';
 
 const mapDispatchToProps = dispatch => {
 	return {
-		openAudioPlayerModal: article => dispatch(openAudioPlayerModal(article)),
+		openAudioPlayerModal: article => dispatch(openAudioPlayerModal(article))
 	};
 };
 class ArchiveFeedList extends Component {
@@ -47,22 +47,22 @@ class ArchiveFeedList extends Component {
 			audioVersion = true;
 		}
 
-		const articleContent =  getArticleContent(
+		const articleContent = getArticleContent(
 			article.article_id,
 			article.application_id,
 			audioVersion
 		);
-		if (audioVersion){
+		if (audioVersion) {
 			let articleContentData = await articleContent;
 			const articleObj = {
 				audio: articleContentData.audio,
 				content: articleContentData.content,
 				title: article.title
-			}
-			console.log("article content for audio player: ",articleObj);
-			this.props.openAudioPlayerModal(articleObj); 
+			};
+			console.log('article content for audio player: ', articleObj);
+			this.props.openAudioPlayerModal(articleObj);
 			return addTrackToQueu(articleObj);
-		} 
+		}
 
 		this.props.navigation.navigate('SingleArticle', {
 			article: articleContent, // single article details (content / html)
@@ -86,7 +86,6 @@ class ArchiveFeedList extends Component {
 			// alert('Complete');
 			this.setState({ interactionsComplete: true });
 			console.log('ON ARCHIVEFEEDLISTMOUNT');
-			/* TODO load  */
 			console.log('LOADING FOR: ', this.props.activeSubscriptionFilter.id);
 			getArchiveContent(
 				this.props.activeSubscriptionFilter.id,
@@ -155,5 +154,8 @@ ArchiveFeedList.propTypes = {
 	activeView: PropTypes.string,
 	downloadedArticles: PropTypes.array
 };
-const ArchiveFeedListContainer = connect(null, mapDispatchToProps)(ArchiveFeedList)
+const ArchiveFeedListContainer = connect(
+	null,
+	mapDispatchToProps
+)(ArchiveFeedList);
 export default withNavigation(ArchiveFeedListContainer);

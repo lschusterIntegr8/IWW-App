@@ -205,7 +205,7 @@ function rootReducer(state = initialState, action) {
 
 			return {
 				...state,
-				downloadedArticles: [...state.downloadedArticles, action.payload]
+				downloadedArticles: [action.payload, ...state.downloadedArticles]
 			};
 		}
 		case OPEN_AUDIO_PLAYER_MODAL: {

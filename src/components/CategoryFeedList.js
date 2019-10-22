@@ -87,7 +87,6 @@ class CategoryFeedList extends Component {
 			// alert('Complete');
 			this.setState({ interactionsComplete: true });
 			console.log('ON ARCHIVEFEEDLISTMOUNT');
-			/* TODO load  */
 			console.log('LOADING FOR: ', this.props.activeSubscriptionFilter.id);
 			getCategoryContent(
 				this.props.activeSubscriptionFilter.id,

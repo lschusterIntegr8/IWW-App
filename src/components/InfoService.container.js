@@ -34,13 +34,7 @@ class InfoServiceWrapper extends React.Component {
 		return (
 			<View>
 				<View style={styles.inhalteHeaderWrapper}>
-					<Text style={styles.inhalteHeading}>
-						Informationsdienste (selected:{' '}
-						{this.props.activeSubscriptionFilter
-							? this.props.activeSubscriptionFilter.id
-							: null}
-						)
-					</Text>
+					<Text style={styles.inhalteHeading}>Informationsdienste</Text>
 				</View>
 				<View style={{ marginBottom: 10 }}>
 					<InfoServiceHorizontalList

@@ -1,7 +1,7 @@
 console.disableYellowBox = true;
 
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, StatusBar } from 'react-native';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { v4 } from 'uuid';
@@ -9,6 +9,7 @@ import { v4 } from 'uuid';
 import AppContainer from './router';
 import { store, persistor } from './redux/store/index';
 import * as storageHelper from './helpers/storage';
+import COLOR from './config/colors';
 console.log('STORE');
 console.log(store);
 
@@ -26,6 +27,7 @@ const App = () => {
 	return (
 		<Provider store={store}>
 			<PersistGate loading={null} persistor={persistor}>
+				<StatusBar backgroundColor={COLOR.BLUE} barStyle="light-content" />
 				<AppContainer />
 			</PersistGate>
 		</Provider>
