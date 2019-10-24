@@ -8,6 +8,7 @@ export const subLastModified = state => state.rootReducer.aboArticles.lastModifi
 export const getArchiveIssues = state => state.rootReducer.archiveIssues;
 export const getArchiveArticles = state => state.rootReducer.archiveArticles;
 export const getDownloads = state => state.rootReducer.downloadedArticles;
+export const getCachedArticles = state => state.rootReducer.cachedArticles;
 export const isHomescreenRefreshing = state => state.sessionReducer.homeScreenRefreshing;
 export const getCategoryArticles = state => state.rootReducer.categoryArticles;
 
@@ -98,7 +99,6 @@ export const getDropdownArchiveIssuesOptions = createSelector(
 
 export const getDownloadedArticleContents = (state, articleInfo) => {
 	const currentDownloads = getDownloads(state);
-	console.log('Current downloads', currentDownloads);
 	if (currentDownloads.length === 0) {
 		return undefined;
 	}
@@ -109,6 +109,21 @@ export const getDownloadedArticleContents = (state, articleInfo) => {
 			downloadedArticle.audio === articleInfo.audio
 		) {
 			return downloadedArticle;
+		}
+	}
+
+	return undefined;
+};
+
+export const getCachedArticleContents = (state, articleInfo) => {
+	const cachedArticles = getCachedArticles(state);
+	if (cachedArticles.length === 0) {
+		return undefined;
+	}
+
+	for (const article of cachedArticles) {
+		if (article.article_id === articleInfo.article_id && article.audio === articleInfo.audio) {
+			return article;
 		}
 	}
 

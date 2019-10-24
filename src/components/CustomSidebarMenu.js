@@ -54,7 +54,6 @@ const CustomSidebarMenu = props => (
 				</View>
 			</View>
 
-			{console.log('DRAWER PROPS: ', props)}
 			<DrawerNavigatorItems {...props} />
 			{/* <View>
 				<TouchableOpacity>

@@ -13,7 +13,8 @@ import {
 	OPEN_AUDIO_PLAYER_MODAL,
 	SET_FAVOURITES,
 	APPEND_ARTICLES,
-	SET_ACTIVE_DROPDOWN_ITEM
+	SET_ACTIVE_DROPDOWN_ITEM,
+	CACHE_ARTICLE
 } from './action-types';
 
 /* ACTIONS */
@@ -110,6 +111,13 @@ export function setFavourites(payload) {
 export function setActiveDropdownItem(payload) {
 	return {
 		type: SET_ACTIVE_DROPDOWN_ITEM,
+		payload
+	};
+}
+
+export function cacheArticle(payload) {
+	return {
+		type: CACHE_ARTICLE,
 		payload
 	};
 }

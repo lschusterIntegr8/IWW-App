@@ -85,13 +85,12 @@ class SingleArticleMain extends Component {
 	render() {
 		/* Get parameter that is passed via navigation */
 		if (!this.state.article) {
-			console.log('single article props: ', this.props);
 			const { navigation } = this.props;
 			console.log(navigation.getParam('article', {}));
 			navigation.getParam('article', {}).then(data => {
-				console.log('PROMISE DATA: ', data);
+				// console.log('PROMISE DATA: ', data);
 				let articleBasic = navigation.getParam('articleBasic', {});
-				console.log('Setting state to...', { ...data, ...articleBasic });
+				// console.log('Setting state to...', { ...data, ...articleBasic });
 
 				this.setState({ article: { ...data, ...articleBasic } });
 			});
@@ -105,11 +104,22 @@ class SingleArticleMain extends Component {
 							this.webview = ref;
 						}}
 						onNavigationStateChange={async event => {
-							console.log('NAVIGATION STATE CHANGE: ', event);
-							if (event.url.indexOf('http') !== -1) {
-								console.log('STOPPING');
-								this.webview.stopLoading();
-								Linking.openURL(event.url);
+							try {
+								if (event.url.indexOf('http') !== -1) {
+									console.log('Opening link: ', event.url);
+									this.webview.stopLoading();
+									Linking.openURL(event.url);
+								} else if (event.url.indexOf('@') !== -1) {
+									console.log(event.url);
+									this.webview.stopLoading();
+									console.log(`opening: ${event.url}`);
+									Linking.openURL(event.url);
+								}
+							} catch (err) {
+								console.warn(
+									'Error opening links inside webview (SingleArticleMain)'
+								);
+								console.warn(err);
 							}
 						}}
 						style={styles.webview}

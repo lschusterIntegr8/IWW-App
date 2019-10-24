@@ -44,12 +44,7 @@ const persistConfig = {
 	storage: AsyncStorage,
 	// migrate: createMigrate(migrations, { debug: true }),
 	// version: 12,
-	blacklist: ['sessionReducer']
-	// stateReconciler: autoMergeLevel2
-
-	// Whitelist (Save Specific Reducers)
-	// whitelist: ['authReducer'],
-	// Blacklist (Don't Save Specific Reducers)
+	blacklist: ['sessionReducer'] // don't persist sessionReducer ...
 };
 
 // const persistedCombinedReducer = persistCombineReducers(persistConfig, {

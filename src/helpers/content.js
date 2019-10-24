@@ -4,7 +4,8 @@ import {
 	getArticles,
 	getSubscriptions,
 	getSubscriptionIDs,
-	getDownloadedArticleContents
+	getDownloadedArticleContents,
+	getCachedArticleContents
 } from '../redux/selectors/content.selector';
 
 import * as API from './api';
@@ -21,7 +22,8 @@ import {
 	setCategoryArticles,
 	addToDownloads,
 	setFavourites,
-	appendArticles
+	appendArticles,
+	cacheArticle
 } from '../redux/actions/index';
 import { cleanUrls, matchSubscriptionIdToShortcut } from './util/util';
 import config from '../config/main';
@@ -163,7 +165,7 @@ export const getArticleContent = async (
 	articleId,
 	applicationId,
 	audioVersion = undefined,
-	srcCallerFlag
+	srcCallerFlag = undefined
 ) => {
 	/* Check if article is in downloads */
 	if (srcCallerFlag === 'downloads') {
@@ -182,6 +184,19 @@ export const getArticleContent = async (
 	}
 
 	/* TODO: check if article contents are already cached */
+	const cachedArticle = getCachedArticleContents(store.getState(), {
+		article_id: articleId,
+		audio: audioVersion,
+		application_id: applicationId
+	});
+
+	console.log('Searching article contents in the CACHE ...');
+	if (cachedArticle) {
+		console.log('Found article contents inside CACHED ARTICLES');
+		return cachedArticle;
+	}
+
+	console.log('Could not find article stored in the CACHE ...');
 
 	console.log('Fetching endpoint data where audio=', audioVersion);
 	const { data: articleContent } = await API.singleArticleContent(articleId, audioVersion).catch(
@@ -200,6 +215,19 @@ export const getArticleContent = async (
 	} else {
 		resultObj.audio = true;
 	}
+
+	/* TODO: STORE TO CACHE */
+	console.log('WILL STORE TO CACHE:');
+	const articleInfo = {
+		article_id: articleId,
+		audio: audioVersion,
+		application_id: applicationId
+	};
+
+	const mergedArticleForCache = { ...articleInfo, ...resultObj, audio: audioVersion };
+	console.log('MERGED CACHE ARTICLE: ', mergedArticleForCache);
+
+	store.dispatch(cacheArticle(mergedArticleForCache));
 
 	return resultObj;
 };

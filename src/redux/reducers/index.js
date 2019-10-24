@@ -10,7 +10,8 @@ import {
 	OPEN_AUDIO_PLAYER_MODAL,
 	SET_FAVOURITES,
 	APPEND_ARTICLES,
-	APPEND_SUBSCRIPTION_ARTICLES
+	APPEND_SUBSCRIPTION_ARTICLES,
+	CACHE_ARTICLE
 } from '../actions/action-types';
 
 const initialState = {
@@ -23,7 +24,8 @@ const initialState = {
 	categoryArticles: [],
 	downloadedArticles: [],
 	audioPlayerModal: [],
-	favouriteArticles: []
+	favouriteArticles: [],
+	cachedArticles: []
 };
 
 const addSubscriptionArticles = (state, action) => {
@@ -218,6 +220,12 @@ function rootReducer(state = initialState, action) {
 			return {
 				...state,
 				favouriteArticles: action.payload
+			};
+		}
+		case CACHE_ARTICLE: {
+			return {
+				...state,
+				cachedArticles: [action.payload, ...state.cachedArticles]
 			};
 		}
 	}
