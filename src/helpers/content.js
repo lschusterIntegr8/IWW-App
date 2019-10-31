@@ -58,7 +58,7 @@ export const fetchAndSetArticles = async (subId, limit, skip, searchtext, audio)
 		console.log(responseContent);
 		return responseContent;
 	});
-
+	console.log("fetch and set articles ",articles);
 	return store.dispatch(setArticles(articles));
 };
 
@@ -95,7 +95,8 @@ export const loadMoreArticles = async (
 	}
 
 	console.info('Appending: ', { articles: articles, articleType });
-
+	console.log("load more articles ",articles);
+	cachedArticle(articles, audio);
 	return store.dispatch(appendArticles({ articles: articles, articleType, id: subId, audio }));
 };
 
@@ -167,6 +168,7 @@ export const getArticleContent = async (
 	audioVersion = undefined,
 	srcCallerFlag = undefined
 ) => {
+	
 	/* Check if article is in downloads */
 	if (srcCallerFlag === 'downloads') {
 		const foundArticle = getDownloadedArticleContents(store.getState(), {
@@ -525,3 +527,48 @@ export const storeArticleToDownloads = async (articleInfo, audioVersion = undefi
 		throw new Error({ status: 'error' });
 	}
 };
+
+const cachedArticle = async (articles, audio) => {
+	console.log("number of articles cached: ",store.getState().rootReducer.cachedArticles.length);
+	console.log("--------Cashing load more articles------")
+	let audioVersion = audio ? audio : undefined
+	for (let article of articles){
+		const foundArticle = getCachedArticleContents(store.getState(), {
+			article_id: article.article_id,
+			audioVersion,
+			application_id: article.application_id
+		});
+		if (foundArticle) continue;
+
+		console.log("Article content was not found in store, proceed to cashe");
+		const { data: articleContent } = await API.singleArticleContent(article.article_id, audioVersion).catch(
+			err => {
+				console.log(err);
+				throw err;
+			}
+		);
+	
+		let resultObj = articleContent;
+			console.log("audio value on load more function ", audio);
+		if (!audioVersion) {
+			const articleTag = await matchSubscriptionIdToShortcut(article.application_id);
+			const cleanHTML = cleanUrls(articleContent.content, articleTag);
+			resultObj.content = cleanHTML;
+		} else {
+			resultObj.audio = true;
+		}
+		console.log('WILL STORE TO CACHE:');
+		const articleInfo = {
+			article_id: article.article_id,
+			audio: audioVersion,
+			application_id: article.application_id
+		};
+		
+		console.log("audioversion ", audioVersion)
+		const mergedArticleForCache = { ...articleInfo, ...resultObj, audioVersion};
+		console.log('MERGED CACHE ARTICLE: from load more', mergedArticleForCache);
+	
+		store.dispatch(cacheArticle(mergedArticleForCache));
+	}
+
+}
