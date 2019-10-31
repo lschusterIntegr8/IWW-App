@@ -390,31 +390,18 @@ export const getCategoryContent = async (subId, issueID = undefined, audioVersio
 /* Fetches for every infodienst the favourites list and combines + stores to redux */
 export const getAllFavourites = async () => {
 	try {
-		const allSubIds = getSubscriptionIDs(store.getState());
-		console.log('ALL SUB IDS: ', allSubIds);
 		store.dispatch(setHomeScreenRefreshing(true));
-		const favPromises = [];
 		/* Fetch for all infodienste --> doing multiple requests for every infodienst (*tnx iww*) */
-		for (let subIndex = 0; subIndex < allSubIds.length; subIndex += 1) {
-			console.log('Called for '.subIndex);
-			favPromises.push(API.getFavourites(allSubIds[subIndex]));
-		}
-
-		Promise.all(favPromises).then(combinedPromiseData => {
-			console.log('combinedPromiseData: ', combinedPromiseData);
-			const formattedFavourites = [];
-
+			const favouriteData = await API.getFavourites();
+			console.log("data favourities fetched: ", favouriteData)
+			
+			let formattedFavourites = favouriteData.data;
 			/* Combine all responses to a single formatted array of favourites */
-			for (const req of combinedPromiseData) {
-				for (const reqData of req.data) {
-					formattedFavourites.push(reqData);
-				}
-			}
 
 			console.log('formattedFavourites: ', formattedFavourites);
 			store.dispatch(setHomeScreenRefreshing(false));
 			store.dispatch(setFavourites(formattedFavourites));
-		});
+
 	} catch (err) {
 		console.warn(err);
 	}

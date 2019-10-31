@@ -203,7 +203,7 @@ export const getArchiveArticles = (subId, issueId, audio = undefined) => {
 export const getFavourites = (subId = '') => {
 	return new Promise((resolve, reject) => {
 		axios
-			.get(`${BASE_ENDPOINT}/favourites?application=${subId}`)
+			.get(`${BASE_ENDPOINT}/favourites`)
 			.then(response => {
 				return resolve({ success: true, data: response.data._embedded.favourites });
 			})
