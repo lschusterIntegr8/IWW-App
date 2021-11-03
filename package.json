@@ -44,7 +44,7 @@
     "redux-persist": "^6.0.0",
     "reselect": "^4.0.0",
     "uuid": "^3.3.3",
-    "validator": "^11.1.0"
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",
